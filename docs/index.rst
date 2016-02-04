@@ -55,9 +55,8 @@ this can be found in the book [COD5e]_.
 
 Since kernel programming generally involves a lot of synchronization issues, a
 course on concurrent programming is recommended to be taken later on. One good
-book in this field is the book by Andrews [Andrews]_. These issues are also
-handled in the operating systems books by Stallings and Tanenbaum, but the
-approach is different.
+book in this field is [Andrews]_. These issues are also handled in the
+operating systems books cited above, but the approach is different.
 
 How to Use This Documentation
 *****************************
