@@ -1,0 +1,22 @@
+kudos Code Style
+================
+
+Indentation
+  C: 2 spaces
+  Assembly: tabs
+
+Naming
+  lower case
+  underscores
+
+Constants
+  #define
+
+Braces
+  K&R
+
+Spaces
+  Around keywords apart from sizeof, typeof, alignof, and __attribute__
+  * adjacent to data/function name
+  Around binary/ternary operators (not unary)
+  (Avoid trailing whitespace)
