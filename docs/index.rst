@@ -1,22 +1,163 @@
-.. kudos documentation master file, created by
-   sphinx-quickstart on Thu Feb  4 17:20:27 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Introduction
+============
 
-Welcome to kudos's documentation!
-=================================
+``kudos`` is a skeleton operating system running on a virtual machine called
+``yams``.
 
-Contents:
+The ``kudos`` operating system, as well as its documentation, are heavily based on
+``BUENOS`` and the ``BUENOS`` Roadmap, originally developed at Aalto University,
+Finland. For more information about ``BUENOS`` visit the project homepage at:
 
-.. toctree::
-   :maxdepth: 2
+`http://www.niksula.hut.fi/u/buenos/`_
 
+The ``kudos`` (like ``BUENOS``) operating system is meant as an exercise base
+for operating system project courses. ``kudos`` is a realistic system, that can
+run on some real machines.
 
+The ``kudos`` system supports multiple CPUs, provides threading and a wide
+variety of synchronization primitives. It also includes skeleton code for
+userland program support, partial support for a virtual memory subsystem, a
+trivial filesystem, and generic drivers for textual input and output.
 
-Indices and tables
-==================
+Many simplifications have been made to the hardware where the need for clarity
+has been greater than the need for realism. The ``YAMS`` virtual machine does
+not simulate caches, for example, but provides an otherwise fully realistic
+memory model.
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+The main idea of the system is to give you a real, working multiprocessor
+operating system kernel which is as small and simple as possible. ``kudos``
+could be quite easily ported to a real MIPS32 hardware; only device drivers and
+boot code need to be modified.  A virtual machine environment is used because
+of easier development, static hardware settings and device driver simplicity,
+not because unrealistic assumptions are needed by the kernel.
 
+If you are a student participating in an operating systems project
+course, the course staff has probably already set up a development
+environment for you. If they have not, you must acquire ``YAMS`` (see
+below for details) and compile it. You also need a MIPS32 ELF cross
+compiler to compile ``kudos`` for use with ``YAMS``.
+
+Expected Background Knowledge
+*****************************
+
+Since the ``kudos`` system is written using the C programming language, you
+should be able to program in C. For an introduction on C programming, see the
+classical reference [KR]_, or the more modern, and perhaps more accessible,
+[ModernC]_. You also need to know quite much about programming in general,
+particularly about procedural programming.
+
+We also expect that you are taking a course on operating systems or otherwise
+know the basics about operating systems. You can still find OS textbooks very
+handy when doing the exercises. We recommend that you acquire the book
+"Operating Systems: Three Easy Pieces"[OSTEP]_, or, if you are in a more
+classical mood, we recommend [Stallings]_ or [Tanenbaum]_.
+
+Since you are going to interact directly with the hardware quite a
+lot, you should know something about hardware. A good introduction on
+this can be found in the book \cite{patterson}.
+
+Since kernel programming generally involves a lot of synchronization issues, a
+course on concurrent programming is recommended to be taken later on. One good
+book in this field is the book by Andrews [Andrews]_. These issues are also
+handled in the operating systems books by Stallings and Tanenbaum, but the
+approach is different.
+
+How to Use This Documentation
+*****************************
+
+This documentation is designed to be used both as read-through introduction and
+as a reference guide. To get most out of this document you should probably:
+
+1. Read \autoref{sec:usage} (usage) and \autoref{sec:overview} (system
+overview) carefully.
+
+2. Skim through the whole document to get a good overview.
+
+3. Before designing and implementing your assignments, carefully read all
+chapters on the subject matter.
+
+4. Use the document as a reference when designing and implementing your
+improvements.
+
+``kudos`` for teachers
+**********************
+
+As stated above, the ``kudos`` system is meant as an assignment backbone for
+operating systems project courses. This document, while primarily acting as
+reference guide to the system, is also designed to support project courses. The
+document is ordered so that various kernel programming issues are introduced in
+sensible order and exercises (see also exercises_) are provided
+for each subject area.
+
+While the system as such can be used as a base for a large variety of
+assignments, this document works best if assignments are
+divided into five different parts as follows:
+
+1. **Synchronization and Multiprogramming**. Various multiprogramming issues
+relevant on both multiprocessor and uniprocessor machines are covered in
+\autoref{sec:threading} and \autoref{sec:sync}.
+
+2. **Userland**. Userland processes, interactions between
+kernel and userland as well as system calls are covered in
+\autoref{sec:userland}.
+
+3. **Virtual Memory**. The current virtual memory support
+mechanisms in ``kudos`` are explained in \autoref{sec:vm}, which also
+gives exercises on the subject area.
+
+4. **Filesystem**. Filesystem issues are covered in
+\autoref{sec:fs}.
+
+Preparing for a ``kudos`` Course
+********************************
+
+To implement an operating systems project course with ``kudos``, at least the
+following steps are necessary:
+
+* Provide students with a development environment with precompiled
+``YAMS`` and a MIPS32 ELF cross compiler. See ``YAMS`` usage guide for
+instructions on setup of ``YAMS`` and the cross compiler environment.
+
+* Decide which exercises are used on the course, how many points
+they are worth and what are the deadlines.
+
+* Decide any other practical issues (are design reviews compulsory
+for students, how many students there are per group, etc.)
+
+* Familiarize the staff with ``kudos`` and ``YAMS``.
+
+* Introduce ``kudos`` to the students.
+
+Exercises
+*********
+.. _exercises:
+
+Each chapter in this document contains a set of exercises. Some of
+these are meant as simple thought challenges and some as much more
+demanding and larger programming exercises.
+
+The thought exercises are meant for self study and they can be used to
+check that the contents of the chapter were understood. The
+programming exercises are meant to be possible assignments on
+operating system project courses.
+
+The exercises look like this:
+
+\begin{exercises}[\vspace{\baselineskip}]
+
+\exercise{This is a self study exercise.}
+
+\cexercise{This is a programming assignment. They are indicated with a
+bold exercise number and a keyboard symbol.}
+
+\end{exercises}
+
+.. [KR] Brian Kernighan and Dennis Ritchie. *The C Programming Language*, 2nd Edition. Prentice-Hall, 1988.
+
+.. [ModernC]  Jens Gustedt. *Modern C*. Unpublished, 2015. Available for free from `http://icube-icps.unistra.fr/index.php/File:ModernC.pdf`_.
+
+.. [OSTEP] Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau. *Operating Systems: Three Easy Pieces*. Arpaci-Dusseau Books, 2015.Available for free from `http://pages.cs.wisc.edu/~remzi/OSTEP/`_.
+
+.. [Stallings] William Stallings. *Operating Systems: Internals and Design Principles*, 4th edition. Prentice-Hall, 2001.
+
+.. [Tanenbaum] Andrew Tanenbaum. *Modern Operating Systems*, 2nd edition. Prentice-Hall, 2001.
