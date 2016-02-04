@@ -1,18 +1,16 @@
 Introduction
 ============
 
-``kudos`` is a skeleton operating system running on a virtual machine called
-``yams``.
+``kudos`` is a skeleton operating system for exploring operating systems
+concepts. It is intended for (1) teaching operating systems concepts, and (2)
+to serve as a baseline for open-ended student projects.
 
-The ``kudos`` operating system, as well as its documentation, are heavily based on
-``BUENOS`` and the ``BUENOS`` Roadmap, originally developed at Aalto University,
-Finland. For more information about ``BUENOS`` visit the project homepage at:
-
-`http://www.niksula.hut.fi/u/buenos/`_
-
-The ``kudos`` (like ``BUENOS``) operating system is meant as an exercise base
-for operating system project courses. ``kudos`` is a realistic system, that can
-run on some real machines.
+The ``kudos`` operating system is heavily based upon the ``BUENOS`` operating
+system, and this documentation is heavily based upon the so-called "``BUENOS``
+Roadmap". ``BUENOS`` was originally developed at Aalto University, Finland.
+``kudos`` is a continuation of the ``BUENOS`` effort at the University of
+Copenhagen, Denmark. For more information about ``BUENOS`` visit the project
+homepage at: http://www.niksula.hut.fi/u/buenos/.
 
 The ``kudos`` system supports multiple CPUs, provides threading and a wide
 variety of synchronization primitives. It also includes skeleton code for
