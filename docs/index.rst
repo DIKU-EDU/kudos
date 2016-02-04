@@ -159,3 +159,5 @@ bold exercise number and a keyboard symbol.}
 .. [Tanenbaum] Andrew Tanenbaum. *Modern Operating Systems*, 2nd edition. Prentice-Hall, 2001.
 
 .. [COD5e] David A. Patterson and John L. Hennessy. *Computer Organization and Design*, 5th edition. Elsevier, 2014.
+
+.. [Andrews] Gregory R. Andrews., *Foundations of multithreaded, parallel and distributed programming*. Addison-Wesley Longman, 2000.
