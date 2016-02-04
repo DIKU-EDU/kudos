@@ -65,15 +65,15 @@ This documentation is designed to be used both as read-through introduction and
 as a reference guide. To get most out of this document you should probably:
 
 1. Read \autoref{sec:usage} (usage) and \autoref{sec:overview} (system
-overview) carefully.
+   overview) carefully.
 
 2. Skim through the whole document to get a good overview.
 
 3. Before designing and implementing your assignments, carefully read all
-chapters on the subject matter.
+   chapters on the subject matter.
 
 4. Use the document as a reference when designing and implementing your
-improvements.
+   improvements.
 
 ``kudos`` for teachers
 **********************
@@ -90,19 +90,19 @@ assignments, this document works best if assignments are
 divided into five different parts as follows:
 
 1. **Synchronization and Multiprogramming**. Various multiprogramming issues
-relevant on both multiprocessor and uniprocessor machines are covered in
-\autoref{sec:threading} and \autoref{sec:sync}.
+   relevant on both multiprocessor and uniprocessor machines are covered in
+   \autoref{sec:threading} and \autoref{sec:sync}.
 
 2. **Userland**. Userland processes, interactions between
-kernel and userland as well as system calls are covered in
-\autoref{sec:userland}.
+   kernel and userland as well as system calls are covered in
+   \autoref{sec:userland}.
 
 3. **Virtual Memory**. The current virtual memory support
-mechanisms in ``kudos`` are explained in \autoref{sec:vm}, which also
-gives exercises on the subject area.
+   mechanisms in ``kudos`` are explained in \autoref{sec:vm}, which also
+   gives exercises on the subject area.
 
 4. **Filesystem**. Filesystem issues are covered in
-\autoref{sec:fs}.
+   \autoref{sec:fs}.
 
 Preparing for a ``kudos`` Course
 ********************************
