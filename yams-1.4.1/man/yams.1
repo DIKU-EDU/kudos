@@ -1,0 +1,324 @@
+.\" For Emacs: -*- nroff -*-
+.\"
+.\" Copyright (C) 2002-2010 Juha Aatrokoski, Timo Lilja, Leena Salmela, 
+.\"   Teemu Takanen, Aleksi Virtanen
+.\"
+.\" This is free software; you can redistribute it and/or modify it under
+.\" the terms of the GNU General Public License as published by the Free
+.\" Software Foundation; either version 2, or (at your option) any later
+.\" version.
+.\" 
+.\" This is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" for more details.
+.\" 
+.\" You should have received a copy of the GNU General Public License with
+.\" your Debian GNU/Linux system, in /usr/share/common-licenses/GPL, or with
+.\" the dpkg source package as the file COPYING.  If not, write to the Free
+.\" Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.TH YAMS 1 "Yams version 1.4.0" "Buenos Team" "YAMS MANUAL"
+.SH NAME
+yams \- Yet Another Machine Simulator
+
+.SH SYNOPSIS
+.B yams
+[-h]
+[-v] 
+[-c file]
+[-s file]
+[-g port]
+[binary-file [opt1]...[optN]]
+
+.SH DESCRIPTION
+This manual page documents
+.B yams
+version 1.4.0
+.PP
+.B yams
+is Yet Another Machine Simulator. A hardware simulator for Unix systems.
+.PP
+.B Yams 
+simulates MIPS32 based machine. All MIPS32 ISA instructions and CP0 
+instructions are implemented. Floating point unit (CP1) is not implented.
+In addition to a processor 
+.B yams
+offers realistic yet simple hardware interface. The following 
+hardware devices are included in YAMS: 
+.RS
+- console/terminal
+.br
+- GDB remote debugging interface
+.br
+- real time clock (RTC)
+.br
+- harddisk
+.br
+- network adapter
+.RE
+Additionally YAMS supports pluggable I/O devices written by third
+parties. For more information about included and pluggable devices see
+the info documentation provided with your
+.B yams
+distribution.
+
+.PP
+Configuration is done via  
+.I configuration files. 
+Configuration files are read from default locations (see the
+.B FILES
+section) or from a location defined in command line. Full
+documentation of configuration files can be found from the
+.I yams.info
+info page. Command line options override definitions in configuration files. 
+
+.PP
+Powerful tool for (real time) controlling of 
+.B yams
+is the
+.I hardware console.
+The hardware console is described in the
+.B HARDWARE CONSOLE 
+section.
+
+.SH OPTIONS
+
+.IP "binary-file [opt1]...[optN]"
+YAMS binary file to be loaded into the memory and executed at startup
+(for example an operating system kernel). The binary name may be
+followed by one or more options, which are passed to the binary as
+boot arguments.
+
+The file may be either an ELF executable file or a raw binary file. 
+
+.IP "-s --script file1"
+Execute commands in  
+.I file
+in 
+.B yams
+hardware console. This option may be given several times and all
+scripts are executed in the order they were specified in the command
+line. See the 
+.B HARDWARE CONSOLE
+section for more information.
+
+.IP "-c --config file"
+Read configuration file 
+.I file.
+This will override configurations in the default configuration file.
+
+.IP "-g --gdb port"
+for listening to the GDB remote protocol. If this option is
+given, normal yams hardware console will not be entered when SIGINT is
+caught. Instead the tcp port
+.I port
+is opened for listening. N.B.: The hardware console cannot be entered if
+this option is present.
+
+.IP "-v --version" 
+Print version to stdout and quit.
+
+.IP "-h --help"
+Print help about command line options and quit.
+
+.SH HARDWARE CONSOLE
+
+The hardware console offers a command line based way to examine and control
+.B yams.
+The console is entered by pressing 
+.B CTRL-C. 
+The commands available are described below. Commands can be given in
+either long or short form (short form is given in parentheses). For
+more detailed instructions, see the included info documentation.
+
+.IP "start (s)"
+Start simulator. Simulation is continued from the current state. No 
+initializations will be made.
+
+.IP "step (t) [n]"
+Step 
+.I n
+cycles in the simulator loop. Default is one cycle
+
+.IP "break (b) <addr>"
+Halt simulator when PC reaches breakpoint address 
+.I addr. 
+.B NOTE:
+address must be properly aligned ie. it must divisible by 4, otherwise it is 
+newer reached.
+
+.IP "unbreak (u)"
+Cancel breakpoint.
+
+.IP "quit (q)"
+Quit the simulator.
+
+.IP "interrupt (i) <n> [cpu]"
+Raise interrupt 
+.I n
+(on CPU 
+.I cpu
+).
+
+.IP "regdump (r) [cpu]"
+Print register contents of CPU 
+.I cpu. 
+Default is processor number zero.
+
+.IP "regwrite (w) [cpu:]<r> <v>" 
+Write value 
+.I v 
+to register 
+.I r
+(on CPU
+.I cpu
+).
+         
+.IP "memread (m) <addr> <n> <file>"
+Read 
+.I n
+bytes starting from the address 
+.I addr 
+and write them to file 
+.I file.
+
+.IP "memwrite (l) <addr> <file>" 
+Write contents of the file 
+.I file
+to the memory starting from address 
+.I addr. 
+
+.IP "dump (d) [addr|[cpu:]reg] [n]"
+Dump 
+.I n 
+words of memory starting from address 
+.I addr
+or address pointed to by CPU register
+.I reg
+
+.IP "tlbdump [cpu]"
+Dump contents of the TLB for given CPU. By default, dump CPU 0 TLB.
+
+.IP "poke (p) <addr> <w>"
+Write word
+.I w
+to virtual address
+.I addr
+
+.IP "gdb <port>"
+Open a tcp socket listening in
+.I port
+for the GDB remote protocol. The hardware console is unaccessible
+while the socket is active. When the user ends his GDB session either
+the hardware console is restared or the simulation is continued
+depending on whether the user instructed GDB to continue the
+simulation or kill it.
+
+.IP "boot (b) <imagefile> <parameters>"
+Load the specified image into memory and boot it with the given kernel
+boot parameter string.
+
+
+.PP
+Parameters are entered in the following forms:
+
+.PP
+.B Integers 
+can be entered in three formats: in decimal with no 
+prefixes, in hexadecimal prefixed with 
+.B 0x
+or
+.B #
+(e.g. 0x0badf00d) or in binary prefixed with 
+.B b 
+(e.g. b101010).
+
+.PP
+.B Strings 
+(filenames) are entered in quotation marks (e.g. "test.bin").
+
+.PP
+.B CPU registers 
+are entered as symbolic names. Both 
+.B r+register number 
+form and descriptive symbolic names are 
+accepted (e.g. r0 or zero). 
+
+.PP
+In the case of multiple CPUs a register name can be prefixed with the
+CPU's id number and a colon (:) (e.g. 1:zero). If omitted, the CPU id
+defaults to zero.
+
+.PP
+.B CP0 registers 
+are entered mainly in the same way as CPU registers. 
+The difference is that only descriptive symbolic names are accepted.
+
+.PP
+.B Memory addresses 
+are entered as integers.
+
+.PP
+Console commands can also be written into files and passed to
+.B yams
+by using the command line option -f. Commands will be executed as if they
+were entered directly to the console. Execution of the console command files
+is done as the last operation of the
+.B yams
+startup process. 
+.PP
+.B NOTES: 
+.br
+- If a console command file doesn't end with a 
+.I start
+command, the simulator won't start and the console prompt will be presented. 
+.br
+- If a console command file ends with a 
+.I quit 
+command, 
+.B yams
+will quit.
+.br
+- It is not possible to give a console command file to 
+.B yams 
+from the hardware console command line.   
+
+.SH FILES
+.I ./yams.conf
+.br
+.I $HOME/.yams.conf
+.br
+.I /etc/yams.conf
+.RS
+Default configuration file locations.
+
+.SH
+.SH "SEE ALSO"
+.br
+.B yams
+info documentation
+.br
+
+.SH COPYRIGHT
+.B yams
+\- Yet Another Machine Simulator
+.br
+Copyright (C) 2002-2010 Juha Aatrokoski, Timo Lilja,
+.br  
+  Leena Salmela, Teemu Takanen, Aleksi Virtanen
+.PP
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+.PP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.PP
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+.PP

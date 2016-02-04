@@ -1,0 +1,761 @@
+@node    Memory Mapped Devices
+@section Memory mapped I/O devices
+
+@cindex  memory mapped devices
+@cindex  device descriptors
+@cindex  DMA transfers
+@cindex  device generated interrupts
+@cindex  I/O address space
+
+All I/O operations in @code{YAMS} are memory-mapped. The I/O address
+space is the upper half of the kernel unmapped uncached segment,
+ie. the first byte is at the address 0xb0000000 and the last byte at
+0xbfffffff. Reads or writes to this area will not cause an exception
+provided that the CPU is in kernel mode and the read/write is
+naturally aligned.
+
+Reads from unused portions of the I/O area return 0. However, the
+operating system should not rely this to be so and instead consider
+the result undefined. Writes to unused portions have no effect.
+
+Reads from the I/O area function just as normal memory reads. However,
+writing anything other than a word (e.g. a byte or a half word) to an
+I/O 'port' of a device will give unpredicted results. So writing to
+I/O ports should be restricted to whole words. Some devices may have
+an additional memory mapped I/O area, where the result of writing
+bytes or half-words depends on the device.
+
+The I/O address space is partitioned as follows:
+
+@table @asis
+@item 0xb0000000 - 0xb0000fff
+This area holds the 128 device descriptors which describe the hardware
+devices that are available in the system. For details: @xref{Device
+descriptors}. This area is read-only, meaning that writes have no
+effect.
+
+@item 0xb0001000 - 0xb0001fff
+This area holds the kernel boot parameters as a 0-terminated (C-style)
+string. This area is read-only, meaning that writes have no effect.
+
+@item 0xb0002000 - 0xb0007fff
+This area is reserved for future use. This area is read-only, meaning
+that writes have no effect.
+
+@item 0xb0008000 - 0xbfffffff
+This area holds the actual I/O ports and any additional memory areas
+for the devices. Whether writing to a certain address has any effect
+depends on the device and port/area in question.
+
+@end table
+
+@menu
+* Device descriptors::          0xb0000000 - 0xb0000fff
+* Device type codes::           I/O device type codes
+* Hardware interrupts::         How devices raise interrupts
+* I/O plugins::                 Pluggable I/O devices.
+@end menu
+
+Each of the I/O devices is documented in the following sections:
+
+@menu
+* Meminfo::                     System memory information device.
+* RTC::                         System 'real-time' clock.
+* Shutdown::                    Software Power-off device.
+* CPU status::                  CPU status device.            
+* Terminals::                   Terminal device.
+* Disks::                       Hard disk device.
+* NIC::                         Network interface card.
+@end menu
+
+
+@node       Device descriptors
+@subsection Device descriptors
+
+@cindex  device descriptors
+@cindex  identifying system hardware
+
+In the memory range from 0xb0000000 to 0xb0000fff are located 128
+device descriptors that describe the hardware devices. Each of the
+descriptors is 32 bytes long and has the following structure:
+
+@multitable {offsetxxxx} {32 bytes} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab SIZE @tab DESCRIPTION
+
+@item 0x00 @tab 1 word @tab
+Device type code. Type code 0 is not used by any devices, and it means
+that this descriptor is unused and should be ignored. @xref{Device
+type codes}.
+
+@item 0x04 @tab 1 word @tab
+Device I/O address base. All I/O port offsets of a device are relative
+to this address.
+
+@item 0x08 @tab 1 word @tab
+The length of the device's I/O address area in bytes. This will always
+be a multiple of 4, since all ports are 32 bits wide.
+
+@item 0x0C @tab 1 word @tab
+The number of the IRQ that the device generates. Possible values are
+from 0 to 5. A value of -1 (0xffffffff) means the device will not
+generate any IRQs.
+
+@item 0x10 @tab 8 bytes @tab
+Vendor string. These bytes are used to describe the model of the
+device or some other information intended to be read by humans. The
+operating system may safely ignore the contents of these bytes.  These
+bytes may contain any values and need not be 0-terminated.
+
+@item 0x18 @tab 2 words @tab
+Reserved. The contents of these word should be considered undefined.
+
+@end multitable
+
+When starting, the operating system should read through @emph{all}
+device descriptors, ignoring those with device type code of 0. In
+practise there will be no more devices after the first descriptor with
+type code 0, but the OS must not rely on this as it may very well
+change in the future.
+
+
+@node       Device type codes
+@subsection Device type codes
+
+@cindex device type codes
+@cindex supported devices
+
+A device is identified by its type code. The type codes have the
+following meaning and grouping:
+
+@table @asis
+@item 0x100
+The 0x100 series is for so-called meta-devices, such as those that are
+integrated into the motherboard chipset.
+
+@item 0x101
+System memory information. @xref{Meminfo}.
+
+@item 0x102
+System real-time clock device (RTC). @xref{RTC}.
+
+@item 0x103
+System software shutdown device. @xref{Shutdown}.
+
+@item 0x200
+The 0x200 series is for TTYs and other character-buffered devices.
+
+@item 0x201
+The basic TTY as described in this document. @xref{Terminals}.
+
+@item 0x300
+The 0x300 series is for disks and other block-buffered devices.
+
+@item 0x301
+Hard disk as described in this document. @xref{Disks}.
+
+@item 0x400
+The 0x400 series is for network devices.
+
+@item 0x401
+NIC as described in this document. @xref{NIC}.
+
+@item 0x500
+The 0x500 series is for devices that have both character- and
+block-buffered characteristics.
+
+@item 0xC00
+CPU status "devices". The last two hexadecimal digits
+indicate the number of the CPU, from 0 to 255. @xref{CPU status}.
+
+@end table
+
+
+@node       Hardware interrupts
+@subsection Hardware interrupts
+
+@cindex  device generated interrupts
+@cindex  IRQ distribution among processors
+
+Interrupts (IRQs) caused by hardware devices are distributed evenly to
+all CPUs since they are not CPU specific (unlike other exceptions).
+
+If @code{YAMS} is configured with more than one CPU, the operating
+system @emph{must} support all processors and initialize them
+symmetrically or some device IRQs may be lost (more correctly never
+noticed or handled rather than lost).
+
+@xref{Configuring the Simulator}.
+
+
+@node       I/O plugins
+@subsection I/O plugins
+@cindex I/O plugins
+@cindex Pluggable I/O devices
+
+@code{YAMS} supports user-supplied I/O devices in the form of
+pluggable I/O devices, or I/O plugins. An I/O plugin is a separate
+program which communicates with @code{YAMS} over a stream (unix or
+TCP) socket, responding to writes to and reads from the I/O area(s) of
+the device.
+
+The documentation of the I/O ports and possible memory mapped I/O
+area should be provided with the plugin device.
+
+If you want to implement your own I/O plugin, the protocol is
+specified in the file 'README.PLUGIO'.
+
+@xref{Configuring I/O plugins}.
+
+@node       Meminfo
+@subsection System memory information device
+
+The system memory information device has device type code 0x101 and it
+has the following port:
+
+@multitable {OFFSET} {NAME1234} {row} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab NAME @tab R/W @tab DESCRIPTION
+
+@item 0x00 @tab PAGES @tab R @tab
+This port contains the number of physical memory pages in the
+system. Each page is 4096 bytes (4kB) in size.
+
+@end multitable
+
+
+@node       RTC
+@subsection System real-time clock device
+
+@cindex virtual clockspeed
+
+The RTC device (device type code 0x102) contains information about the
+speed and uptime of the system. It has the following ports:
+
+@multitable {OFFSET} {NAME1234} {row} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab NAME @tab R/W @tab DESCRIPTION
+
+@item 0x00 @tab MSEC @tab R @tab 
+Milliseconds elapsed since the machine started.
+@item 0x04 @tab CLKSPD @tab R @tab
+Machine clock speed in Hz.
+
+@end multitable
+
+The milliseconds are calculated from elapsed clock cycles and the
+simulator's virtual clock speed, and have no relatioin whatsoever with
+real word time.
+
+@xref{Configuring the Simulator}.
+
+@node       Shutdown
+@subsection Software shutdown device
+
+@cindex powering off the simulator from the OS
+@cindex droptting to command console from the OS
+
+The software shutdown device (device type code 0x103) is used to exit
+from @code{YAMS} from within the running program (OS). It has the
+following port:
+
+@multitable {OFFSET} {NAME1234} {row} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab NAME @tab R/W @tab DESCRIPTION
+
+@item 0x00 @tab SHUTDN @tab W @tab 
+Writing the magic word to this port will shut down the machine.
+
+@end multitable
+
+The magic word is 0x0badf00d. Writing the magic word to the port will
+immediately (after the clock cycle is finished) cause the simulator to
+exit.
+
+If magic word 0xdeadc0de is written to the same port, YAMS will not
+exit, but will drop to command console. This feature is usefull for
+kernel panic routies, because after error condition, the state of the
+system can be inspected.
+
+
+@node       CPU status
+@subsection CPU status devices
+
+Each CPU in the system has a status metadevice associated with it. The
+device type codes for CPU status devices range from 0xC00 to 0xC3F,
+the last two hexadecimal digits indicating the number of the CPU. The
+device has the following two ports:
+
+@multitable {OFFSET} {NAME1234} {row} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab NAME @tab R/W @tab DESCRIPTION
+
+@item 0x00 @tab STATUS @tab R @tab 
+CPU status word.
+
+@item 0x04 @tab COMMAND @tab W @tab 
+CPU command port for inter-CPU interrupts.
+
+@end multitable
+
+The STATUS word contains the following information:
+
+@multitable {bit} {123456} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item BIT @tab NAME @tab DESCRIPTION
+
+@item 0 @tab RUNNING @tab
+If the CPU is running this bit has the value 1. Since all CPUs are
+always running in @code{YAMS} this bit always has the value 1.
+
+@item 1 @tab IRQ @tab
+This bit indicates whether this CPU status device has a pending
+interrupt request.
+
+@item 31 @tab ICOMM @tab
+The last command issued to this device was incorrect.
+
+@end multitable
+
+The command port is used to generate and clear inter-CPU interrupts on
+the CPU of the CPU status device. The command port accepts the
+following commands:
+
+@multitable {OFFSETAAAAAA} {AAAAAAAAAAAAAAAAAANAME1234fdsaffsdaf}
+@item COMMAND @tab DESCRIPTION 
+
+@item 0x00 @tab Generate interrupt
+
+@item 0x01 @tab Clear the interrupt
+
+@end multitable
+
+
+@strong{Caution:} Since the maximum number of device descriptors is
+128, configuring @code{YAMS} with too many processors will cause
+undesirable effects.
+
+
+@xref{Configuring the Simulator}.
+
+@node       Terminals
+@subsection Terminal devices
+
+@cindex TTY programming
+
+Only terminals with device type code 0x201 are covered in this
+section.
+
+A terminal (TTY) is a character buffered I/O device from which data
+can be read when it is available and to which data can be written in
+certain speed. Reads and writes are done one byte (character) at a
+time (use the lowest 8 bits of a word). A terminal device has the
+following ports:
+
+@multitable {OFFSET} {NAME1234} {row} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab NAME @tab R/W @tab DESCRIPTION
+
+@item 0x00 @tab STATUS @tab R @tab
+Status bits for the TTY device.
+
+@item 0x04 @tab COMMAND @tab W @tab
+Port for giving commands to the TTY device.
+
+@item 0x08 @tab DATA @tab RW @tab
+Data port for reading from and writing to the TTY. Only the 8 lowest
+bits are used.
+
+@end multitable
+
+
+Operating the TTY is based mostly on interpreting the status bits,
+which are described in the following table. Reading from or writing to
+DATA will update the status bits before the next clock cycle.
+
+@multitable {bit} {123456} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item BIT @tab NAME @tab DESCRIPTION
+
+@item 0 @tab RAVAIL @tab
+There is meaningful (read: real) data available in DATA. If this bit
+is not set, reads from DATA will return 0.
+
+@item 1 @tab WBUSY @tab
+The TTY is writing out its internal buffer. When this bit is set, all
+writes to DATA will be ignored.
+
+@item 2 @tab RIRQ @tab
+The TTY has pending IRQ because new data became available.
+
+@item 3 @tab WIRQ @tab
+The TTY has pending IRQ because WBUSY has been cleared.
+
+@item 4 @tab WIRQE @tab
+Write interrupt generation is enabled if this is 1, disabled if 0.
+
+@item 29 @tab ICOMM @tab
+The last command issued to the COMMAND port was unrecognized.
+
+@item 30 @tab EBUSY @tab
+The last command issued to the COMMAND port could not be handled
+because the TTY was busy.
+
+@item 31 @tab ERROR @tab
+Undefined error in the device. The TTY is to be considered unusable if
+this bit is set.
+
+@end multitable
+
+The following commands are available to control a TTY device:
+
+@table @asis
+
+@item 0x01
+Reset RIRQ. Will zero the RIRQ bit, indicating that the IRQ generated
+has been handled.
+
+@item 0x02
+Reset WIRQ. Acts similarly to the RIRQ resetting.
+
+@item 0x03
+Enables Write IRQs.
+
+@item 0x04
+Disables Write IRQs.
+
+@end table
+
+Reading from a TTY device by the operating system would typically be
+done as follows.
+
+When there is input data available, the TTY will raise an IRQ. The
+handler should check just in case that RAVAIL is really set (should
+always be if RIRQ is set) before reading. It will then read one byte
+from DATA into its own buffer. After reading the byte, it should check
+if more data is available by checking the RAVAIL bit. Data can be read
+as long as RAVAIL is set, and all of it should be read too or the IRQ
+will be raised again after exiting the handler. When all available
+data is read, the handler should reset the RIRQ bit (command 0x01) and
+check once more that no data arrived before RIRQ reset. Every incoming
+byte raises RIRQ only once.
+
+Writing to a TTY device would typically be implemented by the OS as
+follows.
+
+First check WBUSY. If WBUSY is set, the thread should go to sleep.
+When WBUSY is cleared an interrupt is raised. The handler should wake
+up the writing thread and reset WIRQ (command 0x02). The writing
+thread should write the output one byte at a time as long as WBUSY is
+not set. When WBUSY becomes set, the thread should go to sleep again.
+This cycle is repeated until all output is written. If multiple bytes
+is written in interrupt hanlder, write IRQs must be disabled while
+writing so that other CPUs won't end up in the interrupt handler when
+clearly not needing to do so.
+
+@xref{Configuring the Terminal}.
+
+
+@node       Disks
+@subsection Hard disk devices
+
+@cindex hard disk programming
+
+Only disks with device type code 0x301 are covered in this section.
+
+A disk device transfers data between disk and memory using DMA.  It
+generates interrupts when it has completed a DMA transfer. The data is
+stored on an image file in the directory from where @code{YAMS} is
+run.
+
+A disk device has the following I/O ports:
+
+@multitable {OFFSET} {NAME1234} {row} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab NAME @tab R/W @tab DESCRIPTION
+
+@item 0x00 @tab STATUS @tab R @tab
+Status bits for the disk device.
+
+@item 0x04 @tab COMMAND @tab W @tab
+Port for issuing commands to the disk.
+
+@item 0x08 @tab DATA @tab R @tab
+Return value port for query commands. The data will be available
+before the next clock cycle after the query command is written to the
+COMMAND port.
+
+@item 0x0C @tab TSECTOR @tab RW @tab
+Number of the disk sector which should be read/written.
+
+@item 0x10 @tab DMAADDR @tab RW @tab
+Start address of the memory buffer which will be used for sector reads
+and writes.  The size of the buffer is the same as the size of the
+disk sector and addressing is 0x00000000-based unmapped.
+
+@end multitable
+
+The following table describes the status bits of a disk device:
+
+@multitable {bit} {123456} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item BIT @tab NAME @tab DESCRIPTION
+
+@item 0 @tab RBUSY @tab
+The disk is busy reading from disk to memory.
+
+@item 1 @tab WBUSY @tab
+The disk is busy writing from memory to disk.
+
+@item 2 @tab RIRQ @tab
+The disk has finished a read operation and generated an IRQ. The IRQ
+line is held raised by the disk while this bit is set.
+
+@item 3 @tab WIRQ @tab
+The disk has finished a write operation and generated an IRQ. The IRQ
+line is held raised by the disk while this bit is set.
+ 
+@item
+@item 27 @tab ISECT @tab
+The sector number given to a read/write request is invalid.
+
+@item 28 @tab IADDR @tab
+The address given to a read/write request did not reside entirely in
+physical memory.
+
+@item 29 @tab ICOMM @tab
+The last command issued to the COMMAND port was unrecognized.
+
+@item 30 @tab EBUSY @tab
+The last command issued to the COMMAND port could not be handled
+because the disk was busy.
+
+@item 31 @tab ERROR @tab
+Undefined error in the device. The disk is to be considered unusable
+if this bit is set.
+
+@end multitable
+
+The commands that can be issued to a disk device through the COMMAND
+port are listed in the following table. Status changes caused by the
+command will be visible in the status register before the next clock
+cycle (like in normal memory writes on MIPS32 architecture).
+
+@table @asis
+@item 0x01
+Begin read operation. Will begin a transfer from the sector TSECTOR to
+the buffer addresses by DMAADDR. An IRQ is generated on completion.
+
+@item 0x02
+Begin write operation. Will begin a transfer from the buffer addressed
+by DMAADDR to the sector TSECTOR. An IRQ is generated on completion.
+
+@item 0x03
+Reset RIRQ. Will clear the RIRQ bit, indicating that the IRQ generated
+has been handled. This will cause the disk to not raise the IRQ line
+any further unless there is another IRQ pending (should never happen).
+
+@item 0x04
+Reset WIRQ. Acts similarly to the RIRQ resetting.
+
+@item 0x05
+Get number of sectors in the disk, returned in DATA.
+
+@item 0x06
+Get sector size in bytes, returned in DATA.
+
+@item 0x07
+Get sectors per cylinder, returned in DATA.
+
+@item 0x08
+Get disk rotation period in simulated milliseconds, returned in DATA.
+
+@item 0x09
+Get disk full seek time in simulated milliseconds, returned in DATA.
+
+@end table
+
+Using a disk in the OS is very simple. A thread wanting to write to a
+disk will first reserve the disk for itself. Then it will write the
+disk sector and the DMA transfer buffer address to TSECTOR and DMAADDR
+and issue a request for write operation to COMMAND. It should then
+check if there were any errors. If no errors occured, the thread will
+go to sleep.
+
+When the operation is finished, the disk will raise an interrupt. The
+interrupt handler should then wake up the thread that has reserved the
+disk and reset the WIRQ bit. The thread will then release the disk
+reservation and go about its business.
+
+Reading from the disk is done similarly.
+
+
+@xref{Configuring the Disk}.
+
+
+@node       NIC
+@subsection Network interface cards
+
+@cindex network programming
+
+Only network cards with device type code 0x401 are covered in this
+section.
+
+A network interface card functions very much like the disk, except
+of course it will make IRQs on its own when packets arrive.
+
+A NIC is "fully full duplex", meaning it has both a receive and a
+send buffer which can be used simultaneously ie. a frame can be
+received while sending is in progress. When a frame is received in the
+receive buffer it must be then DMA transferred to main memory before
+the next frame can be received.
+
+A network interface card has the following I/O ports:
+
+@multitable {OFFSET} {NAME1234} {row} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab NAME @tab R/W @tab DESCRIPTION
+
+@item 0x00 @tab STATUS @tab R @tab
+Status bits for the network device.
+
+@item 0x04 @tab COMMAND @tab W @tab
+Port for issuing commands to the NIC.
+
+@item 0x08 @tab HWADDR @tab R @tab
+Link level address of the NIC.
+
+@item 0x0C @tab MTU @tab R @tab
+Maximum transfer unit of the NIC in bytes.
+
+@item 0x10 @tab DMAADDR @tab RW @tab
+Start address of the memory buffer which will be used for frame sends
+and receives. The size of the buffer is the size of the MTU and
+addressing is 0x00000000-based unmapped.
+
+@end multitable
+
+The frames (or packets, since there is no trailer, but the term frame
+is used in this document) send to the network have the structure
+defined in the following table. Note that the addresses are in network
+byte order, which is big-endian (since @code{YAMS} is also big-endian
+by default, this is no problem).
+
+
+@multitable {OFFSET} {SIZE1XXXX} {DSTADDR} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item OFFSET @tab SIZE @tab NAME @tab DESCRIPTION
+
+@item 0x00 @tab 1 word @tab DSTADDR @tab
+Link level address of the destination in network byte order.
+
+@item 0x04 @tab 1 word @tab SRCADDR @tab
+Link level address of the sender in network byte order.
+
+@item 0x08 @tab MTU-8 @tab PAYLOAD @tab
+Link level payload, can be up to MTU - 8 bytes. The payload length is
+not defined here, it can be defined in the headers of the higher level
+protocol. The full MTU is always transfered by the hardware.
+
+@end multitable
+
+Network device status bits are described in the following table
+
+@multitable {bit} {NAME12345} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+@item BIT @tab NAME @tab DESCRIPTION
+
+@item 0 @tab RXBUSY @tab
+The receive buffer is either receiving a frame or one has been
+received but not yet transferred to memory. If this bit is set new
+frames cannot be received. This bit must be cleared manually with the
+ready to receive command.
+
+@item 1 @tab RBUSY @tab
+The NIC is transferring a frame from the receive buffer to memory.
+
+@item 2 @tab SBUSY @tab
+The NIC is transferring a frame from memory to the send buffer.
+
+@item 3 @tab RXIRQ @tab
+The NIC has received a frame and generated an IRQ. The frame is ready
+to be transferred from the receive buffer.
+
+@item 4 @tab RIRQ @tab
+A DMA transfer from the receive buffer to memory has completed and an
+IRQ was generated.
+
+@item 5 @tab SIRQ @tab
+A DMA transfer from memory to the send buffer was completed and an IRQ
+was generated.
+
+@item 6 @tab PROMISC @tab
+The NIC is in promiscuous mode, receiving all frames instead of just
+those addressed to it.
+
+@item
+@item 27 @tab NOFRAME @tab
+There is no frame available in the receive buffer but a read transfer
+was requested.
+
+@item 28 @tab IADDR @tab
+The DMA address given did not reside entirely in physical memory.
+
+@item 29 @tab ICOMM @tab
+The last command issued to the COMMAND port was unrecognized.
+
+@item 30 @tab EBUSY @tab
+The last command issued to the COMMAND port could not be handled
+because the NIC was busy.
+
+@item 31 @tab ERROR @tab
+Undefined error in the device. The NIC is to be considered unusable if
+this bit is set.
+
+@end multitable
+
+
+When a DMA transfer from memory to the send buffer is requested, the
+NIC will wait for the send buffer to be available (the previous
+transmit completed) before doing the actual transfer and then begin
+transmitting the transferred frame. That is why there is no IRQ after
+the frame has actually been transmitted into the network.
+
+Available commands for a NIC are listed in the following table
+
+@table @asis
+
+@item 0x01
+Start a DMA transfer from the receive buffer to the memory buffer
+addressed by DMAADDR.
+
+@item 0x02
+Start a DMA transfer from the memory buffer addressed by DMAADDR into
+the send buffer.
+
+@item 0x03
+Clear the RXIRQ bit, indicating that the interrupt has been handled
+and the NIC need not generate it any more for this frame.
+
+@item 0x04
+Clear the RIRQ bit.
+
+@item 0x05
+Clear the SIRQ bit.
+
+@item 0x06
+Clear the RXBUSY bit. This tells the NIC that it can now receive a new
+frame into the receive buffer.
+
+@item 0x07
+Enter promiscuous mode.
+
+@item 0x08
+Exit promiscuous mode.
+
+@end table
+
+
+A typical interrupt handler for a NIC works as follows. When a frame
+is received (RXIRQ) the handler will request a DMA transfer from the
+NIC into the memory buffer allocated for incoming frames. It will then
+clear the RXIRQ bit. When the DMA transfer is completed and the NIC
+generates an IRQ (RIRQ), the handler will do with the received frame
+whatever it needs to and then clear both RXBUSY and RIRQ bits.
+
+When a frame needs to be sent, the sending thread will reserve the NIC
+and check if SBUSY bit is set. If set, the thread will go to
+sleep. When SBUSY is cleared (frame send complete), the interrupt
+handler will wake up the waiting thread. The thread will then request
+a send operation and check for errors. It can then exit, there is no
+need for the sending thread to wait for anything after this.
+
+         
+@xref{Configuring the Network}.

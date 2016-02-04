@@ -1,0 +1,80 @@
+@node    Cross-compiler
+@chapter How to build cross-compiling GCC
+
+Building a cross compiler has really nothing to do with @code{YAMS}.
+Since one is needed to generate code for @code{YAMS} unless a native
+MIPS32 compiler is used, here are short instructions for building GCC
+4.0.2 as a cross-compiler for MIPS32 (actually MIPS ISA 2).
+
+@section How to build a GCC cross-compiler and binutils
+
+To build binaries for the @code{YAMS} simulator, a C compiler and
+assembler is needed. These are provided by the GNU binutils
+(@uref{http://sources.redhat.com/binutils/})and GCC
+(@uref{http://gcc.gnu.org/}) packages. Binutils is needed mainly for
+the GNU assembler and linker, but the others can be quite useful too.
+
+You do not necessarily need a cross compiler to create code for YAMS,
+any native compiler generating 32-bit big-endian MIPS code should do
+the job.
+
+These instructions are tested on binutils 2.16 and 2.16.1, gcc 3.4.3
+and 4.0.2; they should work for newer versions also. The use of GNU
+make (gmake) is recommended, the build may fail if using other
+make. Since we only need a C compiler for Buenos, the gcc-core package
+is used here. The full package can also be used with these
+instructions, but enabling other languages may or may not work.
+
+Download the tarballs to a suitable empty directory and do the
+following:
+
+@example
+#!/bin/sh
+
+# Extract the packages
+gunzip -c binutils-2.16.1.tar.gz | tar xf -
+gunzip -c gcc-core-4.0.2.tar.gz | tar xf -
+
+
+TARGET=mips-elf
+PREFIX=/u/projects/buenos/util/sparc
+
+
+# Build in a separate directory
+mkdir build-binutils
+cd build-binutils
+../binutils-2.16.1/configure --target=$TARGET --prefix=$PREFIX -v
+gmake all
+
+gmake install
+
+PATH=$PREFIX/bin:$PATH
+export PATH
+
+cd ..
+mkdir build-gcc
+cd build-gcc
+../gcc-4.0.2/configure --with-gnu-ld --with-gnu-as --without-nls 
+  --enable-languages=c --disable-multilib --target=$TARGET --prefix=$PREFIX -v
+gmake all
+
+gmake install
+@end example
+
+
+As can be seen, the format chosen for the object files is ELF, since
+it is about the only one supported by gcc on MIPS target. You may of
+course choose any format you like. However, @code{YAMS} only supports
+loading ELF executables or raw binary files, and ELF is the format
+used by Buenos userland programs.
+
+PREFIX is naturally the directory under which the software should be 
+installed. When installed, the cross-compiler binaries are found as 
+"$PREFIX/$TARGET/bin/*" and "$PREFIX/bin/$TARGET-*". TARGET is the 
+architecture/platform to cross-compile to. Specifying mips-elf will 
+produce MIPS big-endian code in ELF format, mipsel-elf would produce 
+MIPS little-endian code in ELF.
+
+PREFIX should be same for both binutils and GCC. If you want to use
+different prefixes you must also give @code{configure} the option
+@samp{--with-as=$BINUTILPREFIX/bin/mips-elf-as} when building GCC.

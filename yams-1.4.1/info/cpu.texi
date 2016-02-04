@@ -1,0 +1,95 @@
+@node    CPU
+@section CPU
+
+@cindex  CPU
+@cindex  CPU registers
+
+@code{YAMS} CPU emulates a big-endian MIPS32 processor. As of
+@code{YAMS} version 1.4.0, emulating a little-endian processor is also
+supported. @xref{Configuring the Simulator}. The CPU supports all
+instructions of the MIPS32 instruction set architecture. The processor
+also contains a MIPS32 style co-processor 0. @xref{CP0}. Coprocessor 1
+(Floating Point Unit) is not implemented.
+
+@menu
+* CPU registers::               Description of CPU registers
+@end menu
+
+@node    CPU registers
+@subsection CPU registers
+
+@multitable {Name} {Number} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Name @tab Number @tab Description
+
+@item zero @tab 0 @tab Always contains 0
+
+@item at @tab 1 @tab Reserved for assembler
+
+@item v0 @tab 2 @tab Function return
+
+@item v1 @tab 3 @tab Function return
+
+@item a0 @tab 4 @tab Argument register
+
+@item a1 @tab 5 @tab Argument register
+
+@item a2 @tab 6 @tab Argument register
+
+@item a3 @tab 7 @tab Argument register
+
+@item t0 @tab 8 @tab Temporary (Caller saves)
+
+@item t1 @tab 9 @tab Temporary (Caller saves)
+
+@item t2 @tab 10 @tab Temporary (Caller saves)
+
+@item t3 @tab 11 @tab Temporary (Caller saves)
+
+@item t4 @tab 12 @tab Temporary (Caller saves)
+
+@item t5 @tab 13 @tab Temporary (Caller saves)
+
+@item t6 @tab 14 @tab Temporary (Caller saves)
+
+@item t7 @tab 15 @tab Temporary (Caller saves)
+
+@item s0 @tab 16 @tab Saved temporary (Callee saves)
+
+@item s1 @tab 17 @tab Saved temporary (Callee saves)
+
+@item s2 @tab 18 @tab Saved temporary (Callee saves)
+
+@item s3 @tab 19 @tab Saved temporary (Callee saves)
+
+@item s4 @tab 20 @tab Saved temporary (Callee saves)
+
+@item s5 @tab 21 @tab Saved temporary (Callee saves)
+
+@item s6 @tab 22 @tab Saved temporary (Callee saves)
+
+@item s7 @tab 23 @tab Saved temporary (Callee saves)
+
+@item t8 @tab 24 @tab Temporary (Caller saves)
+
+@item t9 @tab 25 @tab Temporary (Caller saves)
+
+@item k0 @tab 26 @tab Reserved for operating system
+
+@item k1 @tab 27 @tab Reserved for operating system
+
+@item gp @tab 28 @tab Global pointer
+
+@item sp @tab 29 @tab Stack pointer
+
+@item fp @tab 30 @tab Frame pointer
+
+@item ra @tab 31 @tab Return address
+
+@item pc @tab @tab Program counter
+
+@item hi @tab @tab Register used by multiply and divide instructions
+
+@item lo @tab @tab Register used by multiply and divide instructions
+
+@end multitable

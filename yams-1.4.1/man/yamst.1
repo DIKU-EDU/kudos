@@ -1,0 +1,167 @@
+.\" For Emacs: -*- nroff -*-
+.\"
+.\" Copyright (C) 2002 Juha Aatrokoski, Timo Lilja, Leena Salmela, 
+.\"   Teemu Takanen, Aleksi Virtanen
+.\"
+.\" This is free software; you can redistribute it and/or modify it under
+.\" the terms of the GNU General Public License as published by the Free
+.\" Software Foundation; either version 2, or (at your option) any later
+.\" version.
+.\" 
+.\" This is distributed in the hope that it will be useful, but WITHOUT
+.\" ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+.\" FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+.\" for more details.
+.\" 
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+.\"
+.TH YAMST 1 "yamst version 1.3.0" "Buenos Team" "YAMST MANUAL"
+.SH NAME
+yamst \- YAMS Terminal Tool
+
+.SH SYNOPSIS
+.B yamst
+[-u] [-i] [-l] [hostname/socketfile] [port]
+.br
+.B yamst
+-l localport
+.br
+.B yamst
+-l socketfile
+.br
+.B yamst
+hostname port
+.br
+.B yamst
+localport
+.br
+.B yamst
+socketfile
+
+.SH EXAMPLES
+.B yamst
+-lu s0
+.br
+.B yamst
+-li 10000
+.br
+.B yamst
+-i host.domain.tld 10000
+.br
+.B yamst
+-u s0
+
+.SH DESCRIPTION
+This manual page documents
+.B yamst
+version 1.0.0
+.PP
+.B yamst
+is a terminal tool for YAMS. YAMS terminals are stream sockets, either
+Unix domain or TCP, either listening for a connection or making one.
+.B yamst
+can connect to a Unix or a TCP socket, and it can also listen for a
+connection on both type of sockets. Once the connection is made,
+everything typed on the keyboard will be passed to YAMS, and
+everything YAMS outputs to the terminal will be written on the
+screen.
+.PP
+The keyboard input is passed unbuffered and "unmodified", which mostly
+means that e.g. pressing the enter key will yield the key code 13, or '\\r'. 
+Special keypresses (modifiers such as shift, control etc.) are
+NOT passed.
+.PP
+One can also use
+.B telnet
+as a terminal tool when the YAMS terminal is of listening TCP
+type. However, telnet's default mode is line buffered, enter yields
+the "\\r\\n" pair and local echo is on.
+.PP
+The preferred way is making YAMS terminals outbound domain sockets,
+ie.
+.B yamst
+is listeing on a domain socket to which YAMS connects to at
+startup.
+
+.SH OPTIONS
+.IP -u
+Specify that Unix domain socket should be used.
+.IP -i
+Specify that inet (TCP) socket should be used.
+.IP -l
+Listen to the socket instead of connecting to it.
+.IP hostname
+The host to which outbound inet connections are made.
+.IP socketfile
+The socket file to use when domain socket is specified.
+.IP port
+The port which the inet connection should be made to, or the port to
+listen if -l is specified.
+.PP
+If -u or -i is omitted, yamst will try to guess the desired operation
+mode as follows.
+.PP
+If -l is specified and there is one nonswitch argument, the argument
+will be interpreted as a TCP port if it is an integer in the range
+1..65535 and yamst will try to listen to the specified port. If that
+fails, the argument is interpreted as the name of a domain socket and
+yamst will try to listen to it instead.
+.PP
+If -l is not specified and there are two arguments, they will be
+interpreted as hostname and port respectively and an inet connection
+will be made.
+.PP
+If -l is not specified and there is one argument, again the argument
+will be interpreted as a TCP port if it is an integer in the range
+1..65535 and yamst will try to connect to the specified port at
+.B localhost .
+If that fails, the argument is interpreted as the name of a domain
+socket and yamst will try to connect to it.
+
+.SH CONSOLE
+By entering the escape key '^]'
+.B yamst
+enters the control console. When in the console the following commands
+can be entered. Entering an empty command will continue normal
+operation.
+.IP cr
+Change to CR mode. In this mode, which is the default, when a CR is
+typed, it will be sent as is to YAMS.
+.IP nl
+Change to NL mode. In this mode, when a CR is typed, it will be sent
+to YAMS as a NL.
+.IP quit
+Exit
+.B yamst .
+Hitting CTRL-C also works, and it also works when in a "wait
+state" (prompt prefixed by ">>>").
+
+.SH
+.SH "SEE ALSO"
+.BR yams (1)
+.BR telnet (1)
+
+.SH COPYRIGHT
+.B yamst
+\- YAMS Terminal Tool
+.br
+Copyright (C) 2002 Juha Aatrokoski, Timo Lilja,
+.br  
+  Leena Salmela, Teemu Takanen, Aleksi Virtanen
+.PP
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+.PP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.PP
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+.PP

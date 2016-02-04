@@ -1,0 +1,193 @@
+@node    GDB remote debugging
+@chapter GDB remote debugging interface
+
+@code{GDB} remote debugging interface allows you to use @code{GDB}
+debugging facilities with a process (e.g., @code{buenos}) run inside
+@code{YAMS} simulator. The @code{GDB} interface is partly an alternative
+to the @code{YAMS} command console. @xref{Command Console}.
+
+@cindex GDB, remote debugging
+
+@menu
+* Setup::         Setting up the cross-platform GDB
+* Starting::      Starting the remote debugging in @code{YAMS}
+* Using::         Using the debugger
+* Shortcomings::  What can be done and what cannot be done?
+@end menu
+
+@node Setup
+@section Setup
+
+First, obtain the @code{GDB} source code. The official home page is
+@uref{http://www.gnu.org/software/gdb/}. We have tested @code{GDB}
+version 7.2. After fetching the source code and unpacking you have to
+compile @code{GDB} with the target @code{mips-elf}:
+
+@example
+$ tar zxvf gdb-7.2.tar.gz
+$ cd gdb-7.2
+$ ./configure --target=mips-elf --prefix=/path/to/your/target/dir
+$ make
+$ make install
+@end example
+
+If the compilation and installation was successful, there should be a
+@code{mips-elf-gdb} binary in your prefix/bin directory.
+
+@node Starting
+@section Starting
+
+The GDB remote debugging interface is executed by giving a command line
+switch to yams once the binary is started. The remote debugging is
+enabled by starting @code{yams} binary with the switch --gdb @var{port},
+where @var{port} is the tcp port where yams listens to tcp connections
+from @code{GDB}. After this you have to start the @code{mips-elf-gdb}
+and setup the connection. For example, here is how you would start the
+debugging session with @code{buenos} and @code{yams} listening in tcp
+port 1500 for remote @code{GDB} connections.
+
+@example
+$ cd buenos
+$ yams --gdb 1500 buenos testconsole
+YAMS - Yet Another Machine Simulator 1.3.0
+
+Copyright (C) 2002-2006 Juha Aatrokoski, Timo Lilja, Leena Salmela,
+  Teemu Takanen, Aleksi Virtanen
+
+Yams comes with ABSOLUTELY NO WARRANTY; This is free software,
+and you are welcome to redistribute it under certain conditions;
+see the file COPYING for details.
+
+Starting on a little endian host.
+Simulating big endian machine.
+Reading configuration from
+'/home/tlilja/work/buenos/buenos/buenos/yams.conf'
+Connecting to TTY at Unix Domain Socket 'tty0.socket'
+TTY connection established
+gdb interface listening on port 1500
+@end example
+
+The last line from @code{YAMS} indicates that the simulation is stopped
+and the gdb interface is listening on tcp port 1500. Now we can start
+the gdb with buenos binary as its argument. We have to give gdb the
+command @code{target remote:port} so that the gdb can contact
+@code{yams}.
+
+@example
+$ cd buenos
+$ mips-elf-gdb buenos
+GNU gdb 6.4
+Copyright 2005 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, ...
+[...]
+This GDB was configured as "--host=i686-pc-linux-gnu --target=mips-elf"...
+(gdb) target remote localhost:1500
+Remote debugging using localhost:1500
+0x80010004 in _start () at init/_boot.S:47
+47              _FETCH_CPU_NUM(t0)
+@end example
+
+From the last line you can see that the @code{YAMS} simulator has been
+interrupted when the kernel was in the @code{_start}.
+See the next section for more examples on how to use the gdb interface.
+@xref{Using}.
+
+@node Using
+@section Using
+
+Refer to the GDB manual for details on using the debugger. Here we give
+brief overview of few of the features available.
+
+Yams supports number of concurrent CPUS that are mapped to threads
+in GDB, you can acess them with @code{info threads} command, the active
+thread is marked with '*':
+@example
+(gdb) info threads
+  4 Thread 4  0x80010004 in _start () at init/_boot.S:47
+  3 Thread 3  0x80010004 in _start () at init/_boot.S:47
+  2 Thread 2  0x80010004 in _start () at init/_boot.S:47
+* 1 Thread 1  0x80010004 in _start () at init/_boot.S:47
+@end example
+
+You can switch active CPU with @code{thread} command and show the
+contents of the registers with @code{info} command:
+@example
+(gdb) thread 2
+[...]
+(gdb) info registers
+          zero       at       v0       v1       a0       a1       a2       a3
+ R0   00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+[...]
+@end example
+
+To show the source code, use the @code{list} command:
+@example
+(gdb) l
+2              .ent    _start
+43
+44      _start:
+45              # If we are running on another CPU than 0, wait until CPU 0
+46              # has initialized the system
+47              _FETCH_CPU_NUM(t0)
+48              bnez    t0, init_wait_loop
+49
+50              # Only CPU 0 runs these
+51              li      sp, 0x8000fffc    # Initialize SP
+@end example
+
+To set a hardware breakpoint and continue execution until the breakpoint
+is hit use @code{hbreak} and @code{continue} commands (Note that only a
+single HW breakpoint are currently supported):
+@example
+(gdb) hbreak scheduler_schedule
+Hardware assisted breakpoint 1 at 0x80012400: file kernel/scheduler.c, line 192.
+(gdb) cont
+Continuing.
+Can't send signals to this remote system.  SIGHUP not sent.
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x80011624 in interrupt_handle (cause=16384) at kernel/interrupt.c:171
+171             if (interrupt_handlers[i].device == NULL)
+@end example
+The GDB reports only the active CPU's position when the breakpoint is
+hit, use @code{info threads} to verify that they are actually in
+@code{scheduler_schedule}.
+
+To examine a variables value, use the @code{print} command:
+@example
+(gdb) p  thread_table
+$1 = @{@{context = 0x0, user_context = 0x0, state = THREAD_FREE, sleeps_on = 0,
+    pagetable = 0x0, process_id = 0, next = 0, dummy_alignment_fill = @{0, 0,
+      0, 0, 0, 0, 0, 0, 0@}@} <repeats 32 times>@}
+@end example
+
+To kill the simulation:
+@example
+(gdb) kill
+Kill the program being debugged? (y or n) y
+@end example
+This will also exit @code{yams} simulation.
+
+
+@node Shortcomings
+@section Shortcomings
+
+@itemize @bullet
+@item Signals and exceptions (e.g. division by zero exception)  are not
+caught or reported to the gdb interface
+@item Only single hardware breakpoint is supported due to the
+limitations of yams
+@itemize @bullet
+@item since signals cannot be reported to the GDB there is no way to
+support software breakpoits or data watch points
+@end itemize
+@item There is no access for the MIPS CP0, use @code{yams} hardware
+console for that
+@item CTRL-C does not work in YAMS console if GDB interface is run but
+you can use CTRL-C or break signal in GDB to stop the simulation and
+trap the control to the GDB
+@item Buenos should be compiled with -O0 flag or the optimizations will
+clobber GDB's source display
+@item Single-stepping via @code{step} or @code{next} commands are not working
+@item GDB @code{detach} is not supported
+@end itemize

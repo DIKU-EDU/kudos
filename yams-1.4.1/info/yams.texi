@@ -1,0 +1,934 @@
+\input texinfo
+@setfilename yams.info
+@settitle Yet Another Machine Simulator: Reference Manual
+@setchapternewpage on
+@finalout
+
+@include version.texi
+
+@ifinfo
+This file documents @code{YAMS}, Yet Another Machine Simulator. A simple
+machine simulator for Operating System Exercises.
+
+Copyright (C) 2002-2010 Juha Aatrokoski, Timo Lilja, Leena Salmela,
+Teemu Takanen, Aleksi Virtanen.
+
+Permission is granted to make and distribute verbatim
+copies of this manual provided the copyright notice and
+this permission notice are preserved on all copies.
+
+@ignore
+Permission is granted to process this file through TeX
+and print the results, provided the printed document
+carries a copying permission notice identical to this
+one except for the removal of this paragraph (this
+paragraph not being relevant to the printed manual).
+
+@end ignore
+
+Permission is granted to copy and distribute modified
+versions of this manual under the conditions for
+verbatim copying, provided also that the sections
+entitled ``Copying'' and ``GNU General Public License''
+are included exactly as in the original, and provided
+that the entire resulting derived work is distributed
+under the terms of a permission notice identical to this
+one.
+
+Permission is granted to copy and distribute
+translations of this manual into another language,
+under the above conditions for modified versions,
+except that this permission notice may be stated in a
+translation approved by the Free Software Foundation.
+@end ifinfo
+
+@titlepage
+@title @code{YAMS}: Yet Another Machine Simulator
+@subtitle Reference Manual
+@subtitle Edition @value{EDITION}, for version @value{VERSION} of @code{YAMS}
+@subtitle @value{UPDATED}
+@author Juha Aatrokoski, Timo Lilja, Leena Salmela,
+@author Teemu Takanen and Aleksi Virtanen
+
+@page
+@vskip 0pt plus 1filll
+
+Copyright @copyright{} 2002--2010 Juha Aatrokoski, Timo Lilja,
+ Leena Salmela, Teemu Takanen and Aleksi Virtanen
+
+Permission is granted to make and distribute verbatim
+copies of this manual provided the copyright notice and
+this permission notice are preserved on all copies.
+
+Permission is granted to copy and distribute modified
+versions of this manual under the conditions for
+verbatim copying, provided also that the sections
+entitled ``Copying'' and ``GNU General Public License''
+are included exactly as in the original, and provided
+that the entire resulting derived work is distributed
+under the terms of a permission notice identical to this
+one.
+
+Permission is granted to copy and distribute
+translations of this manual into another language,
+under the above conditions for modified versions,
+except that this permission notice may be stated in a
+translation approved by the Free Software Foundation.
+@end titlepage
+
+
+@ifnottex
+@node Top
+@top  Top
+This manual documents @code{YAMS}, Yet Another Machine Simulator.
+
+@menu
+* Overview::               Overview of the @code{YAMS} system.
+* Install::                Installing @code{YAMS}.
+* Configuration::          Configuring @code{YAMS}.
+* Invoking YAMS::          How to run @code{YAMS}.
+* Command Console::        How to use @code{YAMS} command console.
+* Simulated Machine::      Description of the simulation environment.
+* Cross-compiler::         How to build a MIPS32 cross-compiler
+* GDB remote debugging::   GDB remote debugging interface
+* Copying::                Copying conditions for @code{YAMS}.
+* Concept Index::          Index of Concepts.
+@end menu
+@end ifnottex
+
+
+@contents
+
+@node    Overview
+@chapter Overview
+
+This manual documents @code{YAMS} version @value{VERSION}.
+
+@code{YAMS} is a machine simulator. It contains simulated CPUs, memory
+and IO-mapped simulated hardware devices such as disks and consoles.
+
+The intended use of @code{YAMS} is to provide a platform for operating
+system implementation courses. @code{YAMS} is very much like a real machine,
+but it can be used as a normal UNIX process. @code{YAMS} has also very
+simple, but still realistic hardware interface. These features make it
+an easy platform for OS development.
+
+@node    Install
+@chapter Install
+
+Generic installation instructions can be found in the file 'INSTALL',
+documentation of the options passed to 'configure' can be found in the
+file 'README'.
+
+@node    Configuration
+@chapter Configuration
+
+@menu
+* Configuration Overview::     Overview of the @code{YAMS} configuration files.
+* Configuring the Simulator::  Configuring CPU.
+* Configuring the Disk::       Configuring hard disk drives.
+* Configuring the Terminal::   Configuring TTY devices.
+* Configuring the Network::    Configuring network devices.
+* Configuring I/O plugins::    Configuring pluggable I/O devices
+* Config Example::             An example.
+@end menu
+
+@node    Configuration Overview
+@section Configuration Overview
+
+The configuration files are looked (in this order):
+@enumerate
+@item
+in the current directory file @code{./yams.conf}
+@item
+in the home directory file @code{$HOME/.yams.conf}
+@item
+in @code{/etc/yams.conf}
+@end enumerate
+
+Configuration file consists of four kinds of sections.
+Sections are separated by the following syntax
+
+@example
+Section "section-name"
+   var val
+   @dots{}
+EndSection
+@end example
+
+Each @code{var} is an identifier, consisting of letters. Values
+@code{val} are either strings (inside quotation marks) or integer
+values. Integers can be in decimal notation (the default), or in
+hexadecimal when they are preceded with "0x". E.g., 1234 is in decimal
+and 0xFFFF is in hexadecimal notation.
+
+Comments begin with the hash mark '#'. Everything up to the trailing
+newline will be ignored.
+
+The valid section names are:
+@itemize
+@item "simulator" (@ref{Configuring the Simulator}.)
+@item "disk" (@ref{Configuring the Disk}.)
+@item "tty" (@ref{Configuring the Terminal}.)
+@item "nic" (@ref{Configuring the Network}.)
+@item "plugin" (@ref{Configuring I/O plugins}.)
+@end itemize
+
+The @code{"simulator"} section is mandatory. Other sections are optional
+and should be specified only if the corresponding devices are to be included
+into the simulated machine.
+
+@node    Configuring the Simulator
+@section Configuring the Simulator
+
+@itemize
+@item @code{cpus INTEGER}
+
+This option specifies the number of CPUs in the simulated machine. This
+can be an integer from 1 to 64. That, is @code{YAMS} can support up to
+64 different CPUs. This option is mandatory.
+
+@item @code{memory INTEGER}
+
+This option specifies the amount of memory in 4 kilobytes pages. So,
+for example, if this option is set to 1024, this means that YAMS has
+totally 1024 * 4KB = 4096 KB of memory. The maximum amount of memory
+YAMS supports is 512 megabytes, which is 131072 pages. This option is
+mandatory.
+
+@item @code{clock-speed INTEGER}
+
+This option specifies the "clock rate" of YAMS simulator. This option
+is mandatory.
+
+@item @code{cpu-irq INTEGER}
+
+This option specifies the harware interrupt line that is used for
+inter-CPU interrupts.
+
+@item @code{big-endian}
+
+Simulate a big-endian machine. This is the default if neither
+@code{big-endian} or @code{little-endian} is present in the
+configuration file.
+
+@item @code{little-endian}
+
+Simulate a little-endian machine. Note that this feature is not
+tested.
+
+@end itemize
+
+
+@node    Configuring the Disk
+@section Configuring the Disk
+
+@itemize
+
+@item @code{filename STRING}
+
+This option specifies the file name of the disk image. The simulator
+reads this disk image or creates new if the file doesn't exist.
+
+@item @code{sector-size INTEGER}
+
+This option specifies the sector size (in bytes) of the simulated
+disk device.
+
+@item @code{sectors INTEGER}
+
+This option specifies the number of sectors in the simulated disk
+device.
+
+@item @code{vendor STRING}
+
+This option specifies the vendor string of the simulated disk device.
+The maximum length of the string is 8 characters.
+
+@item @code{irq INTEGER}
+
+This option specifies the IRQ of the simulated device. The valid values
+are from 0 to 4.
+
+@item @code{cylinders INTEGER}
+
+This option specifies the number of cylinders in the simulated disk
+device. Note that the number of sectors must be a multiple of the
+number of cylinders.
+
+@item @code{rotation-time INTEGER}
+
+This option specifies the disk rotation time in simulated milliseconds.
+
+@item @code{seek-time INTEGER}
+
+This option specifies the full disk seek time in simulated
+milliseconds.
+@end itemize
+
+The options @code{irq}, @code{filename}, @code{sector-size} and
+@code{sectors} are mandatory, other are optional.
+
+
+@node    Configuring the Terminal
+@section Configuring the Terminal
+
+@itemize
+
+@item @code{unix-socket STRING}
+
+Specifies the UNIX domain socket file where the @code{YAMS} will
+connect to or listen for its simulated terminal. @code{YAMS} will
+block until the connection has been established.
+
+The recommended TTY mode is an outbound connection to a UNIX domain
+socket with @code{yamst} on the other end, since this way @code{YAMS}
+can be exited and restarted without input on the other end.
+
+@item @code{tcp-host STRING}
+
+Specifies the remote host name (either DNS name or IP address) of the
+host where to connect the simulated terminal device. @code{YAMS} will
+block until the connection has been established.
+
+If @code{listen} is specified, this specifies which interfaces to
+listen at the local host. E.g. to prevent connections from other hosts
+one provides @code{localhost} as the host name. Setting the host name
+to the empty string @code{""} means that all interfaces should be
+listened.
+
+@item @code{listen}
+
+Specifies that @code{YAMS} should wait for a connection on the socket
+instead of making an outbound connection.
+
+@item @code{port INTEGER}
+
+Specifies the TCP port where to connect @code{YAMS} or if
+@code{listen} was specified where to start the listening socket.
+
+@item @code{vendor STRING}
+
+This option specifies the vendor string of the simulated terminal
+device. The maximum length of the string is 8 characters.
+
+@item @code{irq INTEGER}
+
+This option specifies the IRQ of the simulated device. The valid values
+are from 0 to 4.
+
+@item @code{send-delay INTEGER}
+
+The delay in milliseconds for writes to the device to complete. Value
+can be 0 (no delay) or greater.
+@end itemize
+
+The mandatory options are @code{irq}, either @code{unix-socket} or
+@code{tcp-host} and @code{port}.
+
+
+@node    Configuring the Network
+@section Configuring the Network
+
+@itemize
+
+@item @code{mtu INTEGER}
+
+This option specifies the MTU, maximum transfer unit of the simulated
+network interface card (NIC) device in bytes. The MTU must be at least
+10 bytes.
+
+@item @code{unix-socket STRING}
+
+This option specifies the file name of the unix domain socket, in which
+@code{YAMS} will connect its simulated NIC device.
+
+@item @code{udp-host}
+
+Specifies the multicast address (either DNS name or IP address) where
+to send the network device packets.
+
+@item @code{port}
+
+Specifies the udp port where the network packets will be sent.
+
+@item @code{send-delay INTEGER}
+
+Specifies the send delay of the network interface card (NIC). This is in
+simulated milliseconds.
+
+@item @code{mac INTEGER}
+
+This option specifies the MAC (Media Access Control) address of the simulated
+network device. The broadcast address is always 0xFFFFFFFF.
+
+@item @code{reliability INTEGER}
+
+This option specifies the reliability of the network device. The range
+is from 0 to 100. The value zero means no reliability (everything is
+dropped), whereas 100 means total reliability. Note that if the UDP
+socket is used, 100% reliability is not guaranteed, though.
+
+@item @code{dma-delay INTEGER}
+
+This option specifies the delay of the direct memory access (DMA). The
+unit is simulated milliseconds.
+
+@item @code{vendor STRING}
+
+This option specifies the vendor string of the simulated terminal
+device. The maximum length of the string is 8 characters.
+
+@item @code{irq INTEGER}
+
+This option specifies the IRQ of the simulated device. The valid values
+are from 0 to 4.
+@end itemize
+
+The options @code{mtu}, @code{irq} and either @code{unix-socket} or
+@code{udp-host} and @code{port} are mandatory.
+
+
+@node    Configuring I/O plugins
+@section Configuring I/O plugins
+
+@xref{I/O plugins}.
+
+@itemize
+
+@item @code{unix-socket STRING}, @code{tcp-host STRING}, @code{listen}, @code{port INTEGER}
+
+These options have the same meaning as for a TTY
+device. @ref{Configuring the Terminal}
+
+@item @code{options STRING}
+
+The option string sent to the plugin device(s) at
+initialization. @code{YAMS} does not care what this contains,
+interpretation is done by the plugin I/O device.
+
+@item @code{irq INTEGER}
+
+Each device in a plugin connection specifies its own IRQ. However,
+this option may be used to force the devices to use the specified IRQ
+(if they use one at all).
+
+
+@item @code{async}
+
+If this option is not specified, all devices within this connection
+must act synchronously, ie. only send data as a reply to a request
+from @code{YAMS}. If this option is specified, the devices may also
+send asynchronous data (e.g. keyboard or mouse input).
+
+@end itemize
+
+The mandatory options are either @code{unix-socket} or
+@code{tcp-host} and @code{port}.
+
+
+
+@node    Config Example
+@section Config Example
+
+
+@example
+@include ../src/yams.conf
+@end example
+
+
+@node    Invoking YAMS
+@chapter Invoking YAMS
+
+@cindex version
+@cindex options
+@cindex usage
+@cindex help
+@cindex getting help
+
+The format for running the @code{YAMS} program is:
+
+@example
+yams @var{option} @dots{} [binary-file [@var{opt}] @dots{}]
+@end example
+
+@code{YAMS} supports the following options:
+
+@table @samp
+@item @code{binary-file}
+A binary file to be loaded into the memory and booted at startup (for
+example an operating system kernel). Binary name may be followed by
+one or more options, which are passed to the binary as boot arguments.
+
+The file may be either an ELF executable or a raw binary file. See
+hardware console command 'boot' for a detailed description of the boot
+process.  @ref{boot}
+
+@item --help
+@itemx -h
+Print an informative help message describing the options and then exit.
+
+@item --version
+@itemx -v
+Print the version number of @code{YAMS}.
+and then exit.
+
+@item --config @var{file}
+@itemx -c @var{file}
+@cindex config, file
+Read configuration file @var{file}. This will override @code{YAMS}
+default configuration searching @ref{Configuration Overview}.
+
+@item --script @var{file}
+@itemx -s @var{file}
+Read commands from script @var{file} and after that drop to interactive
+prompt. This argument can be given multiple times. Up to 255 different
+script files are supported. The scripts are executed in the order they
+are specified in the command line.
+
+@item --gdb @var{port}
+@itemx -g @var{port}
+Open a tcp socket listening in @var{port} for the GDB remote protocol.
+The hardware console is unaccessible while the socket is active. When
+the user ends his GDB session either the hardware console is restared or
+the simulation is continued depending on whether the user instructed GDB
+to continue the simulation or kill it.
+@end table
+
+@node   Command Console
+@chapter Command Console
+
+@cindex interactive console
+@cindex console commands
+@cindex command prompt
+
+When @code{YAMS} is started for interactive use, the simulation
+doesn't start automatically. Instead, the system is started into
+hardware command console. This console can be thought as firmware code
+that exists in actual hardware. 
+
+The main uses of the console are data loading (kernel image loading)
+and simulator running state control (starting and stopping). In
+addition to the basic functionality, the console offers some features
+that are useful for debugging.
+
+When the system is in the console mode a prompt is printed for user.
+The prompt looks like this:
+
+YAMS [0]>
+
+Console commands can only be entered when command prompt is shown. The
+number in parenthesis tells the number of hardware clock cycles the
+system has simulated so far.
+
+The console understands the following commands:
+
+@menu
+* help::        Get list of available commands.
+* quit::        Exit @code{YAMS}.
+* memwrite::    Read file into simulator's memory.
+* memread::     Write (part of) simulator's memory into a file.
+* start::       Start simulation.
+* step::        Run simulator one or more cycles.
+* break::       Set hardware breakpoint.
+* unbreak::     Clear hardware breakpoint.
+* regdump::     Dump CPU and co-processor registers.
+* regwrite::    Set CPU or co-processor register value.
+* tlbdump::     Dump TLB for CPU.
+* interrupt::   Raise hardware or software interrupt request.
+* dump::        Dump part of simulator's memory to screen.
+* poke::        Set word in simulator's memory.
+* gdb::         Start the GDB remote protocol debugging interface
+* boot::        Boot kernel image.
+* numbers::     Entering numbers in @code{YAMS}
+@end menu
+
+@node help
+@section help
+
+@cindex online help
+
+Help command prints a list of available commands. If a command name is
+given as an argument, extended help for that command is printed
+instead of the list.
+
+@node quit
+@section quit
+
+@cindex exiting simulator
+
+Quit command exits @code{YAMS}. By default, @code{YAMS} exists with
+exit code 0, but if some other code is needed (usually when running
+scripted tests), exit value in range [0,255] can be given as an
+argument to the quit-command.
+
+@node memwrite
+@section memwrite
+
+@cindex loading binaries
+
+Memwrite reads a file and writes it into simulator's memory. The first
+argument to memwrite command must be a valid hardware memory address
+(memory address relative to 0, not a segmented address) where to
+load the file. The second argument is the name of the file to read in
+quotation marks.
+
+The following example loads file 'test-binary' into memory starting
+from address 0x00030000.
+
+@example
+memwrite 0x00030000 "test-binary"
+@end example
+
+Note that no byte order conversions are done when loading the data.
+The binary must already be in the correct byte order (big-endian by
+default).
+
+@xref{memread}.
+@xref{numbers}.
+
+@node memread
+@section memread
+
+@cindex dumping memory to file
+
+Memread reads simulator part of simulator memory and writes it in a
+file. The first argument to memread command must be a valid hardware
+memory address (memory address relative to 0, not a segmented
+address) where to start the read from. The second argument is the
+number of bytes to read. The third argument is the name of the file to
+be written in quotation marks. If the file exists, it will be overwritten.
+
+The following example dumps 4 kilobytes (one page) of memory starting
+from address 0x0003000 to file 'dump-test-file'.
+
+@example
+memread 0x0003000 4096 "dump-test-file"
+@end example
+
+@xref{memwrite}.
+@xref{numbers}.
+
+@node start
+@section start
+
+@cindex starting simulation
+
+Start command starts the simulation loop. While running the
+simulation, @code{YAMS} doesn't take console commands. To return to
+console and stop the simulation, send interrupt signal to @code{YAMS}
+(usually by pressing CTRL-C).
+
+The stopped simulation can be continued with a new start command.
+
+@xref{step}.
+
+@node tlbdump
+@section tlbdump
+
+@cindex TLB
+
+Tlbdump command prints the contents of translation look-aside buffer
+for CPU 0. If numeric argument is given to the command, it specifies
+some other CPU than CPU 0 for printing. Example:
+
+@example
+tlbdump 1
+@end example
+
+@node step
+@section step
+
+@cindex running one instruction at a time
+
+Step runs the simulator for one clock cycle and then drops back to the
+console. If numeric argument is given to step command, given number of
+clock cycles is simulated before dropping back to the console.
+
+If premature returning is needed, @code{YAMS} can be forced to drop
+back to the console by sending interrupt signal (usually by pressing
+CTRL-C).
+
+@xref{start}.
+@xref{numbers}.
+
+@node break
+@section break
+
+@cindex hardware breakpoints
+
+Break command set hardware breakpoint at the address given as argument
+to the command. When any CPU in the system loads instruction from the
+given address, @code{YAMS} drops to the console.
+
+Only one breakpoint can be active at the same time.
+
+@xref{unbreak}.
+@xref{numbers}.
+
+@node unbreak
+@section unbreak
+
+Unbreak command clears hardware breakpoints.
+
+@xref{break}.
+
+@node regdump
+@section regdump
+
+@cindex CPU registers
+@cindex co-processor registers
+@cindex registers
+
+Regdump command prints contents of CPU and CP0 registers. By default
+CPU 0 and it's co-processor 0 status is printed. If some print for
+some other CPU is needed, regdump takes numeric argument which
+specifies the processor number. Processors are numbered starting from
+0.
+
+@xref{regwrite}.
+
+@node regwrite
+@section regwrite
+
+@cindex writing registers
+
+CPU and CP0 registers can be written with regwrite command. The first
+argument for the command is the name of the register (register names
+can be seen with regdump command). The second argument is the new
+value to store in the given register.
+
+By default CPU 0 registers are affected, but register name can be
+prefixed by CPU number and colon to store into some other CPU.
+
+Some examples:
+
+@example
+regwrite s0 0xdeadbeef
+regwrite 1:sp 0x00030000
+@end example
+
+@xref{regdump}.
+
+@node interrupt
+@section interrupt
+
+@cindex interrupts
+
+Hardware and software interrupt lines can be raised with interrupt
+command. The raising will be valid only for one clock cycle. After
+that, CPU will automatically clear the interrupt as non-pending.
+
+Interrupt command takes interrupt number as first argument. The second
+argument specifies the identification number of the CPU which should
+get the interrupt request. By default all requests go to CPU 0.
+
+The interrupt number number in closed range [0,7]. The meaning of each
+number is (the numbers correspond to interrupt register bit-fields in CP0):
+
+@table @samp
+@item 0
+Software interrupt line 0
+
+@item 1
+Software interrupt line 1
+
+@item 2
+Hardware interrupt line 0
+
+@item 3
+Hardware interrupt line 1
+
+@item 4
+Hardware interrupt line 2
+
+@item 5
+Hardware interrupt line 3
+
+@item 6
+Hardware interrupt line 4
+
+@item 7
+Hardware interrupt line 5
+@end table
+
+
+@node dump
+@section dump
+
+@cindex dumping memory
+
+Contents of simulator memory can be seen with the dump command. By
+default, the command prints 11 words surrounding CPU 0 program
+counter. This is useful when stepping programs.
+
+Dump takes the beginning address of the dump as an optional first
+argument. The second, also optional, argument is the number of words
+to dump. The address argument can be substituted by CPU register name,
+which may be prefixed by CPU id. Note that for segmented addresses the
+TLB of CPU 0 is used for translation. For direct access, use kernel
+unmapped segments as in example below.
+
+Examples:
+
+@example
+dump
+dump v0
+dump 0:v1
+dump 0x80010000 20
+dump 0:t2 10
+@end example
+
+@node poke
+@section poke
+
+@cindex writing memory
+
+One word can be written into simulator memory by poke command. Poke
+takes the memory address as the first argument and value to be stored
+as second argument. Only full words can be written. Note that for
+mapped address segments the TLB of CPU 0 is used for translation.
+
+@xref{dump}.
+
+
+@node gdb
+@section gdb
+@cindex gdb interface starting
+Open a tcp socket listening in a port for the GDB remote protocol. The
+hardware console is unaccessible while the socket is active. When the
+user ends his GDB session either the hardware console is restared or the
+simulation is continued depending on whether the user instructed GDB to
+continue the simulation or kill it.
+
+For example, to make yams listen in tcp socket 1500:
+@example
+gdb 1500
+@end example
+
+@node boot
+@section boot
+
+@cindex booting kernel image
+
+Boot command can be used to boot a kernel image. Boot command takes
+the name of the kernel image file in quotation marks as its first
+argument. The second argument is optional quoted string of kernel arguments.
+
+For example, to boot Buenos kernel from "buenos.img" with
+arguments:
+
+@example
+boot "buenos.img" "startproc=shell"
+@end example
+
+The exact boot process is:
+
+@enumerate
+@item
+First, check whether the image file is an ELF file. This is safe,
+since the ELF magic at the beginning is not a valid MIPS32
+instruction.
+
+@item
+If the image was an ELF file, load all program segments in the file
+into memory and set the program entry point (indicated here with
+@var{ENTRY}) to the one found in the file. @cindex entry point
+
+@item
+If the image file was not an ELF file, the image file is loaded into
+memory at location 0x00010000 in its entirety. The first 64 kB are
+left there for interrupt vectors, initial stack etc. This step is
+equivalent to command @code{memwrite "image" 0x00010000}. @var{ENTRY}
+is set to 0x80010000.
+
+@item
+Program counters in all CPUs are set to @var{ENTRY}. This could be
+done manually by using command @code{regwrite pc @var{ENTRY}} for each
+CPU.
+
+@item
+Kernel argument string is copied into its memory area. This can't
+be done without @code{boot} command.
+
+@item
+Simulation is started. This step could be done manually with command
+@code{start}.
+
+@end enumerate
+
+
+@xref{memwrite}.
+@xref{regwrite}.
+@xref{start}.
+
+
+@node numbers
+@section Entering numbers in the hardware console
+
+@cindex numbers
+@cindex numeric constants
+
+When a number is needed as a part of hardware console command (either
+number of bytes, offset or memory address), @code{YAMS} always accepts
+number in either binary, decimal or hexadecimal form.
+
+Decimal numbers (base 10) can be entered the usual way ("1234").
+Binary numbers must be prefixed by letter 'b' ("b1010001").
+Hexadecimal numbers must be prefixed by either '#' or '0x' ("#a02be").
+
+All numbers must be positive integers in closed range [0, 4294967295]
+(or 2^32-1). In hex, this range is [#0, #ffffffff] and in binary 
+[b0, b11111111111111111111111111111111].
+
+@node    Simulated Machine
+@chapter Simulated Machine
+
+@cindex simulation environment
+@cindex simulated hardware
+@cindex programming instructions
+
+@code{YAMS} simulates a machine with RISC CPUs. The instruction set of
+the CPU emulates MIPS32 instruction set. 
+
+Simulation environment simulates an entire computer, including memory,
+TLB, network interface cards, disks and console devices. Both Direct
+Memory Access (DMA) and Memory Mapped IO (MMIO) devices are present.
+
+@menu
+* CPU::                        Description of the CPU.
+* CP0::                        Description of the Co-Processor 0.
+* Memory::                     Memory Architecture.
+* Memory Mapped Devices::      Other simulated hardware.
+@end menu
+
+@include cpu.texi
+
+@include cp0.texi
+
+@cindex  memory architecture
+@cindex  memory mapping
+@cindex  kernel argument string
+@cindex  memory segments
+@cindex  memory protection
+
+@include memory.texi
+
+@include io.texi
+
+@include cross-gcc.texi
+
+@include gdb.texi
+
+@node    Copying
+@chapter Copying
+
+@include gpl.texi
+
+
+@node       Concept Index
+@unnumbered Concept Index
+
+@printindex cp
+
+@bye

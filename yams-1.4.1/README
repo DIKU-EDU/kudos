@@ -1,0 +1,57 @@
+Options to configure:
+
+
+--with-readline[=PREFIX]
+--without-readline
+
+(Do not) use the readline library if it is detected for hardware
+console command line editing. Default is to use it. IF PREFIX is
+given, then PREFIX/include is added to the header file search path and
+PREFIX/lib to the library search path.
+
+
+--with-polling=METHOD
+
+Specify how to poll for asynchronous input (TTY devices). METHOD can
+be one of the following:
+
+select:
+
+Call select from the main program thread. This has the disadvantage
+that select cannot be called every simulated clock cycle, since that
+way over half of the CPU time available in the host system where YAMS
+is running will be used in select. To avoid this, select is called
+only every ASYNC_INPUT_POLL_INTERVAL (defined in async_input.c). This
+is the old way of doing the polling. However, limiting the calls to
+select is a compromise and not a very elegant way of doing the
+polling, which is precisely why the other polling methods were added.
+
+pthread:
+
+Use POSIX threads and semaphores to poll the input. The polling is
+done in a separate thread with an indefinitely blocking call to
+select, and the main thread is signaled when there is input available.
+This is the default, with a fall-back to the select method if POSIX
+threads are not available.
+
+fork:
+
+Similar to using threads, but the polling is done in a separate
+process. The disadvantages are that the polling thread will consume a
+lot of unneeded memory, since it is forked after most dynamic memory
+allocation (e.g. the main memory space), and that the polling process
+may be left running if the main process is terminated abnormally.
+
+
+From the efficiency viewpoint, pthread and fork are the preferable
+methods, of which pthread is better since the thread cleanup is done
+by the OS thus leaving no ghost process in case of abnormal
+termination.
+
+
+--with-polling-interval=N
+
+Override the value of ASYNC_INPUT_POLL_INTERVAL (defined in
+async_input.c), which defines how often (in simulated clock cycles)
+the select polling method calls select(). This should be a positive
+integer.

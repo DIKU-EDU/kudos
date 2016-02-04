@@ -1,0 +1,804 @@
+@node    CP0
+@section CP0
+
+@cindex  Co-processor 0
+@cindex  kernel mode
+@cindex  user mode
+
+The CP0 registers discussed below are implemented in @code{YAMS}. Note
+that all the registers shown in the @code{YAMS} hardware console are
+not implemented. Note also that all the registers are writable through
+the hardware console. However, illegal values entered through the
+hardware console can result in unpredictable behavior of @code{YAMS}.
+
+@menu
+
+* Index::               Description of Index register
+* Random::              Description of Random register
+* EntLo0 and EntLo1::   Description of EntLo0 and EntLo1 registers
+* Contxt::              Description of Contxt register
+* PgMask::              Description of PgMask register 
+* Wired::               Description of Wired register
+* BadVAd::              Description of BadVAddr register
+* Count::               Description of Count register
+* EntrHi::              Description of EntrHi register
+* Compar::              Description of Compar register
+* Status::              Description of Status register
+* Cause::               Description of Cause register
+* EPC::                 Description of EPC register
+* PRId::                Description of PRId register
+* Conf0::               Description of Conf0 register
+* Conf1::               Description of Conf1 register
+* LLAddr::              Description of LLAddr register
+* ErrEPC::              Description of ErrEPC register
+@end menu
+
+@code{YAMS} supports two operating modes, kernel mode and user mode.
+The processor is in kernel mode when the UM bit in the @code{Status}
+register is zero or when the EXL bit in the @code{Status} register is
+one or when the ERL bit in the @code{Status} register is 1. Otherwise
+the processor is in user mode.
+ 
+@menu
+* TLB::                 Description of YAMS TLB
+* Exceptions::          Description of different exceptions
+@end menu
+
+@node Exceptions
+@subsection Exceptions
+
+@cindex  interrupts in simulated machine
+
+When an exception occurs, the following steps are performed by the
+processor. The @code{EPC} register and the BD field in @code{Cause}
+register are loaded appropriately if the EXL bit in @code{Status}
+register is not set. The CE and ExcCode fields in @code{Cause}
+register are loaded. The EXL bit in @code{status} register is set and
+execution is started at the exception vector. Some exceptions load
+additional information to CP0 registers.
+
+The base for the exception vector is 0x80000000 if the BEV bit in
+@code{Status} register is zero. Otherwise the base is 0xbfc00000. Note
+that this address is not usable for code in YAMS, so BEV should be set
+to zero.
+
+The exception codes (found in field ExcCode in @code{Cause} register
+@xref{Cause}.) and vector offsets for different exceptions are as
+follows:
+
+@table @asis
+
+@item 0 
+@itemx 0x00
+Interrupt. An interrupt has occurred. If the IV field in @code{Cause}
+register is zero, the vector offset is 0x180. Otherwise the vector
+offset is 0x200.
+
+@item 1 
+@itemx 0x01
+TLB modification exception. Software has attempted to store to a
+mapped address but the D bit in TLB is set indicating that the page is
+not writable. When this exception occurs, @code{BadVAd},
+@code{Context} and @code{EntryHi} registers contain the appropriate
+bits of the faulting address. The vector offset is 0x180.
+
+@item 2 
+@itemx 0x02
+TLB exception (load or instruction fetch). The desired entry either
+was not in the TLB or it was not valid. When this exception occurs,
+@code{BadVAd}, @code{Context} and @code{EntryHi} registers contain the
+appropriate bits of the faulting address. If the entry was not in the
+TLB and the EXL bit in the @code{Status} register was zero, the vector
+offset is 0x000. Otherwise the vector offset is 0x180.
+
+@item 3 
+@itemx 0x03
+TLB exception (store). Behaves in exactly the same way as the load or
+instruction fetch one.
+
+@item 4 
+@itemx 0x04
+Address error exception (load or instruction fetch). An address
+exception occurs when memory reference was unaligned or when an
+attempt to reference kernel address space is made in user mode. When
+this exception occurs the faulting address is loaded to the
+@code{BadVAd} register. The vector offset is 0x180.
+
+@item 5 
+@itemx 0x05
+Address error exception (store). Behaves in exactly the same way as
+the load or instruction fetch one.
+
+@item 6 
+@itemx 0x06
+Bus error exception (instruction fetch). Bus error exception occurs
+when the bus request is terminated in an error. The vector offset is
+0x180.
+
+@item 7 
+@itemx 0x07
+Bus error exception (load or store). Behaves in exactly the same way as
+the instruction fetch one.
+
+@item 8 
+@itemx 0x08
+Syscall exception. A syscall instruction was executed. The vector
+offset is 0x180.
+
+@item 9 
+@itemx 0x09
+Breakpoint exception. A break instruction was executed. The vector
+offset is 0x180.
+
+@item 10 
+@itemx 0x0a
+Reserved instruction exception. An instruction which is not defined
+was executed. The vector offset is 0x180.
+
+@item 11 
+@itemx 0x0b
+Coprocessor unusable exception. Software attempted to execute a
+coprocessor instruction but the corresponding coprocessor is not
+implemented in @code{YAMS} or a coprocessor 0 instruction when the
+processor was running in user mode. The vector offset is 0x180.
+
+@item 12 
+@itemx 0x0c
+Arithmetic overflow. Arithmetic overflow occurred when executing an
+arithmetic instruction. The vector offset is 0x180.
+
+@item 13 
+@itemx 0x0d
+Trap exception. The condition of a trap instruction was true. The
+vector offset is 0x180.
+
+@end table
+
+@node TLB
+@subsection TLB
+
+@cindex  TLB handling
+
+@code{YAMS} TLB contains 16 entries. Each entry contains an even entry
+and an odd entry. For each pair of entries TLB contains the following
+fields:
+
+@multitable {xxxx} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item VPN2 @tab 19 bits @tab
+The virtual page number is actually virtual page number/2. The even
+entry maps the page VPN2|0 and the odd entry VPN2|1, where @code{|}
+denotes concatenation of bits.
+
+@item G @tab 1 bit @tab
+The global bit of the entry indicates if the entry is available to all
+processes. 
+
+@item ASID @tab 8 bits @tab
+The address space id field is used to distinguish between entries of
+different processes. The ASID bit in the TLB entry and in the
+@code{EntrHi} register must be the same for the entry to be valid.
+
+@end multitable
+
+Both the even and the odd entry contain the following fields:
+
+@multitable {xxxx} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item PFN @tab 20 bits @tab
+The physical page frame number. 
+
+@item C @tab 3 bits @tab
+The cache coherence bits. Since there is no cache in @code{YAMS}, this
+field is not very useful and will be ignored by the simulator.
+
+@item D @tab 1 bit @tab
+Dirty bit. If this bit is zero, the page is write protected. If the
+bit is one, page can be written can can thus get dirty.
+
+@item V @tab 1 bit @tab
+Valid bit. This bit tells if the mapping is valid.
+
+@end multitable
+
+@xref{EntLo0 and EntLo1}.
+
+@xref{EntrHi}.
+
+@node Index
+@subsection Index
+
+@itemize
+@item Register number: 0
+@item Selection field: 0
+@end itemize
+
+The @code{Index} register contains the index of the TLB used by the
+@code{TLBP}, @code{TLBWI} and @code{TLBR}. There are two fields in
+the @code{Index} register:
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item P @tab 31 @tab 
+Probe Failure. This field is written by hardware during the
+@code{TLBP} instruction to indicate whether the entry is found in TLB
+(1) or not (0). This field is not writable by software.
+
+@item Index @tab 3..0 @tab 
+The index to the TLB. Written by software to give the TLB index used
+by @code{TLBW} and @code{TLBR} instructions. Written by hardware
+during the @code{TLBP} instruction if a matching entry is found.
+This is a read-write field.
+
+@item @tab 30...4 @tab
+Must be written as zero, returns zero when reading.
+
+@end multitable
+
+@node Random
+@subsection Random
+
+@itemize
+@item Register number: 1
+@item Selection field: 0
+@end itemize
+
+The value of @code{Random} register is used to index the TLB by the
+@code{TLBWR} instruction. @code{Random} register is a read-only
+register. The @code{YAMS} hardware updates the value of @code{Random}
+register after each @code{TLBWR} instruction. The value of
+@code{Random} register varies between 15 (number of TLB entries minus
+one) and the lower bound set by the @code{Wired} register.
+@xref{Wired}. At start-up and, when the @code{Wired} register is
+written, @code{Random} register is initialized to its upper bound, 15.
+There is only one field in the @code{Random} register:
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item Random @tab 3...0 @tab 
+The random index to the TLB. This is a read-only field.
+
+@item @tab 31...4 @tab
+Must be written as zero, returns zero when reading.
+
+@end multitable
+
+@node EntLo0 and EntLo1
+@subsection EntLo0 and EntLo1
+
+@itemize
+@item Register number: 2 and 3
+@item Selection field: 0
+@end itemize
+
+The @code{EntLo} registers are used in the TLB instructions. The data
+is either moved from TLB to these registers or vice versa. The fields
+of @code{EntLo0} and @code{EntLo1} registers are the same.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item PFN @tab 25...6 @tab
+Page frame number. This is a read-write field.
+
+@item C @tab 5...3 @tab
+Cache coherency bits. These are not very useful in @code{YAMS} since
+there is no cache. This is a read-write field. This field is ignored
+by @code{YAMS}
+
+@item D @tab 2 @tab
+Dirty bit. The page is writable if this bit is set. Otherwise the page
+is not writable. This is a read-write field. Note that write protected
+pages can't get dirty.
+
+@item V @tab 1 @tab
+Valid bit. Indicates whether the entry is valid.This is a read-write
+field.
+
+@item G @tab 0 @tab
+Global bit. Indicates whether this entry is usable for all processes.
+When writing an entry to the TLB the G bit has to set in both
+@code{EntLo0} and @code{EntLo1} registers for the G bit to be set in
+the TLB. This is a read-write field.
+
+@item @tab 31..26 @tab
+Ignored when writing, returns zero when reading.
+
+@end multitable
+
+@node Contxt
+@subsection Contxt
+
+@itemize
+@item Register number: 4
+@item Selection field: 0
+@end itemize
+
+@code{Contxt} register can be used by the operating system to
+reference a page table entry array, if the size of the entry is 16
+bytes.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item PTEBase @tab 31...23 @tab
+The base address of the page table entry array. This field should be
+written by software.
+
+@item BadVPN2 @tab 22...4 @tab
+This field contains the upper 19 bits of the virtual address that
+caused a TLB exception. This field is written by hardware when a TLB
+exception occurs and from the software's point of view it is read-only.
+
+@item @tab 3..0 @tab
+Must be written as zero, returns zero when reading.
+
+@end multitable
+
+@node PgMask
+@subsection PgMask
+
+@itemize
+@item Register number: 5
+@item Selection field: 0
+@end itemize
+
+The @code{PgMask} (PageMask) register is used in the MIPS32
+architecture to allow variable page sizes. Since @code{YAMS} only
+supports 4 kB pages the @code{PgMask} register is a read-only register
+containing the value 0.
+
+@node Wired
+@subsection Wired
+
+@itemize
+@item Register number: 6
+@item Selection field: 0
+@end itemize
+
+The @code{Wired} register specifies the lower bound for @code{Random}
+register contents. Thus, TLB indexes less than the @code{Wired} cannot
+be replaced with the @code{TLBWR} instruction. @code{TLBWI}
+instruction can be used to replace the wired entries. The @code{Wired}
+register is initialized to zero. 
+
+There is only one field in the @code{Wired} register:
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item Wired @tab 3...0 @tab The boundary of wired TLB entries.
+
+@item @tab 31...4 @tab
+Must be written as zero, returns zero when reading.
+
+@end multitable
+
+@node BadVAd
+@subsection BadVAd
+
+@itemize
+@item Register number: 8
+@item Selection field: 0
+@end itemize
+
+The read-only register @code{BadVAd} is written by @code{YAMS} when
+address error, TLB refill, TLB invalid or TLB modified exception occur.
+
+The fields of the @code{BadVAd} are as follows:
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item BadVAddr @tab 31...0 @tab 
+Bad virtual address. This field is read-only.
+
+@end multitable
+
+@node Count
+@subsection Count
+
+@itemize
+@item Register number: 9
+@item Selection field: 0
+@end itemize
+
+The @code{Count} register is a timer, which is incremented by
+@code{YAMS} on every cycle. The @code{Count} register is a read-write
+register.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item Count @tab 31...0 @tab 
+Counter. This is a read-write field.
+
+@end multitable
+
+@node EntrHi
+@subsection EntrHi
+
+@itemize
+@item Register number: 10
+@item Selection field: 0
+@end itemize
+
+The @code{EntrHi} register contains the data used for matching a TLB
+entry when writing to, reading from or accessing the TLB.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item VPN2 @tab 31...13 @tab
+The upper 19 bits of the virtual address.
+
+@item ASID @tab 7...0 @tab
+Address space identifier.
+
+@item @tab 12...8 @tab
+Must be written as zero, returns zero when reading.
+
+@end multitable
+
+@node Compar
+@subsection Compar
+
+@itemize
+@item Register number: 11
+@item Selection field: 0
+@end itemize
+
+The @code{Compar} register implements a timer and timer interrupt
+together with the @code{Count} register. An interrupt is raised  when
+the values of @code{Count} and @code{Compar} registers are equal. The
+timer interrupt uses interrupt line 5. The timer interrupt is cleared
+by writing a value to the Compar register.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item Comapre @tab 31...0 @tab 
+Counter compare value. This is a read-write field.
+
+@end multitable
+
+@node Status
+@subsection Status
+
+@itemize
+@item Register number: 12
+@item Selection field: 0
+@end itemize
+
+The @code{Status} register contains various fields to indicate the
+current status of the processor.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item CU @tab 28 @tab
+Indicates whether access to the co-processor 0 is enabled. This field
+is initialized to one, indicating access to co-processor 0. This bit
+is a read-write bit.
+
+@item BEV @tab 22 @tab
+Controls the locations of the exception vectors. The value of
+this field is zero when normal exception vectors are used and one when
+bootstrap exception vectors are used. This bit is a read-write bit.
+
+@item IM @tab 15...8 @tab
+Interrupt mask. Controls the enabling of individual interrupt lines.
+This field is a read-write field. If bit is set, the interrupt is
+enabled. The first two bits correspond to the two software interrupts
+and the rest are used for the 5 possible hardware interrupts.
+
+@item UM @tab 4 @tab
+Indicates the base operating mode of the processor. The encoding is
+zero for kernel mode and one for user mode. This field is a read-write
+field. 
+
+@item ERL @tab 2 @tab
+The error level field. The value of this field is zero when
+@code{YAMS} is operating in normal level and one when @code{YAMS} is
+operating in error level. When this bit is set the processor is
+running in kernel mode, all interrupts are disabled and @code{ERET}
+instruction will use the @code{ErrEPC} instead of the @code{EPC}
+register for return address. This field is a read-write field.
+
+@item EXL @tab 1 @tab
+The exception level field. The value of this field is zero when
+@code{YAMS} is running in normal level and one when in exception
+level. When the EXL bit is set, the processor is running in kernel
+mode, all interrupts are disabled, the TLB Refill exceptions use the
+general exception vector instead of the TLB Refill vector and the
+@code{EPC} register and the @code{BD} field of the @code{Cause}
+register will not be updated. This field is a read-write field.
+
+@item IE @tab 0 @tab
+Interrupt enable. When this bit is zero all interrupts are disabled.
+
+@item @tab 18 @tab
+Must be written as zero, returns zero when reading.
+
+@item @tab 31..29, 27...23, 21...19, 17...16, 7...5, 3 @tab
+Ignored when writing, returns zero when reading.
+
+@end multitable
+
+@node Cause
+@subsection Cause
+
+@itemize
+@item Register number: 13
+@item Selection field: 0
+@end itemize
+
+The @code{Cause} register can be used to query the cause of the most
+recent exception. There are also fields which control software
+interrupt requests and the entry vector for interrupts.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item BD @tab 31 @tab 
+This bit is set if the last exception occurred in branch delay slot.
+Otherwise this bit is zero. The BD field is not updated if the EXL bit
+in @code{Status} register is set. This field is read-only.
+
+@item CE @tab 29 @tab
+This field contains the number of the faulting coprocessor when a
+coprocessor unusable exception occurs. This field is read-only.
+
+@item IV @tab 23 @tab
+This field can be used to control the entry vector for interrupt
+exceptions. When this bit is set, interrupt exceptions are vectored to
+the special interrupt vector (0x200). When this bit is not set, the
+interrupt exceptions are vectored to the general exception vector (0x180).
+This is a read-write field.
+
+@item HardIP @tab 15...10 @tab
+This field indicates which interrupts are pending. Bit 15 is for
+hardware interrupt 5, bit 14 for hardware interrupt 4 and so on.
+This field is read-only.
+
+@item SoftIP @tab 9...8 @tab
+This field controls the requests for software interrupts. Bit 9 is for
+software interrupt 1 and bit 8 for software interrupt 0. This is a
+read-write field.
+
+@item ExcCode @tab 6...2 @tab
+This read-only field contains the exception code. @xref{Exceptions}.
+
+@item @tab 22 @tab
+Ignored when writing, returns zero when reading.
+
+@item @tab 30, 27...24, 21...16, 7, 1...0 @tab
+Must be written as zero, returns zero when reading.
+
+@end multitable
+
+@node EPC
+@subsection EPC
+
+@itemize
+@item Register number: 14
+@item Selection field: 0
+@end itemize
+
+The read-write register @code{EPC} (Exception Program Counter)
+contains the address at which the execution of a program will continue
+after an exception is serviced. The @code{EPC} register contains the
+virtual address of the instruction that caused the exception or, if
+that instruction is in branch delay slot, the virtual address of the
+branch or jump instruction preceding that instruction. When the EXL
+bit in @code{Status} register is set, @code{YAMS} will not write
+to the @code{EPC} register.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item EPC @tab 31...0 @tab 
+Exception Program Counter. This is a read-write field.
+
+@end multitable
+
+@node PRId
+@subsection PRId
+
+@itemize
+@item Register number: 15
+@item Selection field: 0
+@end itemize
+
+The read-only register @code{PRId} (Processor id) contains information
+about the processor. 
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item Processor number @tab 31...24 @tab 
+The number of the processor in this installation. The first processor
+is numbered zero, the second one and so on. The last processor's
+number is the number of processors minus one.
+
+@item Company ID @tab 23...16 @tab
+The company ID number for @code{YAMS} is 255.
+
+@item Processor ID @tab 15...8 @tab
+The processor ID number for @code{YAMS} is 0.
+
+@item Revision @tab 7...0 @tab
+The revision number for @code{YAMS} is 0.
+
+@end multitable
+
+@node Conf0
+@subsection Conf0
+
+@itemize
+@item Register number: 16
+@item Selection field: 0
+@end itemize
+
+The @code{Conf0} register is a read-only register providing
+information about the processor. All fields of the @code{Conf0}
+register are constant.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item M @tab 31 @tab 
+Tells that Conf1 is implemented at a select field 1. The value of this
+field is one.
+
+@item BE @tab 15 @tab 
+Denotes the endianess of the processor. The value of this field is one
+for a big-endian processor (@code{YAMS} default) and zero for a
+little-endian processor.
+
+@item AT @tab 14...13 @tab 
+Indicates that @code{YAMS} emulates the MIPS32 architecture. The value
+of this field is zero.
+
+@item AR @tab 12...10 @tab
+Indicates that @code{YAMS} emulates the revision 1 of the MIPS32
+architecture. The value of this field is zero.
+
+@item MT @tab 9...7 @tab
+Indicates the MMU type used by @code{YAMS}. Since @code{YAMS} emulates
+the standard TLB model of the MIPS32 architecture, the value of this
+field is one.
+
+@end multitable
+
+@node Conf1
+@subsection Conf1
+
+@itemize
+@item Register number: 16
+@item Selection field: 1
+@end itemize
+
+The read-only @code{Conf1} register provides more information about
+the capabilities of the processor.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item M @tab 31 @tab 
+The value of this field is zero indicating that there is no
+@code{Conf2} register.
+
+@item MMU size @tab 30...25 @tab 
+Number of TLB entries minus one. Thus 15 for @code{YAMS}.
+
+@item IS @tab 24...22 @tab
+Icache setes per way.
+The value of this field is zero, because @code{YAMS} does not support 
+caches.
+
+@item IL @tab 21...19 @tab
+Icache line size.
+The value of this field is zero, because @code{YAMS} does not support 
+caches.
+
+@item IA @tab 18...16 @tab
+Icache associativity.
+The value of this field is zero, because @code{YAMS} does not support 
+caches.
+
+@item DS @tab 15...13 @tab
+Dcache sets per way. 
+The value of this field is zero, because @code{YAMS} does not support 
+caches.
+
+@item DL @tab 12...10 @tab
+Dcache line size.
+The value of this field is zero, because @code{YAMS} does not support 
+caches.
+
+@item DA @tab 9...7 @tab
+Dcache associativity.
+The value of this field is zero, because @code{YAMS} does not support 
+caches.
+
+@item C2 @tab 6 @tab
+Indicates whether co-processor 2 is implemented.
+The value of this field is zero, because @code{YAMS} does not support 
+co-processor 2.
+
+@item PC @tab 4 @tab
+Indicates whether performance counter registers are implemented.
+The value of this field is zero, because @code{YAMS} does not support 
+perforamnce counter registers.
+
+@item WR @tab 3 @tab
+Indicates whether watch registers are implemented.
+The value of this field is zero, because @code{YAMS} does not support 
+watch registers.
+
+@item CA @tab 2 @tab
+Indicates whether code compression is implemented.
+The value of this field is zero, because @code{YAMS} does not support 
+code compression.
+
+@item EP @tab 1 @tab
+Indicates whether EJTAG is implemented.
+The value of this field is zero, because @code{YAMS} does not support 
+EJTAG.
+
+@item FP @tab 0 @tab
+Indicates whether FPU is implemented.
+The value of this field is zero, because @code{YAMS} does not support 
+FPU.
+
+@end multitable
+
+@node LLAddr
+@subsection LLAddr
+
+@itemize
+@item Register number: 17
+@item Selection field: 0
+@end itemize
+
+The @code{LLAddr} register contains the physical address referenced by
+the most recent LL instruction. This register is not used by software
+in normal operation and should be considered read-only.
+
+@node ErrEPC
+@subsection ErrEPC
+
+@itemize
+@item Register number: 30
+@item Selection field: 0
+@end itemize
+
+The read-write register @code{ErrEPC} functions like the @code{EPC}
+register except that it is used on error exceptions.
+
+@multitable {Field name} {xxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+
+@item Field name @tab Bits @tab Description
+
+@item ErrorEPC @tab 31...0 @tab Error exception program counter
+
+@end multitable
+

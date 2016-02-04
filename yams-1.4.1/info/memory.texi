@@ -1,0 +1,133 @@
+@node    Memory
+@section Memory
+
+@cindex  memory architecture
+@cindex  memory mapping
+@cindex  kernel argument string
+@cindex  memory segments
+@cindex  memory protection
+
+@subsection Architecture
+
+@code{YAMS} provides 2^32 bytes (4 gigabytes) virtual address space.
+Virtual address space is divided in five segments shown in table
+below.
+
+@multitable {0xdeadbeef - 0xdeadbeefxxxxxxxxxxxxx} {Sizexxxx} {xxxxxxxxxxxxxxxxxxxxxx}
+ 
+@item Virtual Address Range @tab Size @tab Description
+
+@item 0xE0000000 - 0xFFFFFFFF @tab 512 MB @tab Kernel Mapped
+@item 0xC0000000 - 0xDFFFFFFF @tab 512 MB @tab Supervisor Mapped
+@item 0xA0000000 - 0xBFFFFFFF @tab 512 MB @tab Kernel Unmapped Uncached
+@item 0x80000000 - 0x9FFFFFFF @tab 512 MB @tab Kernel Unmapped
+@item 0x00000000 - 0x7FFFFFFF @tab   2 GB @tab User Mapped
+
+@end multitable
+ 
+Addresses in mapped segments are translated through TLB. Unmapped kernel 
+segments generate physical addresses to lowest 512 MB of physical memory. 
+Cache is not implemented so there are no differences between 
+the two kernel unmapped segments.
+
+@subsection Kernel Unmapped Uncached Segment
+
+Kernel unmapped segment is further divided into following memory areas:
+
+@multitable {0xdeadbeef - 0xdeadbeefxxxxxxxxxxxxxxxxxxx} {xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+ 
+@item Virtual Address Range @tab Description
+@item 0xB0008000 - 0xBFFFFFFF @tab Memory mapped device IO-area 
+@item 0xB0001000 - 0xB0001FFF @tab Kernel Boot parameters string
+@item 0xB0000000 - 0xB0000FFF @tab Device descriptors
+@item 0xA0000000 - 0xAFFFFFFF @tab Kernel binary and stack
+
+@end multitable
+
+@subsection Accessing segments
+
+All segments are accessible while processor is in kernel mode. In user
+mode only User mapped segment is accessible. Accessing other segments
+generates Address Error. Since no supervisor mode is implemented
+Supervisor Mapped segment is accessible only in kernel mode.
+
+@subsection Address Translation
+
+Unmapped Segments
+
+Kernel Unmapped segments generate physical addresses in the following way:
+
+@multitable {Kernel Unmapped Uncachedxxxx} {0xdeadbeef - 0xdeadbeefxxxxxxxxx} {0xdeadbeef - 0xdeadbeefxxxxxxxxxxx}
+ 
+@item Segment @tab Virtual Address @tab Physical Address 
+
+@item Kernel Unmapped Uncached @tab 0xA0000000 - 0xAFFFFFFF @tab 0x00000000 - 0x0FFFFFFF
+@item Kernel Unmapped @tab 0x80000000 - 0x9FFFFFFF @tab 0x00000000 - 0x1FFFFFFF
+ 
+@end multitable
+
+Addresses 0xB0000000-0xBFFFFFFF are used in memory mapped io-devices and
+are not threated as normal physical memory. 
+
+TLB-address translation
+
+@xref{EntrHi}.
+
+@xref{EntLo0 and EntLo1}.
+
+@xref{TLB}.
+
+@xref{Exceptions}.
+
+Memory is mapped in 4096-byte pages in @code{YAMS}. Bits 31-12 of the
+virtual address refer to the page. Bits 11-0 are used indexing inside
+the page. Address translation is performed in the following way:
+
+@table @asis
+
+@item 1 
+Find TLB-entry, whose VPN2 field matches to the bits 31-13 of the virtual
+address and G bit is set or ASID field matches the current process ASID
+(obtainde from EntryHi register). If TLB-entry is not found and
+reference type is load raise TLB exception 0x02. Otherwise, if TLB-entry
+is not found, raise TLB exception 0x03.
+
+@item 2
+Check bit 12 (EvenOddBit) in virtual address. If zero use mapping for
+even page (TLB-entry fields PFN0, C0, D0, V0), otherwise use mapping for
+odd page (TLB-entry fields PFN1, C1, D1, V1).
+
+@item 3
+Check validity bit of page (V-field of even/odd page mapping in
+TLB-entry). If one page is valid and access to the page is
+permitted. Otherwise raise TLB exception 0x02 (load) or 0x03
+(store).
+
+@item 4
+Check dirty bit of page (D-field of even/odd page mapping in
+TLB-entry). If zero and reference type is store, raise TLB modification
+exception 0x01. Note that dirty bit is also write protection bit.
+
+@item 5
+Generate physical address by concatenating bits 19-0 of PFN-field and
+bits 11-0 of virtual address.
+
+@end table 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

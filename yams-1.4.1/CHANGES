@@ -1,0 +1,83 @@
+YAMS 1.4.1 (2011-02-15)
+
+2011-02-15
+
+	* src/simulator.h: inline functions now defined static to fix
+	portability issue.
+
+YAMS 1.4.0 (2011-01-18)
+
+2010-11-24
+	* GDB remote debugging interface: reworked the serial line interface
+	support, dropped HW console support, made gdb.c use async_input
+	interface, added documentation
+
+2010-11-23
+	* Added support for little-endian simulator
+
+	* src/yams.c:
+	Fix bug in config file override
+
+2007-02-25
+	* Makefile.am, configure.ac, semtest.c:
+	Added test to check that POSIX semaphores actually work
+
+2006-01-18
+	* Added initial support for the GDB remote debugging interface.
+
+2006-01-13
+	* Fix make dist so that info/yams.{ps,pdf} is now autobuild
+
+YAMS 1.3.0 (2006-01-13)
+
+2006-01-12
+	* Better portability with pthreads and printf formatting macros.
+
+	* Minor bugfixes.
+
+2005-09-11
+	* Better autoconf script.
+
+	* src/async_input.c:
+	Variable for inter-thread communication is now marked volatile.
+
+2005-06-05
+	* Added support for pluggable I/O devices; see file README.PLUGIO.
+
+	* Some bugfixes.
+
+2005-05-07
+	* Added ELF binary support
+
+2005-04-14
+	* Added asynchronous input subsystem with three polling
+        methods
+
+	* Some bugfixes
+
+2005-04-09
+	* src/hwconsole.c:
+	Added performance meter
+
+2005-03-08
+	* Fixed inter-cpu interrupts.
+
+YAMS 1.2.3 (2005-04-25)
+
+2005-04-25
+	* src/disk.c:
+	Fixed disk to handle access to the last memory page correctly.
+
+YAMS 1.2.2 (2005-01-13)
+
+2004-03-23
+	* src/nic.c:
+	Fixed NIC to conform to specification (frame is not lost if
+	RXIRQ is cleared before DMA transfer)
+
+2004-02-18
+	* src/yamst.c:
+	Added -e command line option to terminate after YAMS has ended
+	(support for scripted testcases).
+
+YAMS 1.2.0 (2004-01-19)
