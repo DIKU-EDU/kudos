@@ -39,16 +39,15 @@ Expected Background Knowledge
 *****************************
 
 Since the ``kudos`` system is written using the C programming language, you
-should be able to program in C. For an introduction on C programming, see the
-classical reference [KR]_, or the more modern, and perhaps more accessible,
-[ModernC]_. You also need to know quite much about programming in general,
-particularly about procedural programming.
+should be able to program in C. For an introduction to the C programming
+language, see the classical reference [KR]_, or the more modern, and perhaps
+more accessible, [ModernC]_.
 
 We also expect that you are taking a course on operating systems or otherwise
 know the basics about operating systems. You can still find OS textbooks very
-handy when doing the exercises. We recommend that you acquire the book
+handy when doing the exercises. We recommend that you get a hold of the book
 "Operating Systems: Three Easy Pieces"[OSTEP]_, or, if you are in a more
-classical mood, we recommend [Stallings]_ or [Tanenbaum]_.
+classical mood, [Stallings]_ or [Tanenbaum]_.
 
 Since you are going to interact directly with the hardware quite a
 lot, you should know something about hardware. A good introduction on
