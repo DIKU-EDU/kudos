@@ -51,7 +51,7 @@ classical mood, [Stallings]_ or [Tanenbaum]_.
 
 Since you are going to interact directly with the hardware quite a
 lot, you should know something about hardware. A good introduction on
-this can be found in the book \cite{patterson}.
+this can be found in the book [COD5e]_.
 
 Since kernel programming generally involves a lot of synchronization issues, a
 course on concurrent programming is recommended to be taken later on. One good
@@ -158,3 +158,5 @@ bold exercise number and a keyboard symbol.}
 .. [Stallings] William Stallings. *Operating Systems: Internals and Design Principles*, 4th edition. Prentice-Hall, 2001.
 
 .. [Tanenbaum] Andrew Tanenbaum. *Modern Operating Systems*, 2nd edition. Prentice-Hall, 2001.
+
+.. [COD5e] David A. Patterson and John L. Hennessy. *Computer Organization and Design*, 5th edition. Elsevier, 2014.
