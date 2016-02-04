@@ -3,7 +3,7 @@
 # Set the module name
 MODULE := vm
 
-FILES := mm_heap.c memory.c
+FILES := memory.c
 
 MIPSSRC += $(patsubst %, $(MODULE)/%, $(FILES))
 X64SRC += $(patsubst %, $(MODULE)/%, $(FILES))

@@ -25,7 +25,7 @@
 /**
  * Initializes virtual memory system. Initialization consists of page
  * pool initialization and disabling static memory reservation. After
- * this kmalloc() may not be used anymore.
+ * this stalloc() may not be used anymore.
  */
 void vm_init(void)
 {

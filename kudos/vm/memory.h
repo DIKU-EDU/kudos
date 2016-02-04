@@ -42,36 +42,4 @@ void vm_update_mappings(virtaddr_t *thread);
 void vm_memwrite(pagetable_t *pagetable, unsigned int buflen,
                  virtaddr_t target, const void *source);
 
-/* Kernel Heap Memory Management
- * Provides dynamic memory allocation */
-
-/* Heap Structure - Linked List */
-typedef struct heap_header_t
-{
-  /* Address */
-  virtaddr_t addr;
-
-  /* Flags */
-  uint32_t flags;
-
-  /* Length of this block */
-  uint32_t length;
-
-  /* Next link */
-  struct heap_header_t *link;
-
-} heap_header_t;
-
-/* Defines */
-#define MM_HEAP_LOCATION        0x10000000
-#define MM_HEAP_ADDR_OFFSET     0x200000
-#define MM_HEAP_SIZE            (0x20000000 - (MM_HEAP_LOCATION + MM_HEAP_ADDR_OFFSET))
-#define MM_HEAP_END             0x20000000
-
-#define MM_HEAP_FLAG_ALLOCATED  0x1
-
-void heap_init(void);
-virtaddr_t *kmalloc(uint32_t length);
-void kfree(void *ptr);
-
 #endif
