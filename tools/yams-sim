@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Run YAMS.
+
+set -e # Exit on first error.
+(test -d kudos && test -d userland) || \
+    (echo "error: missing directories 'kudos' and/or 'userland'"; exit 1)
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <program> [<arg>...]"
+    exit 1
+fi
+
+CONF=yams.conf
+
+socket="$(cat "$CONF" | sed 's/#.*//' | grep unix-socket \
+    | sed -r 's/.*unix-socket *"(.*)".*/\1/' | head -n 1)"
+
+if [ ! -S "$socket" ]; then
+    echo "Socket $socket not found."
+    echo "Make sure yams-term is running in this directory."
+    exit 2
+fi
+
+yams -c "$CONF" "$@"

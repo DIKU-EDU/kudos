@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Run a YAMS terminal.
+
+set -e # Exit on first error.
+(test -d kudos && test -d userland) || \
+    (echo "error: missing directories 'kudos' and/or 'userland'"; exit 1)
+
+CONF=yams.conf
+
+socket="$(cat "$CONF" | sed 's/#.*//' | grep unix-socket \
+    | sed -r 's/.*unix-socket *"(.*)".*/\1/' | head -n 1)"
+
+echo "Using socket $socket."
+
+yamst -lu "$socket"

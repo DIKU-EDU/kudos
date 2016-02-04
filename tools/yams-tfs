@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# Compile all programs from the `userland` directory and write them to
+# a disk file (`store.file` by default).  Also write `.txt` files from
+# that directory to the disk.
+#
+# Usage: yams-tfs [<disk>]
+
+set -e # Exit on first error.
+(test -d kudos && test -d userland) || \
+    (echo "error: missing directories 'kudos' and/or 'userland'"; exit 1)
+
+disk="$1"
+if ! [ "$disk" ]; then
+    disk=store.file
+fi
+volume_name=disk
+
+make -C kudos
+make -C userland
+
+rm -f "$disk"
+./kudos/util/tfstool create "$disk" 16384 $volume_name
+
+cd userland
+
+ls | while read f; do
+    if (test -x "$f" && test -f "$f") || (echo "$f" | grep -q '.txt$'); then
+        cd ..
+        ./kudos/util/tfstool write "$disk" userland/$f $f
+        cd userland
+    fi
+done

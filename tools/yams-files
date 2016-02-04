@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# List all files in a disk (`store.file` by default).
+#
+# Usage: yams-files [<disk>]
+
+set -e # Exit on first error.
+(test -d kudos && test -d userland) || \
+    (echo "error: missing directories 'kudos' and/or 'userland'"; exit 1)
+
+disk="$1"
+if ! [ "$disk" ]; then
+    disk=store.file
+fi
+
+vname="$(./kudos/util/tfstool list "$disk" \
+    | grep -Po '(?<=volume name: )[^,]+')"
+
+./kudos/util/tfstool list "$disk" \
+    | tail -n +4 \
+    | sed -r 's/^ *[0-9]+ +[0-9]+ +([^ ]+).*$/\1/' \
+    | while read file; do
+          echo "[$vname]$file"
+      done
