@@ -9,10 +9,12 @@ concepts. It is intended for:
 
 The ``kudos`` operating system is heavily based upon the ``BUENOS`` operating
 system, and this documentation is heavily based upon the so-called "``BUENOS``
-Roadmap". ``BUENOS`` was originally developed at Aalto University, Finland.
-``kudos`` is a continuation of the ``BUENOS`` effort at the University of
-Copenhagen, Denmark. For more information about ``BUENOS`` visit the project
-homepage at: http://www.niksula.hut.fi/u/buenos/.
+Roadmap". ``BUENOS`` was originally developed at `Department of Computer
+Science & Engineering, Aalto University, Finland
+<https://www.niksula.hut.fi/>`_.  ``kudos`` is a continuation of the ``BUENOS``
+effort at the `Department of Computer Science at the University of Copenhagen
+(DIKU) <http://www.diku.dk/>`_, Denmark. For more information about ``BUENOS``
+visit the project homepage at: http://www.niksula.hut.fi/u/buenos/.
 
 The ``kudos`` system supports multiple CPUs, provides threading and a wide
 variety of synchronization primitives. It also includes skeleton code for
