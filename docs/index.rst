@@ -142,14 +142,12 @@ operating system project courses.
 
 The exercises look like this:
 
-\begin{exercises}[\vspace{\baselineskip}]
+1. *This is a theoretical exercise.*
 
-\exercise{This is a self study exercise.}
+2. ⌨ *This is a programming task.*
 
-\cexercise{This is a programming assignment. They are indicated with a
-bold exercise number and a keyboard symbol.}
-
-\end{exercises}
+References
+**********
 
 .. [KR] Brian Kernighan and Dennis Ritchie. *The C Programming Language*, 2nd Edition. Prentice-Hall, 1988.
 
