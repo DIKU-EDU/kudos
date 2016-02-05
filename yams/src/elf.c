@@ -180,9 +180,10 @@ static int load_elf_file(FILE *f, uint32_t *entry_point) {
 	case PT_INTERP:
 	    printf("ELF: detected interpreter request\n");
 	    return LOADELF_FAILURE;
-	default:
-	    printf("ELF: unsupported program header\n");
-	    return LOADELF_FAILURE;
+    /*
+     * Other program headers indicate an incompatible file *or* a file
+     * with extra headers.  Just ignore for now.
+     */
 	}
 
 	/* to the next program header */
