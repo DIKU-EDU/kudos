@@ -78,54 +78,56 @@ as a reference guide. To get most out of this document you should probably:
 4. Use the document as a reference when designing and implementing your
    improvements.
 
-``kudos`` for teachers
-**********************
+.. 
+   ``kudos`` for teachers
+   ----------------------
 
-As stated above, the ``kudos`` system is meant as an assignment backbone for
-operating systems project courses. This document, while primarily acting as
-reference guide to the system, is also designed to support project courses. The
-document is ordered so that various kernel programming issues are introduced in
-sensible order and exercises (see also exercises_) are provided
-for each subject area.
+   As stated above, the ``kudos`` system is meant as an assignment backbone for
+   operating systems project courses. This document, while primarily acting as
+   reference guide to the system, is also designed to support project courses. The
+   document is ordered so that various kernel programming issues are introduced in
+   sensible order and exercises (see also exercises_) are provided
+   for each subject area.
 
-While the system as such can be used as a base for a large variety of
-assignments, this document works best if assignments are
-divided into five different parts as follows:
+   While the system as such can be used as a base for a large variety of
+   assignments, this document works best if assignments are
+   divided into five different parts as follows:
 
-1. **Synchronization and Multiprogramming**. Various multiprogramming issues
-   relevant on both multiprocessor and uniprocessor machines are covered in
-   \autoref{sec:threading} and \autoref{sec:sync}.
+   1. **Synchronization and Multiprogramming**. Various multiprogramming issues
+      relevant on both multiprocessor and uniprocessor machines are covered in
+      \autoref{sec:threading} and \autoref{sec:sync}.
 
-2. **Userland**. Userland processes, interactions between
-   kernel and userland as well as system calls are covered in
-   \autoref{sec:userland}.
+   2. **Userland**. Userland processes, interactions between
+      kernel and userland as well as system calls are covered in
+      \autoref{sec:userland}.
 
-3. **Virtual Memory**. The current virtual memory support
-   mechanisms in ``kudos`` are explained in \autoref{sec:vm}, which also
+   3. **Virtual Memory**. The current virtual memory support
+      mechanisms in ``kudos`` are explained in \autoref{sec:vm}, which also
    gives exercises on the subject area.
 
-4. **Filesystem**. Filesystem issues are covered in
-   \autoref{sec:fs}.
+   4. **Filesystem**. Filesystem issues are covered in
+      \autoref{sec:fs}.
 
-Preparing for a ``kudos`` Course
-********************************
+   Preparing for a ``kudos`` Course
+   --------------------------------
+   ********************************
 
-To implement an operating systems project course with ``kudos``, at least the
-following steps are necessary:
+   To implement an operating systems project course with ``kudos``, at least the
+   following steps are necessary:
 
-* Provide students with a development environment with precompiled
-``YAMS`` and a MIPS32 ELF cross compiler. See ``YAMS`` usage guide for
-instructions on setup of ``YAMS`` and the cross compiler environment.
+   * Provide students with a development environment with precompiled
+   ``YAMS`` and a MIPS32 ELF cross compiler. See ``YAMS`` usage guide for
+   instructions on setup of ``YAMS`` and the cross compiler environment.
 
-* Decide which exercises are used on the course, how many points
-they are worth and what are the deadlines.
+   * Decide which exercises are used on the course, how many points
+   they are worth and what are the deadlines.
 
-* Decide any other practical issues (are design reviews compulsory
-for students, how many students there are per group, etc.)
+   * Decide any other practical issues (are design reviews compulsory
+   for students, how many students there are per group, etc.)
 
-* Familiarize the staff with ``kudos`` and ``YAMS``.
+   * Familiarize the staff with ``kudos`` and ``YAMS``.
 
-* Introduce ``kudos`` to the students.
+   * Introduce ``kudos`` to the students.
 
 Exercises
 *********
