@@ -39,7 +39,7 @@ below for details) and compile it. You also need a MIPS32 ELF cross
 compiler to compile ``kudos`` for use with ``YAMS``.
 
 Expected Background Knowledge
-*****************************
+-----------------------------
 
 Since the ``kudos`` system is written using the C programming language, you
 should be able to program in C. For an introduction to the C programming
@@ -62,7 +62,7 @@ book in this field is [Andrews]_. These issues are also handled in the
 operating systems books cited above, but the approach is different.
 
 How to Use This Documentation
-*****************************
+-----------------------------
 
 This documentation is designed to be used both as read-through introduction and
 as a reference guide. To get most out of this document you should probably:
@@ -130,7 +130,7 @@ as a reference guide. To get most out of this document you should probably:
    * Introduce ``kudos`` to the students.
 
 Exercises
-*********
+---------
 .. _exercises:
 
 Each chapter in this document contains a set of exercises. Some of
@@ -149,7 +149,7 @@ The exercises look like this:
 2. ⌨ *This is a programming task.*
 
 References
-**********
+----------
 
 .. [KR] Brian Kernighan and Dennis Ritchie. *The C Programming Language*, 2nd Edition. Prentice-Hall, 1988.
 
