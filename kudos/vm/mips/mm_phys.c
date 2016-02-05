@@ -18,21 +18,21 @@
 
 /* Bitmap field of physical pages. Length is number of physical pages
    rounded up to a word boundary */
-static bitmap_t *pagepool_free_pages;
+static bitmap_t *physmem_free_pages;
 
 /* Number of physical pages */
-static int pagepool_num_pages;
+static int physmem_num_pages;
 
 /* Number of free physical pages */
-static int pagepool_num_free_pages;
+static int physmem_num_free_pages;
 
 /* Number of last staticly reserved page. This is needed to ensure
    that staticly reserved pages are not freed in accident (or in
    purpose).  */
-static int pagepool_static_end;
+static int physmem_static_end;
 
-/* Spinlock to handle synchronous access to pagepool_free_pages */
-static spinlock_t pagepool_slock;
+/* Spinlock to handle synchronous access to physmem_free_pages */
+static spinlock_t physmem_slock;
 
 /**
  * Returns the number of memory pages present in the system. Causes
@@ -94,7 +94,7 @@ int physmem_get_reserved_size()
 /**
  * Physical memory initialization. Finds out number of physical pages and
  * number of staticly reserved physical pages. Marks reserved pages
- * reserved in pagepool_free_pages.
+ * reserved in physmem_free_pages.
  */
 void physmem_init(void *bootinfo)
 {
@@ -104,26 +104,26 @@ void physmem_init(void *bootinfo)
   /* We dont use this */
   bootinfo = bootinfo;
 
-  pagepool_num_pages = physmem_get_size();
+  physmem_num_pages = physmem_get_size();
 
-  pagepool_free_pages =
-    (uint32_t *)stalloc(bitmap_sizeof(pagepool_num_pages));
-  bitmap_init(pagepool_free_pages, pagepool_num_pages);
+  physmem_free_pages =
+    (uint32_t *)stalloc(bitmap_sizeof(physmem_num_pages));
+  bitmap_init(physmem_free_pages, physmem_num_pages);
 
   /* Note that number of reserved pages must be get after we have
      (staticly) reserved memory for bitmap. */
   num_res_pages = physmem_get_reserved_size();
-  pagepool_num_free_pages = pagepool_num_pages - num_res_pages;
-  pagepool_static_end = num_res_pages;
+  physmem_num_free_pages = physmem_num_pages - num_res_pages;
+  physmem_static_end = num_res_pages;
 
   for (i = 0; i < num_res_pages; i++)
-    bitmap_set(pagepool_free_pages, i, 1);
+    bitmap_set(physmem_free_pages, i, 1);
 
-  spinlock_reset(&pagepool_slock);
+  spinlock_reset(&physmem_slock);
 
-  kprintf("Pagepool: Found %d pages of size %d\n", pagepool_num_pages,
+  kprintf("Physmem: Found %d pages of size %d\n", physmem_num_pages,
           PAGE_SIZE);
-  kprintf("Pagepool: Static allocation for kernel: %d pages\n",
+  kprintf("Physmem: Static allocation for kernel: %d pages\n",
           num_res_pages);
 }
 
@@ -139,20 +139,20 @@ physaddr_t physmem_allocblock(void)
   int i;
 
   intr_status = _interrupt_disable();
-  spinlock_acquire(&pagepool_slock);
+  spinlock_acquire(&physmem_slock);
 
-  if (pagepool_num_free_pages > 0) {
-    i = bitmap_findnset(pagepool_free_pages,pagepool_num_pages);
-    pagepool_num_free_pages--;
+  if (physmem_num_free_pages > 0) {
+    i = bitmap_findnset(physmem_free_pages,physmem_num_pages);
+    physmem_num_free_pages--;
 
-    /* There should have been a free page. Check that the pagepool
+    /* There should have been a free page. Check that the physmem
        internal variables are in synch. */
-    KERNEL_ASSERT(i >= 0 && pagepool_num_free_pages >= 0);
+    KERNEL_ASSERT(i >= 0 && physmem_num_free_pages >= 0);
   } else {
     i = 0;
   }
 
-  spinlock_release(&pagepool_slock);
+  spinlock_release(&physmem_slock);
   _interrupt_set_state(intr_status);
   return i*PAGE_SIZE;
 }
@@ -172,18 +172,18 @@ void physmem_freeblock(void *Ptr)
   i = phys_addr / PAGE_SIZE;
 
   /* A page allocated by stalloc should not be freed. */
-  KERNEL_ASSERT(i >= pagepool_static_end);
+  KERNEL_ASSERT(i >= physmem_static_end);
 
   intr_status = _interrupt_disable();
-  spinlock_acquire(&pagepool_slock);
+  spinlock_acquire(&physmem_slock);
 
   /* Check that the page was reserved. */
-  KERNEL_ASSERT(bitmap_get(pagepool_free_pages, i) == 1);
+  KERNEL_ASSERT(bitmap_get(physmem_free_pages, i) == 1);
 
-  bitmap_set(pagepool_free_pages, i, 0);
-  pagepool_num_free_pages++;
+  bitmap_set(physmem_free_pages, i, 0);
+  physmem_num_free_pages++;
 
-  spinlock_release(&pagepool_slock);
+  spinlock_release(&physmem_slock);
   _interrupt_set_state(intr_status);
 }
 
