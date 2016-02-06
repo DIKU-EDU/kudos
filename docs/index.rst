@@ -22,11 +22,11 @@ variety of synchronization primitives. It also includes skeleton code for
 userland program support, partial support for a virtual memory subsystem, a
 trivial filesystem, and generic drivers for textual input and output.
 
-Currently, ``kudos`` can run on top of a ``YAMS``, yet another MIPS simulator
-originally developed alongside ``BUENOS``, or on an x86-64 simulator or
-machine, although we won't explore this latter aspect of ``kudos`` here. All
-that you need to know, is that ``kudos`` is, at least in principle, a
-cross-platform operating system.
+Currently, ``kudos`` can run on top of ``YAMS``, Yet Another MIPS Simulator,
+originally developed alongside ``BUENOS``, or on an x86-64 simulator like QEMU,
+although we won't explore this latter aspect of ``kudos`` here. All that you
+need to know, is that ``kudos`` is, at least in principle, a cross-platform
+operating system.
 
 With ``YAMS``, many simplifications have been made to the hardware where the
 need for clarity has been greater than the need for realism. The ``YAMS``
