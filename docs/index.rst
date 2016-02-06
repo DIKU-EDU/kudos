@@ -161,9 +161,9 @@ References
 
 .. [KR] Brian Kernighan and Dennis Ritchie. *The C Programming Language*, 2nd Edition. Prentice-Hall, 1988.
 
-.. [ModernC]  Jens Gustedt. *Modern C*. Unpublished, 2015. Available for free from `http://icube-icps.unistra.fr/index.php/File:ModernC.pdf`_.
+.. [ModernC]  Jens Gustedt. *Modern C*. Unpublished, 2015. Available for free from http://icube-icps.unistra.fr/index.php/File:ModernC.pdf.
 
-.. [OSTEP] Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau. *Operating Systems: Three Easy Pieces*. Arpaci-Dusseau Books, 2015.Available for free from `http://pages.cs.wisc.edu/~remzi/OSTEP/`_.
+.. [OSTEP] Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau. *Operating Systems: Three Easy Pieces*. Arpaci-Dusseau Books, 2015.Available for free from http://pages.cs.wisc.edu/~remzi/OSTEP/.
 
 .. [Stallings] William Stallings. *Operating Systems: Internals and Design Principles*, 4th edition. Prentice-Hall, 2001.
 
