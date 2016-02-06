@@ -1,7 +1,7 @@
 Introduction
 ============
 
-.. |kudos| replace:: ``kudos``
+.. |kudos| replace:: ``KUDOS``
 .. |buenos| replace:: ``BUENOS``
 .. |yams| replace:: ``YAMS``
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# kudos documentation build configuration file, created by
+# KUDOS documentation build configuration file, created by
 # sphinx-quickstart on Thu Feb  4 17:20:27 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -55,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'kudos'
+project = 'KUDOS'
 copyright = '2016, DIKU'
 author = 'DIKU'
 
@@ -213,7 +213,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'kudosdoc'
+htmlhelp_basename = 'KUDOSdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -235,7 +235,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'kudos.tex', 'kudos Documentation',
+    (master_doc, 'KUDOS.tex', 'KUDOS Documentation',
      'DIKU', 'manual'),
 ]
 
@@ -265,7 +265,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'kudos', 'kudos Documentation',
+    (master_doc, 'KUDOS', 'KUDOS Documentation',
      [author], 1)
 ]
 
@@ -279,8 +279,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'kudos', 'kudos Documentation',
-     author, 'kudos', 'One line description of project.',
+    (master_doc, 'KUDOS', 'KUDOS Documentation',
+     author, 'KUDOS', 'One line description of project.',
      'Miscellaneous'),
 ]
 
