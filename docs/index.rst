@@ -8,8 +8,10 @@ concepts. It is intended for:
 2. to serve as a baseline for open-ended student projects.
 
 The ``kudos`` operating system is heavily based upon the ``BUENOS`` operating
-system, and this documentation is heavily based upon the so-called "``BUENOS``
-Roadmap". ``BUENOS`` was originally developed at `Aalto University
+system, and this documentation is heavily based upon the accompanying
+"``BUENOS`` Roadmap".
+
+``BUENOS`` was originally developed at `Aalto University
 <https://www.niksula.hut.fi/>`_, Finland.  ``kudos`` is a continuation of the
 ``BUENOS`` effort at the `Department of Computer Science at the University of
 Copenhagen (DIKU) <http://www.diku.dk/>`_, Denmark. For more information about
