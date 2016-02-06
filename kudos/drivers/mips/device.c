@@ -71,7 +71,7 @@ void device_init(void)
                 "0x%3.3x at 0x%8.8x\n",
                 descriptor->type, descriptor->io_area_base);
       } else {
-        if (descriptor->irq != 0xffffffff)  
+        if (descriptor->irq != 0xffffffff)
           kprintf("Device: Type 0x%3.3x at 0x%8.8x irq 0x%x "
                   "driver '%s'\n",
                   descriptor->type, descriptor->io_area_base,
@@ -81,7 +81,7 @@ void device_init(void)
                   "driver '%s'\n",
                   descriptor->type, descriptor->io_area_base,
                   driver->name);
-                
+
         device_table[number_of_devices]=driver->initfunc(descriptor);
         if (device_table[number_of_devices] != NULL) {
           number_of_devices++;
