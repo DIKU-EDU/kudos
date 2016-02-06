@@ -22,14 +22,20 @@ variety of synchronization primitives. It also includes skeleton code for
 userland program support, partial support for a virtual memory subsystem, a
 trivial filesystem, and generic drivers for textual input and output.
 
-Many simplifications have been made to the hardware where the need for clarity
-has been greater than the need for realism. The ``YAMS`` virtual machine does
-not simulate caches, for example, but provides an otherwise fully realistic
-memory model.
+Currently, ``kudos`` can run on top of a ``YAMS``, yet another MIPS simulator
+originally developed alongside ``BUENOS``, or on an x86-64 simulator or
+machine, although we won't explore this latter aspect of ``kudos`` here. All
+that you need to know, is that ``kudos`` is, at least in principle, a
+cross-platform operating system.
 
-The main idea of the system is to give you a real, working multiprocessor
+With ``YAMS``, many simplifications have been made to the hardware where the
+need for clarity has been greater than the need for realism. The ``YAMS``
+virtual machine does not simulate caches, for example, but provides an
+otherwise fully realistic memory model.
+
+The main idea of ``kudos`` is to give you a real, working multiprocessor
 operating system kernel which is as small and simple as possible. ``kudos``
-could be quite easily ported to a real MIPS32 hardware; only device drivers and
+could be quite easily ported to other architectures; only device drivers and
 boot code need to be modified.  A virtual machine environment is used because
 of easier development, static hardware settings and device driver simplicity,
 not because unrealistic assumptions are needed by the kernel.
