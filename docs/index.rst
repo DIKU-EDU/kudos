@@ -1,40 +1,44 @@
 Introduction
 ============
 
-``kudos`` is a skeleton operating system for exploring operating systems
+.. |kudos| replace:: ``kudos``
+.. |buenos| replace:: ``BUENOS``
+.. |yams| replace:: ``YAMS``
+
+|kudos| is a skeleton operating system for exploring operating systems
 concepts. It is intended for:
 
 1. teaching operating system concepts, and
 2. to serve as a baseline for open-ended student projects.
 
-The ``kudos`` operating system is heavily based upon the ``BUENOS`` operating
+The |kudos| operating system is heavily based upon the |buenos| operating
 system, and this documentation is heavily based upon the accompanying
-"``BUENOS`` Roadmap".
+"|buenos| Roadmap".
 
-``BUENOS`` was originally developed at `Aalto University
-<https://www.niksula.hut.fi/>`_, Finland.  ``kudos`` is a continuation of the
-``BUENOS`` effort at the `Department of Computer Science at the University of
+|buenos| was originally developed at `Aalto University
+<https://www.niksula.hut.fi/>`_, Finland.  |kudos| is a continuation of the
+|buenos| effort at the `Department of Computer Science at the University of
 Copenhagen (DIKU) <http://www.diku.dk/>`_, Denmark. For more information about
-``BUENOS`` visit the project homepage at: http://www.niksula.hut.fi/u/buenos/.
+|buenos| visit the project homepage at: http://www.niksula.hut.fi/u/buenos/.
 
-The ``kudos`` system supports multiple CPUs, provides threading and a wide
+The |kudos| system supports multiple CPUs, provides threading and a wide
 variety of synchronization primitives. It also includes skeleton code for
 userland program support, partial support for a virtual memory subsystem, a
 trivial filesystem, and generic drivers for textual input and output.
 
-Currently, ``kudos`` can run on top of ``YAMS``, Yet Another MIPS Simulator,
-originally developed alongside ``BUENOS``, or on an x86-64 simulator like QEMU,
-although we won't explore this latter aspect of ``kudos`` here. All that you
-need to know, is that ``kudos`` is, at least in principle, a cross-platform
+Currently, |kudos| can run on top of |yams|, Yet Another MIPS Simulator,
+originally developed alongside |buenos|, or on an x86-64 simulator like QEMU,
+although we won't explore this latter aspect of |kudos| here. All that you
+need to know, is that |kudos| is, at least in principle, a cross-platform
 operating system.
 
-With ``YAMS``, many simplifications have been made to the hardware where the
-need for clarity has been greater than the need for realism. The ``YAMS``
+With |yams|, many simplifications have been made to the hardware where the
+need for clarity has been greater than the need for realism. The |yams|
 virtual machine does not simulate caches, for example, but provides an
 otherwise fully realistic memory model.
 
-The main idea of ``kudos`` is to give you a real, working multiprocessor
-operating system kernel which is as small and simple as possible. ``kudos``
+The main idea of |kudos| is to give you a real, working multiprocessor
+operating system kernel which is as small and simple as possible. |kudos|
 could be quite easily ported to other architectures; only device drivers and
 boot code need to be modified.  A virtual machine environment is used because
 of easier development, static hardware settings and device driver simplicity,
@@ -42,14 +46,14 @@ not because unrealistic assumptions are needed by the kernel.
 
 If you are a student participating in an operating systems project
 course, the course staff has probably already set up a development
-environment for you. If they have not, you must acquire ``YAMS`` (see
+environment for you. If they have not, you must acquire |yams| (see
 below for details) and compile it. You also need a MIPS32 ELF cross
-compiler to compile ``kudos`` for use with ``YAMS``.
+compiler to compile |kudos| for use with |yams|.
 
 Expected Background Knowledge
 -----------------------------
 
-Since the ``kudos`` system is written using the C programming language, you
+Since the |kudos| system is written using the C programming language, you
 should be able to program in C. For an introduction to the C programming
 language, see the classical reference [KR]_, or the more modern, and perhaps
 more accessible, [ModernC]_.
@@ -75,7 +79,7 @@ How to Use This Documentation
 This documentation is designed to be used both as read-through introduction and
 as a reference guide. To get most out of this document you should probably:
 
-1. Read \autoref{sec:usage} (usage) and \autoref{sec:overview} (system
+1. Read :ref:`usage` and \autoref{sec:overview} (system
    overview) carefully.
 
 2. Skim through the whole document to get a good overview.
@@ -87,15 +91,15 @@ as a reference guide. To get most out of this document you should probably:
    improvements.
 
 .. 
-   ``kudos`` for teachers
+   |kudos| for teachers
    ----------------------
 
-   As stated above, the ``kudos`` system is meant as an assignment backbone for
+   As stated above, the |kudos| system is meant as an assignment backbone for
    operating systems project courses. This document, while primarily acting as
-   reference guide to the system, is also designed to support project courses. The
-   document is ordered so that various kernel programming issues are introduced in
-   sensible order and exercises (see also exercises_) are provided
-   for each subject area.
+   reference guide to the system, is also designed to support project courses.
+   The document is ordered so that various kernel programming issues are
+   introduced in sensible order and exercises (see also exercises_) are
+   provided for each subject area.
 
    While the system as such can be used as a base for a large variety of
    assignments, this document works best if assignments are
@@ -110,22 +114,22 @@ as a reference guide. To get most out of this document you should probably:
       \autoref{sec:userland}.
 
    3. **Virtual Memory**. The current virtual memory support
-      mechanisms in ``kudos`` are explained in \autoref{sec:vm}, which also
-   gives exercises on the subject area.
+      mechanisms in |kudos| are explained in \autoref{sec:vm}, which also
+      gives exercises on the subject area.
 
    4. **Filesystem**. Filesystem issues are covered in
       \autoref{sec:fs}.
 
-   Preparing for a ``kudos`` Course
+   Preparing for a |kudos| Course
    --------------------------------
    ********************************
 
-   To implement an operating systems project course with ``kudos``, at least the
+   To implement an operating systems project course with |kudos|, at least the
    following steps are necessary:
 
    * Provide students with a development environment with precompiled
-   ``YAMS`` and a MIPS32 ELF cross compiler. See ``YAMS`` usage guide for
-   instructions on setup of ``YAMS`` and the cross compiler environment.
+   |yams| and a MIPS32 ELF cross compiler. See |yams| usage guide for
+   instructions on setup of |yams| and the cross compiler environment.
 
    * Decide which exercises are used on the course, how many points
    they are worth and what are the deadlines.
@@ -133,9 +137,9 @@ as a reference guide. To get most out of this document you should probably:
    * Decide any other practical issues (are design reviews compulsory
    for students, how many students there are per group, etc.)
 
-   * Familiarize the staff with ``kudos`` and ``YAMS``.
+   * Familiarize the staff with |kudos| and |yams|.
 
-   * Introduce ``kudos`` to the students.
+   * Introduce |kudos| to the students.
 
 Exercises
 ---------
