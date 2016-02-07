@@ -138,6 +138,12 @@ cd "$OSM_DIR"
         # Extract and build gcc for MIPS and x86_64.
         cd "$BUILD_DIR"
         tar xf gcc-$GCC_VERSION.tar.gz
+
+	 # On Linux (and Maybe OS X), download GMP, MPFR and MPCGMP 4.2+, MPFR 2.4.0+ and MPC 0.8.0+.
+        cd "gcc-$GCC_VERSION"
+        contrib/download_prerequisites
+        cd "$BUILD_DIR"
+
         mkdir build-gcc
         cd build-gcc
         ../gcc-$GCC_VERSION/configure --with-gnu-ld --with-gnu-as \
@@ -180,7 +186,7 @@ cd "$OSM_DIR"
 +    /* Other program headers indicate an incompatible file *or* a file
 +       with extra headers.  Just ignore. */
  	}
- 
+
  	/* to the next program header */
 EOF
     cd ..
