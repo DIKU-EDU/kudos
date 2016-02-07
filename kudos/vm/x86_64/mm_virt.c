@@ -24,6 +24,10 @@
 //Page mask
 #define VMM_PAGE_MASK 0xFFFFFFFFFFFFF000
 
+//Heap
+#define MM_HEAP_LOCATION 0x10000000
+#define MM_HEAP_END 0x20000000
+
 /* Globals */
 static pml4_t *kernel_pml4;
 static uint64_t kernel_pdbr;
