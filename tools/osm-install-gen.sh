@@ -139,7 +139,8 @@ cd "$OSM_DIR"
         cd "$BUILD_DIR"
         tar xf gcc-$GCC_VERSION.tar.gz
 
-	 # On Linux (and Maybe OS X), download GMP, MPFR and MPCGMP 4.2+, MPFR 2.4.0+ and MPC 0.8.0+.
+        # On Linux (and Maybe OS X), download GMP, MPFR and MPCGMP 4.2+,
+        # MPFR 2.4.0+ and MPC 0.8.0+.
         cd "gcc-$GCC_VERSION"
         contrib/download_prerequisites
         cd "$BUILD_DIR"
