@@ -6,6 +6,7 @@
 
    introduction.rst
    usage.rst
+   device-drivers.rst
 
 .. |kudos| replace:: ``KUDOS``
 .. |buenos| replace:: ``BUENOS``
