@@ -52,7 +52,7 @@ cat > osm-install.sh <<"EOFGEN"
 #  + Ask on the Piazza forum, and upload (part of) the log file at
 #    "$HOME/osm/install_log" to e.g. <http://pastebin.com/>.
 #
-# Installation requires approximately 2 GB space, but most of it is used for
+# Installation requires approximately 3 GB space, but most of it is used for
 # temporary build files (by default in `$HOME/osm/build`) which can be removed
 # afterwards.  If something goes wrong during the installation, the easiest
 # action is probably to remove the entire $HOME/osm directory before starting
