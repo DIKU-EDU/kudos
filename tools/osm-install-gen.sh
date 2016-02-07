@@ -10,7 +10,7 @@ cat > osm-install.sh <<"EOFGEN"
 #
 # READ THIS SCRIPT BEFORE RUNNING IT!
 #
-# Installs YAMS and its dependencies.  Requires a *NIX system.
+# Installs a cross-compiler and YAMS.  Requires a *NIX system.
 #
 # This script compiles GCC (GNU C Compiler) and GNU Binutils for MIPS, which
 # takes a while, and then installs YAMS.  This approach should work on all
@@ -19,8 +19,8 @@ cat > osm-install.sh <<"EOFGEN"
 #
 # Your OS might already have cross-compilation packages for GCC and Binutils,
 # in which case you can install those instead.  If you don't want this script
-# to install GCC and Binutils for MIPS, set the INSTALL_MIPS_UTILS environment
-# variable to false, i.e. run
+# to install GCC and Binutils for MIPS and x86_64, set the INSTALL_MIPS_UTILS
+# environment variable to false, i.e. run
 #
 #   export INSTALL_MIPS_UTILS=false
 #
@@ -32,7 +32,7 @@ cat > osm-install.sh <<"EOFGEN"
 #
 #   export PATH="$HOME/osm/bin:$PATH"
 #
-# to your `~/.profile`, `~/.bash_profile` or similar.  You can then run KUdOS
+# to your `~/.profile`, `~/.bash_profile` or similar.  You can then run Kudos
 # with `yams-term` and `yams-sim` as described in the guide on Absalon.
 #
 # If you wish to install the various utilities to another directory, run
@@ -41,25 +41,8 @@ cat > osm-install.sh <<"EOFGEN"
 #
 # before running this script.
 #
-# YAMS depends on GCC and GNU Binutils, both of which have a lot of
-# dependencies.  Install those listed at
-# <http://gcc.gnu.org/install/prerequisites.html>.  You can
-# *either* download them and then install them manually, or you can use your
-# package manager to automatically install them.
-#
-# Manual download of dependencies (after the automatic download, you need to
-# manually make and install the dependencies):
-#
-#   wget ftp://ftp.mpi-sb.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/releases/gcc-5.3.0/gcc-5.3.0.tar.gz
-#   tar xf gcc-5.3.0.tar.gz
-#   cd gcc-5.3.0
-#   ./contrib/download_prerequisites
-#
-# Automatic dependencies install on Debian:
-#
-#   sudo apt-get build-dep gcc-5 binutils
-#
-# Other Linux distros have similar features.
+# GCC and GNU Binutils have several dependencies, all of which are built and
+# installed automatically by this script.
 #
 # If the install fails, and you don't know what to do, do one of these two
 # things:
@@ -140,7 +123,8 @@ cd "$OSM_DIR"
         tar xf gcc-$GCC_VERSION.tar.gz
 
         # On Linux (and Maybe OS X), download GMP, MPFR and MPCGMP 4.2+,
-        # MPFR 2.4.0+ and MPC 0.8.0+.
+        # MPFR 2.4.0+ and MPC 0.8.0+.  These will then be automatically built
+        # before gcc.
         cd "gcc-$GCC_VERSION"
         contrib/download_prerequisites
         cd "$BUILD_DIR"
