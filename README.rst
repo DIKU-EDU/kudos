@@ -1,5 +1,5 @@
-KUDOS—Københavns Universitets Didactic Operating System
-=======================================================
+KUDOS
+=====
 
 |docs|
 
