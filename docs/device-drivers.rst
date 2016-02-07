@@ -45,13 +45,13 @@ Interrupt Handlers
 ------------------
 
 All device drivers include an interrupt handler. When an interrupt occurs the
-sys- tem needs to know which interrupt handlers need to be called. This
-mechanism is implemented with an interrupt handler registration scheme. When
-the device drivers are initialized, they will register their interrupt handler
-to be called when- ever specified interrupts occur. When an interrupt occurs,
-the interrupt handling mechanism will then call all interrupt handlers which
-are registered with the occured interrupt. This means that the interrupt
-handler might be called although the device has not generated an interrupt.
+system needs to know which interrupt handlers need to be called. This mechanism
+is implemented with an interrupt handler registration scheme. When the device
+drivers are initialized, they will register their interrupt handler to be
+called whenever specified interrupts occur. When an interrupt occurs, the
+interrupt handling mechanism will then call all interrupt handlers which are
+registered with the occured interrupt. This means that the interrupt handler
+might be called although the device has not generated an interrupt.
 
 The registered interrupt handlers are kept in the table interrupt handlers
 which holds elements of type interrupt entry t. The fields of this structure
