@@ -1,4 +1,4 @@
-|kudos| Documentation
+KUDOS Documentation
 =====================
 
 .. toctree::
@@ -7,7 +7,3 @@
    introduction.rst
    usage.rst
    device-drivers.rst
-
-.. |kudos| replace:: ``KUDOS``
-.. |buenos| replace:: ``BUENOS``
-.. |yams| replace:: ``YAMS``

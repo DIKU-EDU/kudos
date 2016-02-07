@@ -1,7 +1,7 @@
 Device Drivers
 ==============
 
-Since |kudos| is a realistic operating system, it can use hardware devices to
+Since KUDOS is a realistic operating system, it can use hardware devices to
 interact with the outside world. Hardware devices include things like consoles,
 disks and network interface adapters.
 
@@ -110,16 +110,16 @@ are described in the following table:
 Device Abstraction Layers
 -------------------------
 
-The device driver interface in |kudos| contains several abstraction layers. All
+The device driver interface in KUDOS contains several abstraction layers. All
 device drivers must implement standard interface functions (initialization
 function and possibly interrupt handler) and most will also additionally
 implement functions for some generic device type. Three generic device types
-are provided in |kudos|: generic character device (``gcd``), generic block
+are provided in KUDOS: generic character device (``gcd``), generic block
 device (``gbd``) and generic network device (``gnd``). These can be thought as
 "superclasses" from which the actual device drivers are inherited.
 
 Generic character device is a device which provides uni- or bidirectional
-bytestream. The only such device preimplemented in |kudos| is the console.
+bytestream. The only such device preimplemented in KUDOS is the console.
 Generic block device is a device which provides random read/write access to
 fixed sized blocks. The only such device implemented is the disk driver. These
 interfaces could also be used to implement stream based network protocol or
@@ -134,7 +134,3 @@ typecode identifier. Device typecodes which are defined in
 for each device in the system by calling these initialization functions. This
 initialization is done by ``device_init()``, found in
 ``drivers/$ARCH/device.c``.
-
-.. |kudos| replace:: ``KUDOS``
-.. |buenos| replace:: ``BUENOS``
-.. |yams| replace:: ``YAMS``

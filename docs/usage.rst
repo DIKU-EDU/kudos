@@ -1,7 +1,4 @@
-Using |kudos|
+Using KUDOS
 =============
 .. _usage:
 
-.. |kudos| replace:: ``KUDOS``
-.. |buenos| replace:: ``BUENOS``
-.. |yams| replace:: ``YAMS``
