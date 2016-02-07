@@ -101,17 +101,17 @@ cd "$OSM_DIR"
         # Extract and build binutils for MIPS and x86_64.
         cd "$BUILD_DIR"
         tar zxvf binutils-$BINUTILS_VERSION.tar.gz
-        mkdir binutils-build
-        cd binutils-build
+        mkdir build-binutils
+        cd build-binutils
         CFLAGS='-Wno-unused-value -Wno-logical-not-parentheses' \
             ../binutils-$BINUTILS_VERSION/configure \
             --target=mips-elf --prefix="$OSM_DIR"
         make -j $NJOBS
         make install
         cd ..
-        rm -rf binutils-build
-        mkdir binutils-build
-        cd binutils-build
+        rm -rf build-binutils
+        mkdir build-binutils
+        cd build-binutils
         CFLAGS='-Wno-unused-value -Wno-logical-not-parentheses' \
             ../binutils-$BINUTILS_VERSION/configure \
             --target=x86_64-elf --prefix="$OSM_DIR"
