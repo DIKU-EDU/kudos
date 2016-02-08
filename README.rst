@@ -1,7 +1,5 @@
-|kudos|
-=======
-
-.. |kudos| replace:: ``KUDOS``
+KUDOS
+=====
 
 |docs|
 
@@ -13,7 +11,7 @@
 Important Student Notice
 ------------------------
 
-**When using |kudos| for course work, don't publicly fork this repository, or
+**When using KUDOS for course work, don't publicly fork this repository, or
 otherwise make your course work public before you have passed the course.**
 
 The policy at the University of Copenhagen is that a student that keeps their
