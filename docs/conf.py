@@ -56,7 +56,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'KUDOS'
-copyright = '2014-2016, DIKU; 2003-2012 Juha Aatrokoski, Timo Lilja, Leena Salmela, Teemu Takanen, Aleksi Virtanen'
+copyright = u'2014-2016 DIKU.  Based on Buenos © Copyright 2003-2012 Juha Aatrokoski, Timo Lilja, Leena Salmela, Teemu Takanen, Aleksi Virtanen'
 author = 'DIKU'
 
 # The version info for the project you're documenting, acts as replacement for
