@@ -41,8 +41,26 @@ cat > osm-install.sh <<"EOFGEN"
 #
 # before running this script.
 #
-# GCC and GNU Binutils have several dependencies, all of which are built and
-# installed automatically by this script.
+# GCC and GNU Binutils have several dependencies, all of which *should be* built
+# and installed automatically by this script.  However, this might not work, in
+# which case you need to install these dependencies manually.  Install those
+# listed at <http://gcc.gnu.org/install/prerequisites.html>.  You can
+# *either* download them and then install them manually, or you can use your
+# package manager to automatically install them.
+#
+# Manual download of dependencies (after the automatic download, you need to
+# manually make and install the dependencies):
+#
+#   wget ftp://ftp.mpi-sb.mpg.de/pub/gnu/mirror/gcc.gnu.org/pub/gcc/releases/gcc-5.3.0/gcc-5.3.0.tar.gz
+#   tar xf gcc-5.3.0.tar.gz
+#   cd gcc-5.3.0
+#   ./contrib/download_prerequisites
+#
+# Automatic dependencies install on Debian and Ubuntu:
+#
+#   sudo apt-get build-dep gcc-5 binutils
+#
+# Other Linux distros have similar features.
 #
 # If the install fails, and you don't know what to do, do one of these two
 # things:
@@ -122,11 +140,11 @@ cd "$OSM_DIR"
         cd "$BUILD_DIR"
         tar xf gcc-$GCC_VERSION.tar.gz
 
-        # On Linux (and Maybe OS X), download GMP, MPFR and MPCGMP 4.2+,
-        # MPFR 2.4.0+ and MPC 0.8.0+.  These will then be automatically built
+        # On Linux (and Maybe OS X), download GMP 4.3+, MPCGMP 4.2+,
+        # MPFR 2.4.0+, and MPC 0.8.0+.  These will then be automatically built
         # before gcc.
         cd "gcc-$GCC_VERSION"
-        contrib/download_prerequisites
+        ./contrib/download_prerequisites
         cd "$BUILD_DIR"
 
         mkdir build-gcc
@@ -134,7 +152,7 @@ cd "$OSM_DIR"
         ../gcc-$GCC_VERSION/configure --with-gnu-ld --with-gnu-as \
             --without-nls --enable-languages=c --disable-multilib \
             --disable-libssp --disable-libquadmath --target=mips-elf \
-            --prefix="$OSM_DIR"
+            --disable-shared --prefix="$OSM_DIR"
         make -j $NJOBS
         make install
         cd ..
@@ -144,7 +162,7 @@ cd "$OSM_DIR"
         ../gcc-$GCC_VERSION/configure --with-gnu-ld --with-gnu-as \
             --without-nls --enable-languages=c --disable-multilib \
             --disable-libssp --disable-libquadmath --target=x86_64-elf \
-            --prefix="$OSM_DIR"
+            --disable-shared --prefix="$OSM_DIR"
         make -j $NJOBS
         make install
     fi
