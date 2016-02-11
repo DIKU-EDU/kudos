@@ -8,7 +8,7 @@ exclusive access to system resources.  Each userland program is run in a private
 sandbox, and processes should be able to interact only through well defined
 means, i.e. system calls.
 
-The Kudos kernel is multithreaded and can use multiple CPUs.  The kernel
+The KUDOS kernel is multithreaded and can use multiple CPUs.  The kernel
 provides the threading and synchronization primitives.  Several device drivers
 for the simulated devices of Yams are also provided.  Memory handling in the
 kernel is quite primitive, as most virtual memory features are left as
@@ -23,7 +23,7 @@ more about that later.
 Directory structure
 -------------------
 
-The Kudos source code consists of modules stored in directories.  A directory
+The KUDOS source code consists of modules stored in directories.  A directory
 may contain subdirectories for architecture-specific implementations for MIPS
 and x86-64.  The directories and their contents are as follows:
 
@@ -31,13 +31,13 @@ and x86-64.  The directories and their contents are as follows:
 ~~~~~~~~~~~~~~~
 
 Kernel initialization and entry point.  This directory contains the functions
-that Kudos will execute first when it is booted.
+that KUDOS will execute first when it is booted.
 
 ``kudos/kernel/``
 ~~~~~~~~~~~~~~~~~
 
 Thread handling, context switching, scheduling and synchronization.  Also
-various core functions used in the Kudos kernel reside here (e.g. ``panic`` and
+various core functions used in the KUDOS kernel reside here (e.g. ``panic`` and
 ``kmalloc``).
 
 ``kudos/proc``
@@ -70,12 +70,12 @@ Miscellaneous library code (e.g. string handling and random number generation).
 ``kudos/util``
 ~~~~~~~~~~~~~~
 
-UNIX utilities for Kudos usage (e.g. ``tfstool`` used for writing the Trivial
+UNIX utilities for KUDOS usage (e.g. ``tfstool`` used for writing the Trivial
 Filesystem disk files).
 
 ``userland``
 ~~~~~~~~~~~~
 
 Userland programs.  These are not part of the kernel.  They can be used to test
-the userland implementation of Kudos by saving them to a Trivial Filesystem disk
-file and booting Kudos with that.
+the userland implementation of KUDOS by saving them to a Trivial Filesystem disk
+file and booting KUDOS with that.

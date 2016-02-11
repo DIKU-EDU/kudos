@@ -2,17 +2,17 @@ Using KUDOS
 ===========
 .. _usage:
 
-The Kudos system requires the following software to run:
+The KUDOS system requires the following software to run:
 
 * The Yams machine simulator
 * GNU Binutils for the ``mips-elf`` target
 * GNU GCC cross-compiler for the ``mips-elf`` target
 * GNU Make
 
-Note that Kudos also has an ``x86-64`` target.  However, this document will not
+Note that KUDOS also has an ``x86-64`` target.  However, this document will not
 focus on that, as only the MIPS target works with Yams.
 
-For the DIKU Operating Systems course, please use the handed out Kudos and
+For the DIKU Operating Systems course, please use the handed out KUDOS and
 Yams versions.
 
 
@@ -20,7 +20,7 @@ Compiling the kernel
 --------------------
 
 You can compile the skeleton system by running ``make`` in the ``kudos/``
-subdirectory of Kudos.
+subdirectory of KUDOS.
 
 After compiling the system, you should have a binary named ``kudos-mips`` in
 that directory.  This is your entire operating system in one file!
@@ -30,10 +30,10 @@ Compiling the userland programs
 -------------------------------
 
 Userland programs are compiled using the same cross-compiler used for compiling
-Kudos.  To run compiled programs, they need to be copied to a virtual disk,
-where Kudos can then find them.
+KUDOS.  To run compiled programs, they need to be copied to a virtual disk,
+where KUDOS can then find them.
 
-To compile userland binaries go to the ``userland/`` subdirectory of Kudos and
+To compile userland binaries go to the ``userland/`` subdirectory of KUDOS and
 run ``make``.
 
 If you wish to add your own userland binaries to the Makefile, add your source
@@ -43,11 +43,11 @@ files to the ``SOURCES`` variable at the beginning of the Makefile.
 Writing to the virtual disk
 ---------------------------
 
-Kudos has a The Trivial Filesystem (TFS) implementation and a tool ``tfstool``
-to copy binaries from host filesystem to Kudos filesystem.  To get a summary of
+KUDOS has a The Trivial Filesystem (TFS) implementation and a tool ``tfstool``
+to copy binaries from host filesystem to KUDOS filesystem.  To get a summary of
 the arguments that ``tfstool`` accepts, you can run it without any arguments.
 
-Kudos also ships with a tool ``yams-tfs``, which automatically builds all
+KUDOS also ships with a tool ``yams-tfs``, which automatically builds all
 userland programs *and* writes them all to a Yams disk.  You can use
 ``yams-files`` to list the currently stored files.
 
@@ -61,7 +61,7 @@ To boot our MIPS system with Yams, we need two terminal windows: one for
 diagnostics, and one for operating system input/output.
 
 Yams' base tools are named ``yamst`` (for the input/output) and ``yams`` (for
-the diagnostics), but usually it's easier to use Kudos' Yams tools:
+the diagnostics), but usually it's easier to use KUDOS' Yams tools:
 
 * ``yams-term``: Setup a OS input/output window, and wait for directions from
   the other window (communication goes through a POSIX socket).
@@ -79,7 +79,7 @@ of the form ``key=value``, which can be read in the kernel by calling
 
 * ``initprog``: the name of the file in the Yams disk that the kernel starts at
   the first thread.
-* ``randomseed``: the initial seed for Kudos' random number generator.
+* ``randomseed``: the initial seed for KUDOS' random number generator.
 
 You implicitly define your own bootargs by using ``bootargs_get`` somewhere in
 kernel code.
@@ -93,9 +93,9 @@ Example: Compile and run ``halt``
 ---------------------------------
 
 In this subsection, we will go through the compilation and running of the
-``halt`` userland program handed out together with Kudos.
+``halt`` userland program handed out together with KUDOS.
 
-Once you have a version of Kudos extracted on your system, build the kernel and
+Once you have a version of KUDOS extracted on your system, build the kernel and
 the userland programs::
 
     make -C kudos
@@ -114,8 +114,8 @@ Let that wait, and open a new terminal window.  In that, run::
     yams-sim kudos/kudos-mips initprog=[disk]halt.mips
   
 This should finish without a hitch and print a lot of diagnostics, while the
-``yams-term`` terminal window should print both Kudos boot messages and
-Kudos halt messages (since it's running a program compiled from
+``yams-term`` terminal window should print both KUDOS boot messages and
+KUDOS halt messages (since it's running a program compiled from
 `userland/halt.c`, which calls the HALT syscall).  Instead of writing that long
 `yams-sim` line, you can just write::
 
@@ -123,7 +123,7 @@ Kudos halt messages (since it's running a program compiled from
 
 which should do the same, except not print as much filler text.
 
-Run ``yams-files`` to list the files currently stored in the Kudos TFS disk.  It
+Run ``yams-files`` to list the files currently stored in the KUDOS TFS disk.  It
 should at least give you this::
 
     [disk]halt.mips

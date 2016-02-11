@@ -2,7 +2,7 @@ Kernel overview
 ===============
 .. _kernel-overview:
 
-Although aiming for simplicity, the Kudos kernel is still quite a complicated
+Although aiming for simplicity, the KUDOS kernel is still quite a complicated
 piece of software.
 
 To understand how the kernel is built, we must first understand what it actually
@@ -32,8 +32,8 @@ Threading
 
 Now we have seen an overview of various kernel services, but we still don't have
 anything which can call these service functions.  The core of any kernel,
-including Kudos, is its threading and context switching functionality.
-Threading is provided by a special threading library in Kudos.  The threading
+including KUDOS, is its threading and context switching functionality.
+Threading is provided by a special threading library in KUDOS.  The threading
 system makes it possible to execute threads in separate instances of program
 execution.  Each thread runs independently of each other, alternating their
 turns on the CPU(s).  The context switching system is used to switch one thread
@@ -61,7 +61,7 @@ with various synchronization mechanisms.
 Virtual Memory
 --------------
 
-The virtual memory subsystem in Kudos affects the whole kernel, interacts with
+The virtual memory subsystem in KUDOS affects the whole kernel, interacts with
 hardware and also with the userland.
 
 The VM subsystem is responsible for all memory handling operations in the
@@ -72,9 +72,9 @@ directly with all system components.
 
 .. figure:: kudos-memory.png
 
-   The Kudos memory structure.
+   The KUDOS memory structure.
 
-The physical memory usage in Kudos for its MIPS target can be seen in the
+The physical memory usage in KUDOS for its MIPS target can be seen in the
 picture above.  At the left side of the figure, memory addresses can be seen.
 At the bottom is the beginning of the system main memory (address zero) and at
 the top the end of the physical memory.
@@ -97,7 +97,7 @@ page for each process.
 Support for Multiple Processors
 -------------------------------
 
-Kudos is a multiprocessor operating system, with pre-emptive
+KUDOS is a multiprocessor operating system, with pre-emptive
 kernel threading. All kernel functions are thread-safe (re-entrant)
 except for those that are used only during the bootup process.
 
@@ -129,12 +129,12 @@ which Yams emulates, the memory is divided into segments.  Kernel code can
 access all these segments, while user programs can only access the first segment
 called the *user mapped segment*.  In this segment the first bit of the address
 is 0.  If the first bit is 1, the address belongs to one of the kernel segments
-and is not usable in userland.  The most important kernel segment in Kudos is
+and is not usable in userland.  The most important kernel segment in KUDOS is
 the *kernel unmapped segment*, where addresses start with the bit sequence 100.
 These addresses point to physical memory locations.  In the kernel, most
 addresses are like this.
 
-For initializing the system, Kudos provides a function ``kmalloc`` (for "kernel
+For initializing the system, KUDOS provides a function ``kmalloc`` (for "kernel
 malloc") to allocate memory in arbitrary-size chunks.  This memory is
 permanently allocated and cannot be freed.  Before initializing the virtual
 memory system, ``kmalloc`` is used to allocate memory.  After the initialization
@@ -153,7 +153,7 @@ one provides us with a valid stack.  Every kernel thread must have its own
 stack.  In addition, every CPU must have an interrupt stack because thread
 stacks cannot be easily used for interrupt processing.  If a kernel thread is
 associated with a user process, the user process must also have its own stack.
-Kudos already sets up kernel stacks and interrupt stacks appropriately.
+KUDOS already sets up kernel stacks and interrupt stacks appropriately.
 
 Because the kernel and interrupt stacks are statically allocated, their size is
 limited. This means that large structures and tables cannot be allocated on the
@@ -196,7 +196,7 @@ never be held for a long time.
 Floating point numbers
 ----------------------
 
-Yams does not support floating point numbers, so they cannot be used with Kudos'
+Yams does not support floating point numbers, so they cannot be used with KUDOS'
 MIPS target either.  If an attempt to execute a floating point instruction is
 made, a co-processor unusable exception will occur (since the floating point
 unit is co-processor 1 in the MIPS32 architecture.)
@@ -205,7 +205,7 @@ unit is co-processor 1 in the MIPS32 architecture.)
 Naming conventions
 ------------------
 
-Some special naming conventions have been used when programming Kudos.  These
+Some special naming conventions have been used when programming KUDOS.  These
 might help you find a function or a variable when you need it.  Functions are
 generally named as ``filename_action`` -- where ``filename`` is the name of the
 file where the function resides, and ``action`` tells what the function does.
