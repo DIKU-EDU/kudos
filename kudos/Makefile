@@ -39,7 +39,7 @@
 # $Id: Makefile,v 1.36 2012/02/03 12:44:38 tlilja Exp $
 
 ## User configurable variables
-MODULES  := init kernel lib drivers proc vm fs util lib/gcc 
+MODULES  := init kernel lib drivers proc vm fs util lib/gcc
 ARCHMIPS := init/mips kernel/mips vm/mips lib/mips drivers/mips proc/mips
 ARCH64   := init/x86_64 kernel/x86_64 vm/x86_64 lib/x86_64 drivers/x86_64 proc/x86_64
 #CHANGEDFLAGS := -DCHANGED_1 -DCHANGED_2 -DCHANGED_3 -DCHANGED_4 -DCHANGED_5
