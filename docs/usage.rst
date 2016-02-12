@@ -4,16 +4,16 @@ Using KUDOS
 
 The KUDOS system requires the following software to run:
 
-* The Yams machine simulator
+* The YAMS machine simulator
 * GNU Binutils for the ``mips-elf`` target
 * GNU GCC cross-compiler for the ``mips-elf`` target
 * GNU Make
 
 Note that KUDOS also has an ``x86-64`` target.  However, this document will not
-focus on that, as only the MIPS target works with Yams.
+focus on that, as only the ``mips32`` target works with YAMS.
 
 For the DIKU Operating Systems course, please use the handed out KUDOS and
-Yams versions.
+YAMS versions.
 
 
 Compiling the kernel
@@ -48,7 +48,7 @@ to copy binaries from host filesystem to KUDOS filesystem.  To get a summary of
 the arguments that ``tfstool`` accepts, you can run it without any arguments.
 
 KUDOS also ships with a tool ``yams-tfs``, which automatically builds all
-userland programs *and* writes them all to a Yams disk.  You can use
+userland programs *and* writes them all to a YAMS disk.  You can use
 ``yams-files`` to list the currently stored files.
 
 By default, the disk is named ``store.file``.
@@ -57,11 +57,11 @@ By default, the disk is named ``store.file``.
 Booting the system
 ------------------
 
-To boot our MIPS system with Yams, we need two terminal windows: one for
+To boot our ``mips32`` system with YAMS, we need two terminal windows: one for
 diagnostics, and one for operating system input/output.
 
-Yams' base tools are named ``yamst`` (for the input/output) and ``yams`` (for
-the diagnostics), but usually it's easier to use KUDOS' Yams tools:
+YAMS' base tools are named ``yamst`` (for the input/output) and ``yams`` (for
+the diagnostics), but usually it's easier to use KUDOS' YAMS tools:
 
 * ``yams-term``: Setup a OS input/output window, and wait for directions from
   the other window (communication goes through a POSIX socket).
@@ -77,7 +77,7 @@ the path to the MIPS kernel.  The remaining arguments are so-called ``bootargs``
 of the form ``key=value``, which can be read in the kernel by calling
 ``bootargs_get(key)``.  A selection of bootargs:
 
-* ``initprog``: the name of the file in the Yams disk that the kernel starts at
+* ``initprog``: the name of the file in the YAMS disk that the kernel starts at
   the first thread.
 * ``randomseed``: the initial seed for KUDOS' random number generator.
 
@@ -105,14 +105,14 @@ Then transfer all userland programs onto the ``store.file`` virtual disk::
 
     yams-tfs
 
-Then prepare Yams for listening on boot requests::
+Then prepare YAMS for listening on boot requests::
   
     yams-term
 
 Let that wait, and open a new terminal window.  In that, run::
 
     yams-sim kudos/kudos-mips initprog=[disk]halt.mips
-  
+
 This should finish without a hitch and print a lot of diagnostics, while the
 ``yams-term`` terminal window should print both KUDOS boot messages and
 KUDOS halt messages (since it's running a program compiled from
