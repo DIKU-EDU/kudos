@@ -1,10 +1,9 @@
 # Makefile for the kernel module
 
 # Set the module name
-MODULE := init/mips
+MODULE := proc/mips32
 
-
-FILES := _boot.S main.c
+FILES := exception.c _syscall.c _proc.c
 
 MIPSSRC += $(patsubst %, $(MODULE)/%, $(FILES))
 

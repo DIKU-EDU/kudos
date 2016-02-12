@@ -1,9 +1,10 @@
 # Makefile for the kernel module
 
 # Set the module name
-MODULE := vm/mips
+MODULE := init/mips32
 
-FILES := _tlb.S mm_virt.c tlb.c mm_phys.c
+
+FILES := _boot.S main.c
 
 MIPSSRC += $(patsubst %, $(MODULE)/%, $(FILES))
 
