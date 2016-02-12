@@ -63,7 +63,7 @@ int select_cpu_for_irq();
   }
 */
 #define WRITE_REG(cpuptr, reg, value) \
-(((reg) != zero) ? ((cpuptr)->registers[(reg)] = (value)) : 0)
+(((reg) != (unsigned int)zero) ? ((cpuptr)->registers[(reg)] = (value)) : 0)
 
 #define READ_REG(cpuptr, reg) \
   ((cpuptr)->registers[(reg)])
