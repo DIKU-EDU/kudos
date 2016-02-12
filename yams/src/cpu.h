@@ -28,15 +28,15 @@
 #include "cpu_defs.h"
 
 typedef struct {
-    uint32_t instr;
-    uint8_t opcode : 6;
-    uint8_t rs : 5;
-    uint8_t rt : 5;
-    uint8_t rd : 5 ;
-    uint8_t sa : 5;
-    uint32_t instr_index : 26;
-    uint16_t immediate;
-    uint8_t function : 6;
+  uint32_t instr;
+  uint8_t opcode : 6;
+  uint8_t rs : 5;
+  uint8_t rt : 5;
+  uint8_t rd : 5 ;
+  uint8_t sa : 5;
+  uint32_t instr_index : 26;
+  uint16_t immediate;
+  uint8_t function : 6;
 } instr_t;
 
 /* Initialize the cpu_t struct */
@@ -58,39 +58,39 @@ int select_cpu_for_irq();
 
 /*
 #define WRITE_REG(cpuptr, reg, value) \
-    {if ((reg) != zero) \
-       (cpuptr)->registers[(reg)] = (value); \
-    }
-*/ 
+  {if ((reg) != zero) \
+     (cpuptr)->registers[(reg)] = (value); \
+  }
+*/
 #define WRITE_REG(cpuptr, reg, value) \
 (((reg) != zero) ? ((cpuptr)->registers[(reg)] = (value)) : 0)
 
 #define READ_REG(cpuptr, reg) \
-    ((cpuptr)->registers[(reg)])
+  ((cpuptr)->registers[(reg)])
 
 /* Unsigned sign extension */
 #define U_SIGN_EXTEND_8(value8bit) \
-    ((uint32_t) ((int32_t) ((int8_t) (value8bit))))
+  ((uint32_t) ((int32_t) ((int8_t) (value8bit))))
 
 #define U_SIGN_EXTEND_16(value16bit) \
-    ((uint32_t) ((int32_t) ((int16_t) (value16bit))))
+  ((uint32_t) ((int32_t) ((int16_t) (value16bit))))
 
 /* Signed sign extension */
 #define I_SIGN_EXTEND_8(value8bit) \
-    ((int32_t) ((int8_t) (value8bit)))
+  ((int32_t) ((int8_t) (value8bit)))
 
 #define I_SIGN_EXTEND_16(value16bit) \
-    ((int32_t) ((int16_t) (value16bit)))
+  ((int32_t) ((int16_t) (value16bit)))
 
 #define RAISE_INTERRUPT(cpu, int_nro) {\
-        hardware->cpus[cpu]->cp0->registers[Cause] = \
-	hardware->cpus[cpu]->cp0->registers[Cause] | \
-	(((uint32_t) 1) << ((int_nro)+8));}
+    hardware->cpus[cpu]->cp0->registers[Cause] = \
+  hardware->cpus[cpu]->cp0->registers[Cause] | \
+  (((uint32_t) 1) << ((int_nro)+8));}
 
 #define RAISE_HW_INTERRUPT(cpu, int_nro) {\
-        hardware->cpus[cpu]->cp0->registers[Cause] = \
-	hardware->cpus[cpu]->cp0->registers[Cause] | \
-	(((uint32_t) 1) << ((int_nro)+8+2));}
+    hardware->cpus[cpu]->cp0->registers[Cause] = \
+  hardware->cpus[cpu]->cp0->registers[Cause] | \
+  (((uint32_t) 1) << ((int_nro)+8+2));}
 
 
 /* Memory access types for TLB translation */
