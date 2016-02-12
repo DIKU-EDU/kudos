@@ -23,7 +23,7 @@ You can compile the skeleton system by running ``make`` in the ``kudos/``
 subdirectory of KUDOS.
 
 After compiling the system, you should have a binary named ``kudos-mips32`` in
-that directory.  This is your entire operating system in one file!
+that directory.  This is your entire operating system, in one file!
 
 
 Compiling the userland programs
@@ -33,7 +33,7 @@ Userland programs are compiled using the same cross-compiler used for compiling
 KUDOS.  To run compiled programs, they need to be copied to a virtual disk,
 where KUDOS can then find them.
 
-To compile userland binaries go to the ``userland/`` subdirectory of KUDOS and
+To compile userland binaries, go to the ``userland/`` subdirectory of KUDOS and
 run ``make``.
 
 If you wish to add your own userland binaries to the Makefile, add your source
