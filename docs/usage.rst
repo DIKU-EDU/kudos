@@ -102,15 +102,15 @@ the userland programs::
 
 Then transfer all userland programs onto the ``store.file`` virtual disk::
 
-    ~/kudos$ yams-tfs
+    ~/kudos$ tools/yams-tfs
 
 Then prepare YAMS for listening on boot requests::
   
-    ~/kudos$ yams-term
+    ~/kudos$ tools/yams-term
 
 Let that wait, and open a new terminal window.  In that, run::
 
-    ~/kudos$ yams-sim kudos/kudos-mips32 initprog=[disk]halt.mips32
+    ~/kudos$ tools/yams-sim kudos/kudos-mips32 initprog=[disk]halt.mips32
 
 This should finish without a hitch and print a lot of diagnostics, while the
 ``yams-term`` terminal window should print both KUDOS boot messages and KUDOS
@@ -118,14 +118,22 @@ halt messages (since it's running a program compiled from ``userland/halt.c``,
 which calls ``syscall_halt``).  Instead of writing that long ``yams-sim`` line,
 you can just write::
 
-    ~/kudos$ yams-init halt.mips32
+    ~/kudos$ tools/yams-init halt.mips32
 
 which should do the same, except not print as much filler text.
 
-Run ``yams-files`` to list the files currently stored in the KUDOS TFS disk.  It
-should at least give you this::
+Run ``tools/yams-files`` to list the files currently stored in the KUDOS TFS
+disk.  It should at least give you this::
 
     [disk]halt.mips32
     [disk]halt.x86_64
 
 where ``[disk]`` is the volume name.
+
+.. tip:: You can add ``~/kudos/tools/`` to your ``PATH``, and avoid having to
+         type the ``tools/`` prefix every time. This is already done in the
+         handed out VirtualBox image. On your own machine you can do this by
+         adding the following line to your ``~/.bash_profile``::
+
+              PATH=$HOME/kudos/tools/:$PATH
+          
