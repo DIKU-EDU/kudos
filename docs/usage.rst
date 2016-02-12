@@ -22,7 +22,7 @@ Compiling the kernel
 You can compile the skeleton system by running ``make`` in the ``kudos/``
 subdirectory of KUDOS.
 
-After compiling the system, you should have a binary named ``kudos-mips`` in
+After compiling the system, you should have a binary named ``kudos-mips32`` in
 that directory.  This is your entire operating system in one file!
 
 
@@ -85,7 +85,7 @@ You implicitly define your own bootargs by using ``bootargs_get`` somewhere in
 kernel code.
 
 ``yams-init`` takes one argument: the name of your init program.  Meaning,
-``yams-init program.mips`` calls ``yams-sim kudos/kudos-mips
+``yams-init program.mips`` calls ``yams-sim kudos/kudos-mips32
 initprog=[disk]program.mips``.
 
 
@@ -111,7 +111,7 @@ Then prepare YAMS for listening on boot requests::
 
 Let that wait, and open a new terminal window.  In that, run::
 
-    yams-sim kudos/kudos-mips initprog=[disk]halt.mips
+    yams-sim kudos/kudos-mips32 initprog=[disk]halt.mips
 
 This should finish without a hitch and print a lot of diagnostics, while the
 ``yams-term`` terminal window should print both KUDOS boot messages and
