@@ -124,9 +124,8 @@ DEPS := $(patsubst %.c,%.d,$(filter %.c,$(SRC))) \
 %.d: %.S
 	CC=$(CC) ./depend.sh `dirname $*` $(CFLAGS) $< >$@
 
-doc: $(SRC)
-	doc++ -t -o doc/code/buenos.tex ${SRC}
-	doc++ -t -s -o doc/code/buenos-src.tex ${SRC}
+docs: $(SRC)
+	make -C ../docs html
 
 # TAGS
 ctags:
