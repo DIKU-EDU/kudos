@@ -1,6 +1,8 @@
 /* -*- fundamental -*- (for emacs) */
 
 %option noyywrap
+%option noinput
+%option nounput
 %{
 
 #include <math.h>
