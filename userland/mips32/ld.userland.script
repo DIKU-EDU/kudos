@@ -1,0 +1,12 @@
+ENTRY(_start)
+OUTPUT_FORMAT("elf32-bigmips")
+
+SECTIONS
+{
+    . = 0x0001000;
+    /* Group into two segments, RO and RW. See proc/elf.h for notes. */
+    ro_segment  ALIGN(0x1000): { *(.text .rodata .rodata.*) }
+    rw_segment  ALIGN(0x1000): { *(.data .bss COMMON) }
+
+    BINARY_ENDS_HERE = .;
+}

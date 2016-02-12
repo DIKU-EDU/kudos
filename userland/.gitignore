@@ -1,4 +1,4 @@
-*.mips
+*.mips32
 *.x86_64
 *.map
-*.x64map
+*.o
