@@ -202,7 +202,7 @@ cp0_t *cp0_create(int cpu_id) {
 exception_t tlb_translate(cpu_t *cpu, uint32_t va, uint32_t *pa, int reftype) {
   int i;
 
-  int v, c, d;
+  int v, d;
   uint32_t pfn;
 
   cp0_t *cp0 = cpu->cp0;
@@ -215,12 +215,10 @@ exception_t tlb_translate(cpu_t *cpu, uint32_t va, uint32_t *pa, int reftype) {
       if((va & 0x00001000) == 0) {
         pfn = TLB_PFN0(cp0, i);
         v   = TLB_V0(cp0, i);
-        c   = TLB_C0(cp0, i);
         d   = TLB_D0(cp0, i);
       } else {
         pfn = TLB_PFN1(cp0, i);
         v   = TLB_V1(cp0, i);
-        c   = TLB_C1(cp0, i);
         d   = TLB_D1(cp0, i);
       }
 
