@@ -124,9 +124,6 @@ DEPS := $(patsubst %.c,%.d,$(filter %.c,$(SRC))) \
 %.d: %.S
 	CC=$(CC) ./depend.sh `dirname $*` $(CFLAGS) $< >$@
 
-docs: $(SRC)
-	make -C ../docs html
-
 # TAGS
 ctags:
 	find . -type f -name '*.[ch]' | xargs ctags
