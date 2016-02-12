@@ -44,7 +44,11 @@ SRC     :=
 MIPSSRC :=
 X64SRC  :=
 
-all: $(TARGET_MIPS32) $(TARGET_X86_64) $(UTILTARGET)
+all: mips32
+
+mips32: $(TARGET_MIPS32) $(UTILTARGET)
+
+x86_64: $(TARGET_X86_64) $(UTILTARGET)
 
 install: $(TARGET64)
 	mount /dev/sda6
