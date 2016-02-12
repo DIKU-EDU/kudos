@@ -60,14 +60,14 @@ include $(patsubst %, %/module.mk, $(ARCHMIPS))
 include $(patsubst %, %/module.mk, $(ARCH64))
 
 # determine the object files
-MIPSOBJS :=  $(patsubst %.s,%.mips32.o,$(filter %.s,$(SRC))) \
+MIPS32OBJS :=  $(patsubst %.s,%.mips32.o,$(filter %.s,$(SRC))) \
 	 $(patsubst %.S,%.mips32.o,$(filter %.S,$(SRC))) \
          $(patsubst %.c,%.mips32.o,$(filter %.c,$(SRC))) \
          $(patsubst %.s,%.mips32.o,$(filter %.s,$(MIPSSRC))) \
 	 $(patsubst %.S,%.mips32.o,$(filter %.S,$(MIPSSRC))) \
          $(patsubst %.c,%.mips32.o,$(filter %.c,$(MIPSSRC)))
 
-X64OBJS := $(patsubst %.s,%.x86_64.o,$(filter %.s,$(X64SRC))) \
+X86_64OBJS := $(patsubst %.s,%.x86_64.o,$(filter %.s,$(X64SRC))) \
 	$(patsubst %.S,%.x86_64.o,$(filter %.S,$(X64SRC))) \
         $(patsubst %.c,%.x86_64.o,$(filter %.c,$(X64SRC))) \
 	$(patsubst %.s,%.x86_64.o,$(filter %.s,$(SRC))) \
@@ -78,7 +78,7 @@ X64OBJS := $(patsubst %.s,%.x86_64.o,$(filter %.s,$(X64SRC))) \
 
 # For some reason the order of the object file matters; the startup
 # code (kernel/boot.o) must come before other files.
-$(TARGET_MIPS32): $(MIPSOBJS) 
+$(TARGET_MIPS32): $(MIPS32OBJS) 
 	$(LD) -o $@ $(LDFLAGS) $^
 
 # Compile rule for assembler source
@@ -92,7 +92,7 @@ $(TARGET_MIPS32): $(MIPSOBJS)
 %.mips32.o: %.c
 	$(CC) $(MIPS_INC) -o $@  $(CFLAGS) -c $<
 
-$(TARGET_X86_64): $(X64OBJS)
+$(TARGET_X86_64): $(X86_64OBJS)
 	$(LD64) -o $@ $(LDFLAGS64) $^
 
 # Compile rule for assembler source
@@ -154,7 +154,7 @@ submit-archive: $(SRC)
 	(cd ..; $(GTAR) cf - kudos | gzip >submit-$(PHASE).tar.gz)
 
 clean:	utilclean
-	rm -f $(TARGET_X86_64) $(TARGET_MIPS32) $(MIPSOBJS) $(X64OBJS) *~ */*~ kudos32.map tags TAGS
+	rm -f $(TARGET_X86_64) $(TARGET_MIPS32) $(MIPS32OBJS) $(X86_64OBJS) *~ */*~ *.map tags TAGS
 
 real-clean: clean
 	rm -f $(DEPS)
