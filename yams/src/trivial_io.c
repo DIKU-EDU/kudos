@@ -72,11 +72,9 @@ int cpuinfo_io_read(device_t *dev, uint32_t addr, uint32_t *data) {
 
 /* port 1: command port */
 int cpuinfo_io_write(device_t *dev, uint32_t addr, uint32_t data) {
-  int cpunum;
   cpuinfo_t *cpu;
 
   if (dev == NULL || dev->realdevice == NULL) return -1;
-  cpunum = dev->typecode & 0xff;
   cpu = (cpuinfo_t *) dev->realdevice;
 
   switch(addr) {
