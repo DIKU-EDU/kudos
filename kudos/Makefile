@@ -25,7 +25,7 @@ AS      := mips-elf-as
 LD      := mips-elf-ld
 
 CFLAGS  += -g -G0 -O2 -I. -Wall -W -Werror $(CHANGEDFLAGS)
-LDFLAGS := --script=ld.script --cref -G0 -Map kudos-mips32.map
+LDFLAGS := --script=ldmips32.script --cref -G0 -Map kudos-mips32.map
 ASFLAGS := -gstabs+ -I. -Wa,-mips32 $(CHANGEDFLAGS)
 
 CCX86_64	:= x86_64-elf-gcc
@@ -33,7 +33,7 @@ ASX86_64	:= x86_64-elf-as
 LDX86_64	:= x86_64-elf-ld
 
 CFLAGSX86_64  += -O2 -I. -g -fverbose-asm -Wall -Werror -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding -D SMALL_ENDIAN $(CHANGEDFLAGS)
-LDFLAGSX86_64 := --script=ld64.script -z max-page-size=0x1000 -Map kudos-x86_64.map
+LDFLAGSX86_64 := --script=ldx86_64.script -z max-page-size=0x1000 -Map kudos-x86_64.map
 ASFLAGSX86_64 := -I.
 
 # -G0 is needed to avoid GP optimization (LD won't link if it is used)
