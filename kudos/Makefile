@@ -161,7 +161,4 @@ clean:	utilclean
 real-clean: clean
 	rm -f $(DEPS)
 
-.PHONY: clean
-.PHONY: doc
 .PHONY: submit-archive kudos.tar.gz
-
