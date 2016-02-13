@@ -1,6 +1,6 @@
 /* yams  -- Yet Another Machine Simulator
    Copyright (C) 2002-2005 Juha Aatrokoski, Timo Lilja, Leena Salmela,
-     Teemu Takanen, Aleksi Virtanen
+   Teemu Takanen, Aleksi Virtanen
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -130,87 +130,87 @@ static uint32_t cpu_irq = CPU_IRQ_DEFAULT;
 
 int cfg_socketdomain(int type)
 {
-    if (type == CFG_SOCKET_UNIX)
-        return AF_UNIX;
-    else if (type == CFG_SOCKET_NET)
-        return PF_INET;
-    else {
-        printf("yams: invalid socket type\n");
-        exit(1);
-    }
+  if (type == CFG_SOCKET_UNIX)
+    return AF_UNIX;
+  else if (type == CFG_SOCKET_NET)
+    return PF_INET;
+  else {
+    printf("yams: invalid socket type\n");
+    exit(1);
+  }
 
 }
 
 char *cfg_checksocketname(char *name)
 {
-    if (strlen(name) > 0)
-        return name;
-    printf("invalid socket name: %s", name);
-    exit(1);
+  if (strlen(name) > 0)
+    return name;
+  printf("invalid socket name: %s", name);
+  exit(1);
 }
 /*
  * Simulator options handling
  */
 int cfg_simdefined()
 {
-    return clock_speed > 0 && mem_pages > 0 && num_cpus > 0;
+  return clock_speed > 0 && mem_pages > 0 && num_cpus > 0;
 }
 
 int cfg_simoptions_start(void)
 {
-    if (cfg_simdefined()) {
-        fprintf(stderr, "Simulator configuration already defined.");
-        exit(1);
-    }
+  if (cfg_simdefined()) {
+    fprintf(stderr, "Simulator configuration already defined.");
+    exit(1);
+  }
 
-    return 1;
+  return 1;
 }
 
 int cfg_simoption_clockspeed(uint32_t speed)
 {
-    clock_speed = speed;
-    return 1;
+  clock_speed = speed;
+  return 1;
 }
 
 int cfg_simoption_memory(uint32_t memory)
 {
-    mem_pages = memory;
-    return 1;
+  mem_pages = memory;
+  return 1;
 }
 
 int cfg_simoption_cpus(uint32_t cpus)
 {
-    num_cpus = cpus;
-    return 1;
+  num_cpus = cpus;
+  return 1;
 }
 
 int cfg_simoption_cpuirq(uint32_t irq)
 {
-    if (irq < 0 || irq > 5) {
-        printf("\
+  if (irq < 0 || irq > 5) {
+    printf("\
 yams: error in configuration file. Invalid IRQ line for inter-CPU \
-      interrupts.");
-        exit(1);
-    }
-    cpu_irq = irq;
-    return 1;
+    interrupts.");
+    exit(1);
+  }
+  cpu_irq = irq;
+  return 1;
 }
 
 int cfg_simoption_endianness(int bigendian) {
-    simulator_bigendian = bigendian;
-    return 1;
+  simulator_bigendian = bigendian;
+  return 1;
 }
 
 int cfg_simoptions_end(void)
 {
-    if (!cfg_simdefined()) {
-        printf("\
+  if (!cfg_simdefined()) {
+    printf("\
 yams: error in configuration file. All necessary options for\n\
-      section \"Simulator\" were NOT given.\n");
-        exit(1);
-    }
+    section \"Simulator\" were NOT given.\n");
+    exit(1);
+  }
 
-    return 1;
+  return 1;
 }
 
 cfg_device_t cfg_devices[CFG_MAX_DEVICES];
@@ -219,38 +219,38 @@ int cfg_maxdev = -1;
 
 int cfg_deviceoptions_init(void)
 {
-    if (cfg_maxdev > CFG_MAX_DEVICES) {
-        printf("\
+  if (cfg_maxdev > CFG_MAX_DEVICES) {
+    printf("\
 yams: error can't define more than %d devices.\n", CFG_MAX_DEVICES);
-        exit(1);
-    }
-    cfg_maxdev++;
-    cfg_dev_ptr = &(cfg_devices[cfg_maxdev]);
-    return 1;
+    exit(1);
+  }
+  cfg_maxdev++;
+  cfg_dev_ptr = &(cfg_devices[cfg_maxdev]);
+  return 1;
 }
 
 int cfg_diskoptions_check(void)
 {
-    /* XXX Should do sanity checking of user given arguments */
-    return 1;
+  /* XXX Should do sanity checking of user given arguments */
+  return 1;
 }
 
 int cfg_ttyoptions_check(void)
 {
-    /* XXX Should do sanity checking of user given arguments */
-    return 1;
+  /* XXX Should do sanity checking of user given arguments */
+  return 1;
 }
 
 int cfg_nicoptions_check(void)
 {
-    /* XXX Should do sanity checking of user given arguments */
-    return 1;
+  /* XXX Should do sanity checking of user given arguments */
+  return 1;
 }
 
 int cfg_plugoptions_check(void)
 {
-    /* XXX Should do sanity checking of user given arguments */
-    return 1;
+  /* XXX Should do sanity checking of user given arguments */
+  return 1;
 }
 
 
@@ -261,161 +261,161 @@ extern FILE *cfg_in;
 
 int cfg_read(char *cfg_file)
 {
-    FILE *fp;
-    int i;
+  FILE *fp;
+  int i;
 
-    if ((fp = fopen(cfg_file, "rb")) == NULL)
-        return 0;
+  if ((fp = fopen(cfg_file, "rb")) == NULL)
+    return 0;
 
-    /* zero the devices */
-    for (i=0; i<CFG_MAX_DEVICES; i++) {
-	memset(&cfg_devices[i], 0, sizeof(cfg_device_t));
-	cfg_devices[i].irq = -1; /* no irq by default */
-    }
+  /* zero the devices */
+  for (i=0; i<CFG_MAX_DEVICES; i++) {
+    memset(&cfg_devices[i], 0, sizeof(cfg_device_t));
+    cfg_devices[i].irq = -1; /* no irq by default */
+  }
 
-    printf("Reading configuration from '%s'\n", cfg_file);
-    cfg_in = fp; /* set up the lexer */
+  printf("Reading configuration from '%s'\n", cfg_file);
+  cfg_in = fp; /* set up the lexer */
 
-    cfg_parse();
-    fclose(fp);
+  cfg_parse();
+  fclose(fp);
 
-    return 1;
+  return 1;
 }
 
 
 int cfg_read_etc(void)
 {
-    /* XXX /etc Should be autoconf configurable */
-    return cfg_read("/etc/yams.conf");
+  /* XXX /etc Should be autoconf configurable */
+  return cfg_read("/etc/yams.conf");
 }
 
 int cfg_get_home_path(char *dest)
 {
-    char *ptr;
+  char *ptr;
 
-    if ((ptr = getenv("HOME")) == NULL)
-        return 0;
+  if ((ptr = getenv("HOME")) == NULL)
+    return 0;
 
-    strncpy(dest, ptr, MAX_FILENAME_LENGTH);
+  strncpy(dest, ptr, MAX_FILENAME_LENGTH);
 
-    return 1;
+  return 1;
 }
 
 int cfg_read_home(void)
 {
-    char filename[MAX_FILENAME_LENGTH];
+  char filename[MAX_FILENAME_LENGTH];
 
-    if (cfg_get_home_path(filename)) {
-        strncat(filename, "/.yams.conf", MAX_FILENAME_LENGTH);
-        return cfg_read(filename);
-    } else
-        return 0;
+  if (cfg_get_home_path(filename)) {
+    strncat(filename, "/.yams.conf", MAX_FILENAME_LENGTH);
+    return cfg_read(filename);
+  } else
+    return 0;
 }
 
 int cfg_read_cwd(void)
 {
-    char filename[MAX_FILENAME_LENGTH];
+  char filename[MAX_FILENAME_LENGTH];
 
-    getcwd(filename, MAX_FILENAME_LENGTH);
-    strncat(filename, "/yams.conf", MAX_FILENAME_LENGTH);
+  getcwd(filename, MAX_FILENAME_LENGTH);
+  strncat(filename, "/yams.conf", MAX_FILENAME_LENGTH);
 
-    return cfg_read(filename);
+  return cfg_read(filename);
 }
 
 int cfg_init(void)
 {
-    int i;
+  int i;
 
-    if (cfg_simdefined()) {
-        simulator_create(mem_pages, num_cpus, clock_speed * 1000, cpu_irq);
-    } else {
-        printf(
+  if (cfg_simdefined()) {
+    simulator_create(mem_pages, num_cpus, clock_speed * 1000, cpu_irq);
+  } else {
+    printf(
 "yams: simulator not created. (Configuration file didn't specify all\n\
-        necessary options.\n");
+    necessary options.\n");
+    exit(1);
+  }
+
+  for (i = 0; i <= cfg_maxdev; i++) {
+    device_t *dev = NULL;
+    int retval;
+
+    switch (cfg_devices[i].type) {
+    case CFG_DISK:
+      dev = disk_create();
+      if ((retval = disk_init(cfg_devices[i].filename,
+              cfg_devices[i].sectorsize,
+              cfg_devices[i].numsectors,
+              dev))) {
+        printf("yams: Unable to create disk device (code: %d).\n",
+             retval);
         exit(1);
+      }
+      if ((retval = disk_setparams(cfg_devices[i].numcylinders,
+                    cfg_devices[i].time_rot,
+                    cfg_devices[i].time_fullseek,
+                    dev))) {
+        printf("yams: Unable to create disk device (code: %d).\n",
+             retval);
+        exit(1);
+      }
+      device_set_irq(dev, cfg_devices[i].irq);
+      device_set_vendor(dev, cfg_devices[i].vendor);
+      break;
+    case CFG_TTY:
+      dev = tty_create();
+      if ((retval = tty_init(cfg_devices[i].domain, cfg_devices[i].name,
+                   cfg_devices[i].port, cfg_devices[i].listen,
+                   dev))) {
+        printf("yams: Unable to create tty device (code: %d).\n",
+             retval);
+        exit(1);
+      }
+      device_set_irq(dev, cfg_devices[i].irq);
+      device_set_vendor(dev, cfg_devices[i].vendor);
+      tty_setdelay(cfg_devices[i].send_delay, dev);
+      break;
+    case CFG_NIC:
+      dev = nic_create();
+      if ((retval = nic_init(cfg_devices[i].domain,
+                   cfg_devices[i].name,
+                   cfg_devices[i].port,
+                   cfg_devices[i].mtu,
+                   dev))) {
+        printf("yams: Unable to create nic device (code: %d).\n",
+             retval);
+        exit(1);
+      }
+
+      nic_setreliability(cfg_devices[i].reliability, dev);
+      nic_sethwaddr(cfg_devices[i].hwaddr, dev);
+      nic_setdelays(cfg_devices[i].dma_delay, cfg_devices[i].send_delay,
+             dev);
+      device_set_irq(dev, cfg_devices[i].irq);
+      device_set_vendor(dev, cfg_devices[i].vendor);
+      break;
+    case CFG_PLUGIN:
+      if ((retval = plugio_init(cfg_devices[i].domain,
+                    cfg_devices[i].name,
+                    cfg_devices[i].port,
+                    cfg_devices[i].listen,
+                    cfg_devices[i].irq,
+                    cfg_devices[i].async,
+                    cfg_devices[i].options))) {
+        printf("yams: unable to initialize pluggable I/O device "
+             "(code: %d).\n", retval);
+        exit(1);
+      }
+      /* don't add a device, plugio_init() does that: */
+      dev = NULL;
+      break;
+    default:
+      /* Never reached */
+      break;
     }
+    if (dev != NULL)
+      simulator_add_device(dev);
 
-    for (i = 0; i <= cfg_maxdev; i++) {
-        device_t *dev = NULL;
-        int retval;
+  }
 
-        switch (cfg_devices[i].type) {
-        case CFG_DISK:
-            dev = disk_create();
-            if ((retval = disk_init(cfg_devices[i].filename,
-                          cfg_devices[i].sectorsize,
-                          cfg_devices[i].numsectors,
-                          dev))) {
-                printf("yams: Unable to create disk device (code: %d).\n",
-                       retval);
-                exit(1);
-            }
-            if ((retval = disk_setparams(cfg_devices[i].numcylinders,
-                                        cfg_devices[i].time_rot,
-                                        cfg_devices[i].time_fullseek,
-                                        dev))) {
-                printf("yams: Unable to create disk device (code: %d).\n",
-                       retval);
-		exit(1);
-            }
-            device_set_irq(dev, cfg_devices[i].irq);
-            device_set_vendor(dev, cfg_devices[i].vendor);
-            break;
-        case CFG_TTY:
-            dev = tty_create();
-            if ((retval = tty_init(cfg_devices[i].domain, cfg_devices[i].name,
-				   cfg_devices[i].port, cfg_devices[i].listen,
-				   dev))) {
-                printf("yams: Unable to create tty device (code: %d).\n",
-                       retval);
-                exit(1);
-            }
-            device_set_irq(dev, cfg_devices[i].irq);
-            device_set_vendor(dev, cfg_devices[i].vendor);
-	    tty_setdelay(cfg_devices[i].send_delay, dev);
-            break;
-        case CFG_NIC:
-            dev = nic_create();
-            if ((retval = nic_init(cfg_devices[i].domain,
-                                   cfg_devices[i].name,
-                                   cfg_devices[i].port,
-                                   cfg_devices[i].mtu,
-                                   dev))) {
-                printf("yams: Unable to create nic device (code: %d).\n",
-                       retval);
-                exit(1);
-            }
-
-            nic_setreliability(cfg_devices[i].reliability, dev);
-            nic_sethwaddr(cfg_devices[i].hwaddr, dev);
-            nic_setdelays(cfg_devices[i].dma_delay, cfg_devices[i].send_delay,
-                         dev);
-            device_set_irq(dev, cfg_devices[i].irq);
-            device_set_vendor(dev, cfg_devices[i].vendor);
-            break;
-	case CFG_PLUGIN:
-	    if ((retval = plugio_init(cfg_devices[i].domain,
-				      cfg_devices[i].name,
-				      cfg_devices[i].port,
-				      cfg_devices[i].listen,
-				      cfg_devices[i].irq,
-				      cfg_devices[i].async,
-				      cfg_devices[i].options))) {
-		printf("yams: unable to initialize pluggable I/O device "
-		       "(code: %d).\n", retval);
-		exit(1);
-	    }
-	    /* don't add a device, plugio_init() does that: */
-	    dev = NULL;
-	    break;
-        default:
-            /* Never reached */
-            break;
-        }
-	if (dev != NULL)
-	    simulator_add_device(dev);
-
-    }
-
-    return 1;
+  return 1;
 }
