@@ -1,5 +1,5 @@
 /*
- * Virtual Memory Manager for KUdos
+ * Virtual Memory Manager for KUDOS
  */
 
 #include "vm/memory.h"

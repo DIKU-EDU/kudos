@@ -8,4 +8,4 @@
 
 void DEBUG(char *debuglevelname, char *format, ...);
 
-#endif /* KUdos_LIB_DEBUG_H */
+#endif /* KUDOS_LIB_DEBUG_H */

@@ -5,6 +5,8 @@
 %option outfile="lex.yy.c"
 %option yylineno
 %option noyywrap
+%option noinput
+%option nounput
 %{
 
 #include "includes.h"

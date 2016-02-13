@@ -15,4 +15,4 @@ int bitmap_get(bitmap_t *bitmap, int pos);
 void bitmap_set(bitmap_t *bitmap, int pos, int value);
 int bitmap_findnset(bitmap_t *bitmap, int l);
 
-#endif /* KUdos_LIB_BITMAP_H */
+#endif /* KUDOS_LIB_BITMAP_H */

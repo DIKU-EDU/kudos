@@ -1,5 +1,5 @@
 /*
- * Main startup routines for KUdos
+ * Main startup routines for KUDOS
  */
 
 #include <arch.h>

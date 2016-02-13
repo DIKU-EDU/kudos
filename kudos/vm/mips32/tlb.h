@@ -78,4 +78,4 @@ int _tlb_write(tlb_entry_t *entries, uint32_t index, uint32_t num);
 void _tlb_write_random(tlb_entry_t *entry);
 
 
-#endif /* KUdos_VM_TLB_H */
+#endif /* KUDOS_VM_TLB_H */

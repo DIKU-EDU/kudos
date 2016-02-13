@@ -1,5 +1,5 @@
 /*
- * Library routines header files for KUdos
+ * Library routines header files for KUDOS
  */
 #ifndef KUDOS_LIB_LIBC_H
 #define KUDOS_LIB_LIBC_H
@@ -53,4 +53,4 @@ uint32_t to_big_endian32(uint32_t in);
 
 uint32_t wordpad(uint32_t in);
 
-#endif /* KUdos_LIB_LIBC_H */
+#endif /* KUDOS_LIB_LIBC_H */

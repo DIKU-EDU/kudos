@@ -20,4 +20,4 @@ void semaphore_destroy(semaphore_t *sem);
 void semaphore_P(semaphore_t *sem);
 void semaphore_V(semaphore_t *sem);
 
-#endif /* KUdos_KERNEL_SEMAPHORE_H */
+#endif /* KUDOS_KERNEL_SEMAPHORE_H */

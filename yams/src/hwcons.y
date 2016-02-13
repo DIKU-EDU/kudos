@@ -111,6 +111,8 @@
 #include <stdio.h>
 #include "hwconsole.h"
 #include <sys/types.h>
+
+int yylex();
      
 void yyerror (s)  /* Called by yyparse on error */
 char *s;

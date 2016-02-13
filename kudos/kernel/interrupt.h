@@ -34,4 +34,4 @@ interrupt_status_t _interrupt_is_disabled(void);
 void _interrupt_yield(void);
 int _interrupt_getcpu(void);
 
-#endif /* KUdos_KERNEL_INTERRUPT_H */
+#endif /* KUDOS_KERNEL_INTERRUPT_H */

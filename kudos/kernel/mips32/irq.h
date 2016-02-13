@@ -48,4 +48,4 @@ void _interrupt_clear_sw1(void);
 void _interrupt_set_EXL(void);
 void _interrupt_clear_EXL(void);
 
-#endif /* KUdos_KERNEL_INTERRUPT_H */
+#endif /* KUDOS_KERNEL_INTERRUPT_H */

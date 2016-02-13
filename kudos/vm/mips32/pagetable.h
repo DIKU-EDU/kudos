@@ -23,4 +23,4 @@ typedef struct pagetable_struct_t{
 } pagetable_t;
 
 
-#endif /* KUdos_VM_PAGETABLE_H */
+#endif /* KUDOS_VM_PAGETABLE_H */

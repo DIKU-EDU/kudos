@@ -131,4 +131,4 @@ void *realloc(void *ptr, size_t size);
 int atoi(const char *nptr);
 #endif
 
-#endif /* KUdos_USERLAND_LIB_H */
+#endif /* KUDOS_USERLAND_LIB_H */

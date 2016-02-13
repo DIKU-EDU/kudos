@@ -1,5 +1,5 @@
 /*
- * The CRT (C Run Time) assembler code for KUdos binaries 
+ * The CRT (C Run Time) assembler code for KUDOS binaries 
  * (entry point is _start).
  *
  * Copyright (C) 2003-2014 Juha Aatrokoski, Timo Lilja,

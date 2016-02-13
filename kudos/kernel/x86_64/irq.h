@@ -55,4 +55,4 @@ void isr_handler17(void);
 void isr_handler18(void);
 void isr_handler19(void);
 
-#endif /* KUdos_KERNEL_INTERRUPT_H */
+#endif /* KUDOS_KERNEL_INTERRUPT_H */

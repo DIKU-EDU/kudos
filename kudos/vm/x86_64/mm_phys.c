@@ -1,5 +1,5 @@
 /*
- * Physical Memory Manager for KUdos
+ * Physical Memory Manager for KUDOS
  */
 
 #include <multiboot.h>

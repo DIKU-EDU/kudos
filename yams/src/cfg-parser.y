@@ -1,10 +1,12 @@
-%name-prefix="cfg_"
+%name-prefix "cfg_"
 
 %{
 #include "includes.h"
 #include "cfg.h"
 
 extern int cfg_lineno;
+
+int cfg_lex();
 
 void yyerror (s)  /* Called by yyparse on error */
 char *s;

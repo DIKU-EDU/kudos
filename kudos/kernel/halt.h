@@ -2,9 +2,9 @@
  * Halt the system
  */
 
-#ifndef KUdos_KERNEL_HALT_H
-#define KUdos_KERNEL_HALT_H
+#ifndef KUDOS_KERNEL_HALT_H
+#define KUDOS_KERNEL_HALT_H
 
 void halt_kernel(void);
 
-#endif /* KUdos_KERNEL_HALT_H */
+#endif /* KUDOS_KERNEL_HALT_H */

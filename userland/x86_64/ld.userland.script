@@ -1,5 +1,5 @@
 /*                                            (for emacs: -*- c -*-)
- *  A linker script for KUdos userland binaries
+ *  A linker script for KUDOS userland binaries
  *
  * Copyright (C) 2003-2014 Juha Aatrokoski, Timo Lilja,
  *   Leena Salmela, Teemu Takanen, Aleksi Virtanen,

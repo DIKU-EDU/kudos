@@ -1,5 +1,5 @@
 /*
- * The CRT assembler code for KUdos binaries (entry point is _start).
+ * The CRT assembler code for KUDOS binaries (entry point is _start).
  *
  * Copyright (C) 2003-2014 Juha Aatrokoski, Timo Lilja,
  *   Leena Salmela, Teemu Takanen, Aleksi Virtanen,

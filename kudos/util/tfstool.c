@@ -33,7 +33,7 @@ FILE *disk;
 
 void print_usage(void)
 {
-  printf("KUdos Trivial Filesystem (TFS) Tool -- Version %s\n\n",
+  printf("KUDOS Trivial Filesystem (TFS) Tool -- Version %s\n\n",
          TFSTOOL_VERSION);
 
   printf("Copyright (C) 2003-2016  Juha Aatrokoski, Timo Lilja,\n");

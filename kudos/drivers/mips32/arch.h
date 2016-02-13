@@ -7,7 +7,7 @@
 
 #include "lib/types.h"
 
-/* Start address of KUdos kernel. */
+/* Start address of KUDOS kernel. */
 #define KERNEL_BOOT_ADDRESS 0x80010000
 
 /* Start address of YAMS IO descriptor area. */

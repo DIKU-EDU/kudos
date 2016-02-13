@@ -2,8 +2,8 @@
  * Kernel configuration options.
  */
 
-#ifndef KUdos_CONFIG_H
-#define KUdos_CONFIG_H
+#ifndef KUDOS_CONFIG_H
+#define KUDOS_CONFIG_H
 
 /* Define the maximum number of threads supported by the kernel 
  * Range from 2 (idle + init) to 256 (ASID size)
@@ -79,4 +79,4 @@
  */
 #define CONFIG_USERLAND_STACK_SIZE 1
 
-#endif /* KUdos_CONFIG_H */
+#endif /* KUDOS_CONFIG_H */
