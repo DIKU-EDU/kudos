@@ -121,7 +121,7 @@
 
 #include "device.h"
 
-void cfg_parse();
+int cfg_parse(void);
 
 static uint32_t clock_speed = 0;
 static uint32_t mem_pages = 0;
