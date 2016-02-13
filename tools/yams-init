@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Run YAMS with the KUdOS MIPS kernel with a specific `initprog` program.  You
+# Run YAMS with the KUDOS MIPS kernel with a specific `initprog` program.  You
 # must still have `yams-term` running in another terminal window.
 #
 # Usage: yams-init <program> [<disk>]
