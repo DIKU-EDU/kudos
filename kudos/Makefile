@@ -1,5 +1,3 @@
-.PHONY: all clean mips32 x86_64
-
 # This Makefile skeleton is excerpted from the paper
 # _Recursive Make Considered Harmful_ by Peter Miller
 # <URL:http://www.tip.net.au/~millerp/rmch/recu-make-cons-harm.html>
@@ -140,3 +138,5 @@ clean:	utilclean
 
 real-clean: clean
 	rm -f $(DEPS)
+
+.PHONY: all clean mips32 x86_64
