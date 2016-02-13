@@ -349,6 +349,7 @@ static int read_mem(uint32_t addr, uint32_t length, char *result)
   hardware->cpus[0]->cp0->registers[Status] = save_status;
 
   /* XXX Exception handling? */
+  exc = exc;
   return 0;
 }
 
@@ -372,6 +373,7 @@ static int write_mem(uint32_t addr, uint32_t length, char *new_value)
   hardware->cpus[0]->cp0->registers[Status] = save_status;
 
   /* XXX Exception handling? */
+  exc = exc;
   return 0;
 }
 
@@ -394,7 +396,6 @@ static int process_gdb_loop(void)
   int regnum;
   uint32_t val;
 
-  regnum = regnum;
   step_cpu = other_cpu = 0;
 
   /* if the hardware is running, we dropped here because the user has
