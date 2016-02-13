@@ -130,35 +130,13 @@ DEPS := $(patsubst %.c,%.d,$(filter %.c,$(SRC))) \
 %.d: %.S
 	CC=$(CC) ./depend.sh `dirname $*` $(CFLAGS) $< >$@
 
-# TAGS
-ctags:
-	find . -type f -name '*.[ch]' | xargs ctags
-
-etags:
-	find . -type f -name '*.[ch]' | xargs etags
-
-tags: ctags etags
-
 # If the no-op rule for source's wouldn't be here, make might not be
 # able to run 'make clean' if a source file was missing.
 $(SRC):
 	@true
 
-# Builds the kudos.tar.gz to the parent directory!
-# This target includes docs. Do not use this for submission
-kudos.tar.gz: $(SRC)
-	(cd ..; find kudos -type f | grep -Ev '[.]d$$' \
-	        | grep -Ev 'no-dist|/CVS/|[.]cvsignore' \
-                | xargs $(GTAR) cvf - | gzip >$@)
-
-# This is the target to build the submission archive.
-submit-archive: $(SRC)
-	(cd ..; $(GTAR) cf - kudos | gzip >submit-$(PHASE).tar.gz)
-
 clean:	utilclean
-	rm -f $(TARGET_X86_64) $(TARGET_MIPS32) $(MIPS32OBJS) $(X86_64OBJS) *~ */*~ *.map tags TAGS
+	rm -f $(TARGET_X86_64) $(TARGET_MIPS32) $(MIPS32OBJS) $(X86_64OBJS) *.map
 
 real-clean: clean
 	rm -f $(DEPS)
-
-.PHONY: submit-archive kudos.tar.gz
