@@ -126,7 +126,8 @@ Run ``tools/yams-files`` to list the files currently stored in the KUDOS TFS
 disk.  It should at least give you this::
 
     [disk]halt.mips32
-    [disk]halt.x86_64
+    [disk]hw.mips32
+    [disk]shell.mips32
 
 where ``[disk]`` is the volume name.
 
