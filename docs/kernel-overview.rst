@@ -43,14 +43,15 @@ i.e. go to sleep.
 
 When starting a thread it is given a function which it executes.  When the
 function ends, the thread dies.  The thread can also commit suicide by
-explicitly killing itself.  Threads cannot kill each other, as murders are not
-allowed in the kernel.  Each userland program runs inside one thread.  When the
-actual userland code is being run, the thread cannot see the kernel memory.  It
-can only use the system call layer.
+explicitly killing itself. The kernel does not allow threads to kill other
+threads. Each userland program runs inside one thread.  When the actual
+userland code is being run, the thread cannot see the kernel memory.  It can
+only use the system call layer.
 
-Threads can be pre-empted at any point, both in kernel and in userland.
-Pre-empting means that the thread is taken out of execution in favor of some
-other thread.  The only way to prevent pre-empting is to disable interrupts.
+Threads can be pre-empted at any point, both when in kernel and when in user
+mode.  Pre-empting means that the thread is taken out of execution in favor of
+some other thread.  The only way to prevent pre-empting is to disable
+interrupts.
 
 Since the kernel includes many data structures, and since multiple threads can
 be run simultaneously (we can have multiple CPUs), all data has to be protected
