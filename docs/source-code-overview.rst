@@ -22,7 +22,7 @@ Source Code Overview
    Directory structure
    -------------------
 
-The KUDOS source code is split into two main directories:
+The KUDOS source code is split into two main subdirectories:
 
 1. :ref:`kudos` -- operating system proper, and
 2. :ref:`userland` -- containing userland programs.
