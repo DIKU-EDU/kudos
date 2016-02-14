@@ -1,6 +1,6 @@
-Booting KUDOS in YAMS
-=====================
-.. _booting-kudos-in-yams:
+Bootstrapping KUDOS
+===================
+.. _bootstrapping-kudos:
 
 This section explains the bootup process of KUDOS from the first instruction
 ever executed by the CPU to the point when userland processes can be started.

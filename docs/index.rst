@@ -10,4 +10,4 @@ KUDOS Documentation
    kernel-overview.rst
    device-drivers.rst
    builtin-drivers.rst
-   booting-kudos-in-yams.rst
+   bootstrapping-kudos.rst
