@@ -52,7 +52,7 @@ void init(void)
   /* Initialize polling TTY driver for kprintf() usage. */
   polltty_init();
 
-  kwrite("Kudos is an educational operating system by the University of Copenhagen\n");
+  kwrite("KUDOS is an educational operating system by the University of Copenhagen\n");
   kwrite("========================================================================\n");
   kwrite("Based on the Buenos operating system skeleton\n");
   kwrite("\n");
