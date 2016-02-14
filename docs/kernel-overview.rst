@@ -1,6 +1,5 @@
 Kernel Overview
 ===============
-.. _kernel-overview:
 
 Although aiming for simplicity, the KUDOS kernel is still quite a complicated
 piece of software.

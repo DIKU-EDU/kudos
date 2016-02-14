@@ -1,6 +1,5 @@
 Using KUDOS
 ===========
-.. _usage:
 
 The KUDOS system requires the following software to run:
 

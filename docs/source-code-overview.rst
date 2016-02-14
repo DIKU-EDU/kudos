@@ -1,6 +1,5 @@
 Source Code Overview
 ====================
-.. _source-code-overview:
 
 ..
    An operating system kernel is the core of any OS.  The kernel acts as a glue
@@ -55,7 +54,7 @@ an overview of this module.
 
 Thread handling, context switching, scheduling and synchronization.  Also
 various core functions used in the KUDOS kernel reside here (e.g. ``panic`` and
-``kmalloc``).
+``kmalloc``). Documentation coming soon.
 
 ``kudos/proc``
 ~~~~~~~~~~~~~~
@@ -67,22 +66,25 @@ binaries and handling exceptions and system calls from userland.
 ~~~~~~~~~~~~
 
 Virtual memory subsystem.  Managing the available physical memory and page
-tables.
+tables. Documentation coming soon.
 
 ``kudos/fs``
 ~~~~~~~~~~~~
 
-Filesystem abstractions and the Trivial Filesystem (TFS).
+Filesystem abstractions and the Trivial Filesystem (TFS). Documentation coming
+soon.
 
 ``kudos/drivers``
 ~~~~~~~~~~~~~~~~~
 
-Low level device drivers and their interfaces.
+Low level device drivers and their interfaces. See :doc:`device-drivers` for an
+overview of this module.
 
 ``kudos/lib``
 ~~~~~~~~~~~~~
 
 Miscellaneous library code (e.g. string handling and random number generation).
+Documentation coming soon.
 
 ``kudos/util``
 ~~~~~~~~~~~~~~
@@ -96,5 +98,6 @@ Filesystem disk files).
 ------------
 
 Userland programs.  These are not part of the kernel.  They can be used to test
-the userland implementation of KUDOS by saving them to a Trivial Filesystem disk
-file and booting KUDOS with that.
+the userland implementation of KUDOS by saving them to a Trivial Filesystem
+disk file and booting KUDOS with that. See :doc:`usage` for information on how
+to do that.

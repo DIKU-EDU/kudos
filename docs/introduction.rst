@@ -1,6 +1,5 @@
 Introduction
 ============
-.. _introduction:
 
 The KUDOS operating system is heavily based upon the BUENOS operating
 system, and this documentation is heavily based upon the accompanying
