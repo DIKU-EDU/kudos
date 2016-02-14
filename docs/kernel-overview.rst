@@ -127,13 +127,13 @@ Kernel programming differs somewhat from programming user programs.
 
 The most significant difference is memory usage.  In the MIPS32 architecture,
 which YAMS emulates, the memory is divided into segments.  Kernel code can
-access all these segments, while user programs can only access the first segment
-called the *user mapped segment*.  In this segment the first bit of the address
-is 0.  If the first bit is 1, the address belongs to one of the kernel segments
-and is not usable in userland.  The most important kernel segment in KUDOS is
-the *kernel unmapped segment*, where addresses start with the bit sequence 100.
-These addresses point to physical memory locations.  In the kernel, most
-addresses are like this.
+access all these segments, while user programs can only access the first
+segment called the *user mapped segment*.  In this segment the first bit of the
+address is ``0``.  If the first bit is ``1``, the address belongs to one of the
+kernel segments and is not usable in userland.  The most important kernel
+segment in KUDOS is the *kernel unmapped segment*, where addresses start with
+the bit sequence ``100``.  These addresses point to physical memory locations.
+In the kernel, most addresses are like this.
 
 For initializing the system, KUDOS provides a function ``kmalloc`` (for "kernel
 malloc") to allocate memory in arbitrary-size chunks.  This memory is
