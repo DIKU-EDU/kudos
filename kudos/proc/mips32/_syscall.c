@@ -9,7 +9,8 @@
 #include "kernel/assert.h"
 
 /* Common Entry point */
-extern uintptr_t syscall_entry(uintptr_t syscall, uintptr_t arg0, uintptr_t arg1, uintptr_t arg2);
+extern uintptr_t syscall_entry(
+  uintptr_t syscall, uintptr_t arg0, uintptr_t arg1, uintptr_t arg2);
 
 /**
  * Handle system calls. Interrupts are enabled when this function is
@@ -29,7 +30,7 @@ void syscall_handle(context_t *user_context)
      * returning from this function the userland context will be
      * restored from user_context.
      */
-    user_context->cpu_regs[MIPS_REGISTER_V0] = 
+    user_context->cpu_regs[MIPS_REGISTER_V0] =
         syscall_entry(user_context->cpu_regs[MIPS_REGISTER_A0],
             user_context->cpu_regs[MIPS_REGISTER_A1],
             user_context->cpu_regs[MIPS_REGISTER_A2],
