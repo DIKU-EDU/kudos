@@ -134,9 +134,12 @@ $(SRC):
 	@true
 
 clean:	utilclean
-	rm -f $(TARGET_X86_64) $(TARGET_MIPS32) $(MIPS32OBJS) $(X86_64OBJS) *.map
-
-real-clean: clean
-	rm -f $(DEPS)
+	rm -f \
+		$(TARGET_X86_64) \
+		$(TARGET_MIPS32) \
+		$(MIPS32OBJS) \
+		$(X86_64OBJS) \
+		$(DEPS) \
+		*.map
 
 .PHONY: all clean mips32 x86_64
