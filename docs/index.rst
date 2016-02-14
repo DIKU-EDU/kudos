@@ -1,8 +1,14 @@
 KUDOS Documentation
-=====================
+===================
+
+KUDOS is a skeleton operating system for exploring operating systems
+concepts. It is intended for:
+
+1. teaching operating system concepts, and
+2. to serve as a baseline for open-ended student projects.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    introduction.rst
    usage.rst

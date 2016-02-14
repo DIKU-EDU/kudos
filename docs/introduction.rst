@@ -2,12 +2,6 @@ Introduction
 ============
 .. _introduction:
 
-KUDOS is a skeleton operating system for exploring operating systems
-concepts. It is intended for:
-
-1. teaching operating system concepts, and
-2. to serve as a baseline for open-ended student projects.
-
 The KUDOS operating system is heavily based upon the BUENOS operating
 system, and this documentation is heavily based upon the accompanying
 "BUENOS Roadmap".
