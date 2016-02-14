@@ -134,7 +134,7 @@ where ``[disk]`` is the volume name.
 .. tip:: You can add ``~/kudos/tools/`` to your ``PATH``, and avoid having to
          type the ``tools/`` prefix every time. This is already done in the
          handed out VirtualBox image. On your own machine you can do this by
-         adding the following line to your ``~/.bash_profile``::
+         adding the following line to your ``~/.bashrc``::
 
               PATH=$HOME/kudos/tools/:$PATH
           
