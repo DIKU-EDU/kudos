@@ -16,7 +16,7 @@
 //extern uintptr_t _syscall(uintptr_t, uintptr_t, uintptr_t, uintptr_t);
 
 /* Halt the system (sync disks and power off). This function will
- * never return. 
+ * never return.
  */
 void syscall_halt(void)
 {
@@ -88,7 +88,7 @@ int syscall_open(const char *filename)
 
 
 /* Close the open file identified by 'filehandle'. Zero will be returned
- * success, other values indicate errors. 
+ * success, other values indicate errors.
  */
 int syscall_close(int filehandle)
 {
@@ -109,7 +109,7 @@ int syscall_read(int filehandle, void *buffer, int length)
 
 
 /* Set the file position of the open file identified by 'filehandle'
- * to 'offset'. Returns 0 on success or a negative value on error. 
+ * to 'offset'. Returns 0 on success or a negative value on error.
  */
 int syscall_seek(int filehandle, int offset)
 {
@@ -130,7 +130,7 @@ int syscall_write(int filehandle, const void *buffer, int length)
 
 
 /* Create a file with the name 'filename' and initial size of
- * 'size'. Returns 0 on success and a negative value on error. 
+ * 'size'. Returns 0 on success and a negative value on error.
  */
 int syscall_create(const char *filename, int size)
 {
@@ -139,7 +139,7 @@ int syscall_create(const char *filename, int size)
 
 
 /* Remove the file identified by 'filename' from the file system it
- * resides on. Returns 0 on success or a negative value on error. 
+ * resides on. Returns 0 on success or a negative value on error.
  */
 int syscall_delete(const char *filename)
 {
@@ -448,19 +448,19 @@ static void printc(char *buf, char c, int flags) {
  * output and whether to use capital digits.
  */
 static int print_uint(char *buf,
-		      int size,
-		      unsigned int n,
-		      unsigned int base,
-		      int flags,
-		      int prec,
-		      int width)
+          int size,
+          unsigned int n,
+          unsigned int base,
+          int flags,
+          int prec,
+          int width)
 {
   static const char digits[32] = "0123456789ABCDEF0123456789abcdef";
   char rev[11]; /* space for 32-bit int in octal */
   int i = 0, written = 0;
 
   if (size <= 0) return 0;
-  
+
   /* produce the number string in reverse order to the temp buffer 'rev' */
   do {
     if (flags & FLAG_SMALLS)
@@ -516,10 +516,10 @@ static int scan_int(const char *s, const char **next) {
 }
 
 static int vxnprintf(char *buf,
-		     int size,
-		     const char *fmt,
-		     va_list ap,
-		     int flags)
+         int size,
+         const char *fmt,
+         va_list ap,
+         int flags)
 {
   int written = 0, w, moremods;
   int width, prec;
@@ -607,7 +607,7 @@ static int vxnprintf(char *buf,
         printc(buf++, ' ', flags);
         written++;
       }
-      
+
       w = print_uint(buf, size-written, arg, 10, flags, 0, 0);
       buf += w;
       written += w;
@@ -674,7 +674,7 @@ static int vxnprintf(char *buf,
     }
   }
   /* the string was truncated */
-  if (written == size) { 
+  if (written == size) {
     buf--;
     written = -1;
   }
@@ -730,7 +730,7 @@ void heap_init()
 }
 
 
-/* Return a block of at least size bytes, or NULL if no such block 
+/* Return a block of at least size bytes, or NULL if no such block
    can be found.  */
 void *malloc(size_t size) {
   free_block_t *block;
@@ -752,7 +752,7 @@ void *malloc(size_t size) {
   for (block = free_list, prev_p = &free_list;
        block;
        prev_p = &(block->next), block = block->next) {
-    if ( (int)( block->size - size - sizeof(size_t) ) >= 
+    if ( (int)( block->size - size - sizeof(size_t) ) >=
          (int)( MIN_ALLOC_SIZE+sizeof(size_t) ) ) {
       /* Block is too big, but can be split. */
       block->size -= size+sizeof(size_t);
@@ -784,7 +784,7 @@ void free(void *ptr)
     /* Iterate through the free list, which is sorted by
        increasing address, and insert the newly freed block at the
        proper position. */
-    for (cur_block = free_list, prev_block = NULL; 
+    for (cur_block = free_list, prev_block = NULL;
          ;
          prev_block = cur_block, cur_block = cur_block->next) {
       if (cur_block > block || cur_block == NULL) {
