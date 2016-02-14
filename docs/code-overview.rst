@@ -70,7 +70,7 @@ Miscellaneous library code (e.g. string handling and random number generation).
 ``kudos/util``
 ~~~~~~~~~~~~~~
 
-UNIX utilities for KUDOS usage (e.g. ``tfstool`` used for writing the Trivial
+Utilities for using KUDOS (e.g. ``tfstool`` used for writing the Trivial
 Filesystem disk files).
 
 ``userland``
