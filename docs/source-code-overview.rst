@@ -37,10 +37,14 @@ need to touch either of these subdirectories.
 ``kudos``
 ---------
 
-The kernel source code in the `kudos` subdirectory consists of modules stored
-in sub-subdirectories.  A module may contain further subdirectories for
-architecture-specific implementations, such as ``mips32`` and ``x86-64``.  The
-kernel contains the following modules:
+The kernel source code is split into modules stored in subdirectories. A module
+typically consists of some C-files and a ``module.mk``. To add a new module,
+list it in the ``MODULES`` variables in ``kudos/Makefile``.  To add new C-files
+to a module, list them in the ``FILES`` variable of the ``module.mk``. A module
+may also contain architecture-specific implementations in designated
+sub-subdirectories, such as ``mips32`` and ``x86-64``.
+
+Currently, the kernel contains the following modules:
 
 ``kudos/init/``
 ~~~~~~~~~~~~~~~
@@ -60,7 +64,9 @@ various core functions used in the KUDOS kernel reside here (e.g. ``panic`` and
 ~~~~~~~~~~~~~~
 
 Userland processes.  Starting of new userland processes, loading userland
-binaries and handling exceptions and system calls from userland.
+binaries and handling exceptions and system calls from userland. See
+:doc:`system-calls` for documentation about the system call interface.
+Documentation about the rest of this module is coming soon.
 
 ``kudos/vm``
 ~~~~~~~~~~~~
