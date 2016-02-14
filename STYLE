@@ -2,8 +2,7 @@ kudos Code Style
 ================
 
 Indentation
-  C: 2 spaces
-  Assembly: tabs
+  2 spaces
 
 Naming
   lower case
