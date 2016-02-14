@@ -74,7 +74,7 @@ directly with all system components.
 
    The KUDOS memory structure.
 
-The physical memory usage in KUDOS for its MIPS target can be seen in the
+The physical memory usage in KUDOS for its ``mips32`` target can be seen in the
 picture above.  At the left side of the figure, memory addresses can be seen.
 At the bottom is the beginning of the system main memory (address zero) and at
 the top the end of the physical memory.
@@ -196,10 +196,10 @@ never be held for a long time.
 Floating point numbers
 ----------------------
 
-Yams does not support floating point numbers, so they cannot be used with KUDOS'
-MIPS target either.  If an attempt to execute a floating point instruction is
-made, a co-processor unusable exception will occur (since the floating point
-unit is co-processor 1 in the MIPS32 architecture.)
+Yams does not support floating point numbers, so they cannot be used with
+KUDOS' ``mips32`` target either.  If an attempt to execute a floating point
+instruction is made, a co-processor unusable exception will occur (since the
+floating point unit is co-processor 1 in the MIPS32 architecture.)
 
 
 Naming conventions
