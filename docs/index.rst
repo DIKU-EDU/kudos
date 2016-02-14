@@ -6,7 +6,7 @@ KUDOS Documentation
 
    introduction.rst
    usage.rst
-   code-overview.rst
+   source-code-overview.rst
    kernel-overview.rst
    device-drivers.rst
    builtin-drivers.rst
