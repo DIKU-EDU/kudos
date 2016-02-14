@@ -56,7 +56,7 @@ void bootargs_init(void *bootargs)
 
   if(bootargs == NULL)
     return;
-    
+
   l = strlen(bootarg_area);
   value_area = (char *) stalloc(l+1);
   bmemcopy(value_area, bootarg_area, l+1);
@@ -103,7 +103,7 @@ void bootargs_init(void *bootargs)
 }
 
 /**
- * Gets specified boot argument. 
+ * Gets specified boot argument.
  *
  * @param key The key to search for.
  *
@@ -120,7 +120,7 @@ char *bootargs_get(char *key)
       return NULL;
 
     o=0;
-    while(*(bootargs_values[i].key+o) == 
+    while(*(bootargs_values[i].key+o) ==
           *(key+o)) {
       if(*(key+o) == 0)
         return bootargs_values[i].value;
@@ -128,7 +128,7 @@ char *bootargs_get(char *key)
       o++;
     }
   }
-    
+
   return NULL;
 }
 

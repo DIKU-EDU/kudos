@@ -24,6 +24,3 @@ typedef struct gcd_struct {
 } gcd_t;
 
 #endif /* DRIVERS_GCD_H */
-
-
-

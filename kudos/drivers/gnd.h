@@ -53,6 +53,3 @@ typedef struct gnd_struct {
 } gnd_t;
 
 #endif /* DRIVERS_GND_H */
-
-
-

@@ -97,4 +97,3 @@ typedef struct gbd_struct {
 
 
 #endif /* DRIVERS_GBD_H */
-

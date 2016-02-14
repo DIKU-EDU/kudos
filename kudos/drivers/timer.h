@@ -10,6 +10,3 @@
 void timer_set_ticks(uint32_t ticks);
 
 #endif /* DRIVERS_POLLTTY_H */
-
-
-

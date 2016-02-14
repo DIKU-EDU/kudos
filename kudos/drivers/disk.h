@@ -20,7 +20,7 @@ typedef struct {
 
     /* Queue of pending requests. New requests are placed to queue
        by disk scheduling policy (see disksched_schedule()). */
-    volatile gbd_request_t     *request_queue;    
+    volatile gbd_request_t     *request_queue;
 
     /* Request currently served by the driver. If NULL device is idle. */
     volatile gbd_request_t     *request_served;
@@ -32,4 +32,3 @@ device_t *disk_init(io_descriptor_t *desc);
 
 
 #endif /* DRIVERS_DISK_H */
-

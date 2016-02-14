@@ -53,6 +53,3 @@ device_t *shutdown_init(io_descriptor_t *desc);
 void shutdown(uint32_t magic);
 
 #endif /* DRIVERS_METADEV_H */
-
-
-
