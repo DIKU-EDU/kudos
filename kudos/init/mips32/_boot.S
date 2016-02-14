@@ -4,22 +4,22 @@
 
 #include "kernel/mips32/asm.h"
 
-        .text
+  .text
   .align  2
   .globl  _start
   .ent  _start
 
 _start:
-  # If we are running on another CPU than 0, wait until CPU 0
-  # has initialized the system
+  # If we are running on a CPU other than 0, wait
+  # until CPU 0 has initialized the system.
   _FETCH_CPU_NUM(t0)
   bnez  t0, init_wait_loop
 
   # Only CPU 0 runs these
-  li      sp, 0x8000fffc    # Initialize SP
-  j init               # Jump to init() in main.c
-        nop
-        .end    _start
+  li  sp, 0x8000fffc        # Initialize SP
+  j init                    # Jump to init() in main.c
+  nop
+  .end    _start
 
 
   .ent init_wait_loop
