@@ -1,7 +1,13 @@
 KUDOS
 =====
 
-|docs|
+KUDOS is a skeleton operating system for exploring operating systems
+concepts. It is intended for:
+
+1. teaching operating system concepts, and
+2. to serve as a baseline for open-ended student projects.
+
+For more in-depth documentation, see |docs|.
 
 .. |docs| image:: https://readthedocs.org/projects/kudos/badge/?version=latest
     :alt: Documentation Status
