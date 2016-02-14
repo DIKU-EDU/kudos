@@ -84,7 +84,7 @@ You implicitly define your own bootargs by using ``bootargs_get`` somewhere in
 kernel code.
 
 ``yams-init`` takes one argument: the name of your init program.  Meaning,
-``yams-init program.mips32`` calls ``yams-sim kudos/kudos-mips32
+``yams-init program`` calls ``yams-sim kudos/kudos-mips32
 initprog=[disk]program.mips32``.
 
 

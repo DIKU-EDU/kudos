@@ -9,7 +9,7 @@ set -e # Exit on first error.
 (test -d kudos && test -d userland) || \
     (echo "error: missing directories 'kudos' and/or 'userland'"; exit 1)
 
-prog="$1"
+prog="$1.mips32"
 disk="$2"
 if ! [ "$disk" ]; then
     disk=store.file
