@@ -28,7 +28,7 @@ The KUDOS source code is split into two main directories:
 2. :ref:`userland` -- containing userland programs.
 
 The KUDOS source code also contains a subdirectory called ``tools``, containing
-useful tools for running KUDOS (see :doc:`usage` for an overview), and
+useful tools for running KUDOS (see :doc:`using-kudos` for an overview), and
 ``docs``, containing the source code for this documentation. You should not
 need to touch either of these subdirectories.
 
@@ -99,5 +99,5 @@ Filesystem disk files).
 
 Userland programs.  These are not part of the kernel.  They can be used to test
 the userland implementation of KUDOS by saving them to a Trivial Filesystem
-disk file and booting KUDOS with that. See :doc:`usage` for information on how
-to do that.
+disk file and booting KUDOS with that. See :doc:`using-kudos` for information
+on how to do that.

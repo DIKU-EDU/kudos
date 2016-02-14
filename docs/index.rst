@@ -11,7 +11,7 @@ concepts. It is intended for:
    :maxdepth: 2
 
    introduction.rst
-   usage.rst
+   using-kudos.rst
    source-code-overview.rst
    bootstrapping-kudos.rst
    kernel-overview.rst

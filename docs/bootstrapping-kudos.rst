@@ -4,7 +4,7 @@ Bootstrapping KUDOS
 This section explains the bootup process of KUDOS from the first instruction
 ever executed by the CPU to the point when userland processes can be started.
 This is **not** an introduction to *running* KUDOS in YAMS, for that, we refer
-you to :doc:`usage`.
+you to :doc:`using-kudos`.
 
 In the beginning there was ``_boot.S``
 --------------------------------------
