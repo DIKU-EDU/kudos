@@ -118,8 +118,8 @@ File-System Related
 
 * Returns the number of bytes actually written, or a negative
   value on error. (If the return value is less than *length* but
-  :math:`\geq 0`, it means that some error occured but that the
-  file was still partially written).
+  ≥ 0, it means that some error occured but that the file was still
+  partially written).
 
 * If the ``filehandle`` is 1, the write is done to ``stdout`` (the
   console), which is always considered to be an open file.
