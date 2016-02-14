@@ -1,4 +1,4 @@
-Code overview
+Code Overview
 =============
 .. _code-overview:
 

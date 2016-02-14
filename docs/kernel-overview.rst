@@ -1,4 +1,4 @@
-Kernel overview
+Kernel Overview
 ===============
 .. _kernel-overview:
 
