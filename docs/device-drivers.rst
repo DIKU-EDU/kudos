@@ -134,3 +134,84 @@ typecode identifier. Device typecodes which are defined in
 for each device in the system by calling these initialization functions. This
 initialization is done by ``device_init()``, found in
 ``drivers/$ARCH/device.c``.
+
+
+Device Driver Initialization
+----------------------------
+
+Every device driver's initialization function must return a pointer to the
+device descriptor (``device_t``) for this device, described in
+``kudos/drivers/device.h``.
+
+Device driver initialization code is called from ``init()`` on bootup.  The
+function called is:
+
+`void device_init(void)`
+
+Finds all devices connected to the system and attempts to initialize
+device drivers for them.
+
+Implementation:
+
+  1. Loop through the device descriptor area of YAMS.
+  2. For each found device, try to find the driver by scanning through the list
+     of available drivers (``drivers_available`` in
+     ``kudos/drivers/$ARCH/drivers.c``).
+  3. If a matching driver is found, call its initialization function
+     and print the match to the console. Store the initialized driver
+     instance to the device driver table ``device_table``.
+  4. Otherwise print a warning about an unrecognized device.
+
+After device drivers are initialized, we must have some mechanism to get a
+handle of a specific device. This can be done with the ``device_get`` function:
+
+`device_t *device_get(uint32_t typecode, uint32_t n)`
+
+Finds initialized device driver based on the type of the device and sequence
+number.  Returns nth initialized driver for device with type ``typecode``.  The
+sequencing begins from zero.  If device driver matching the specifield type and
+sequence number if not found, the function returns ``NULL``.
+
+
+Generic Character Device
+------------------------
+
+The generic character device (GCD) is an abstraction for any character-buffered
+(stream based) I/O device (e.g. a terminal).  A GCD specifies read and write
+functions for the device, which have the same syntax for every GCD.  Thus, when
+using GCD for all character device implementations, the code which reads or
+writes them does not have to care whether the device is a TTY or some other
+character device.
+
+The generic character device is implemented as a structure with the fields
+described in the ``gcd_t`` structure in ``kudos/drivers/gcd.h``.
+
+
+Generic Block Device
+--------------------
+
+The generic block device (GBD) is an abstraction of a block-oriented device
+(e.g. a disk).  GBD consists of a function interface and a ``request`` data
+structure that abstracts the blocks to be handled.  All functions are
+implemented by the actual device driver.
+
+The function interface is provided by the ``gbd_t`` data structure in
+``kudos/drivers/gbd.h``.  To use this interface, it is necessary to describe
+requests in detail; for this, the ``gbd_request_t`` data structure is used.
+This structure includes all necessary information related to the reading or
+writing of a block.
+
+The GBD interface supports both synchronous and asynchronous calls (see the
+``gbd.h`` file for the practical details).
+
+In case of asynchronous calls, the ``gbd`` interface functions will return
+immediately.  This means that the user must wait on an associated kernel
+semaphore before continuing.  Memory reserved for the request may not be
+released until the semaphore is released.  The thread using a GBD device must be
+very careful especially with reserving memory from function stacks (ie. static
+allocation).  If the function is exited before the request is served, the memory
+area of the request may corrupt.
+
+In case of synchronous calls, the ``gbd`` interface functions will block until
+the request is handled.  The memory of the ``request`` data structure may be
+released when control is returned.
