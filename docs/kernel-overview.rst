@@ -218,15 +218,15 @@ C calling conventions
 Normally, a C compiler handles function calling conventions (mostly argument
 passing) transparently.  Sometimes in kernel code the calling convention issues
 need to be handled manually.  Manual calling convention handling is needed when
-calling C routines from an assembly program or when manipulating thread contexts
-in order to pass arguments to starting functions.
+calling C routines from an assembly program or when manipulating thread
+contexts in order to pass arguments to starting functions.
 
-Arguments are passed to all functions in MIPS argument registers ``A0``, ``A1``,
-``A2`` and ``A3``.  When more than 4 arguments are needed, the rest are passed
-in the stack.  The arguments are put into the stack so that the 1st argument is
-in the lowest memory address.
+Arguments are passed to all functions in MIPS32 argument registers ``A0``,
+``A1``, ``A2`` and ``A3``.  When more than 4 arguments are needed, the rest are
+passed on the stack.  The arguments are put onto the stack so that the 1st
+argument is in the lowest memory address.
 
 There is one thing to note: the stack frame for arguments must always be
 reserved, even when all arguments are passed in the argument registers. The
-frame must have space for all arguments.  Arguments which are passed in registers
-need not to be copied into this reserved space.
+frame must have space for all arguments.  Arguments which are passed in
+registers need not to be copied into this reserved space.
