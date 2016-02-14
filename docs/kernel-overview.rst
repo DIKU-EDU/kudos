@@ -84,7 +84,7 @@ interrupt handling routines and data structures, including thread stacks. The
 rest of the memory is at the mercy of the VM.
 
 As in any modern hardware, memory pages (4096 byte regions in our case) can be
-*mapped* in Yams.  The mapped addresses are also called *virtual addresses*.
+*mapped* in YAMS.  The mapped addresses are also called *virtual addresses*.
 Mapping means that certain memory addresses do not actually refer to physical
 memory.  Instead, they are references to a structure which *maps* these
 addresses to the actual addresses.  This makes it possible to provide the
@@ -103,7 +103,7 @@ except for those that are used only during the bootup process.
 
 Most code explicitly concerning SMP support is found in the bootstrap code.
 Unlike in real systems, where usually only one processor starts at boot and it
-is up to it to start the other processors, in Yams *all* processors will start
+is up to it to start the other processors, in YAMS *all* processors will start
 executing code simultaneously and at the same address (``0x80010000``).  To
 handle this, each processor must "know" its own number, to facilitate code that
 branches to different locations based which CPU (otherwise all CPUs would be
@@ -125,7 +125,7 @@ Kernel programming
 Kernel programming differs somewhat from programming user programs.
 
 The most significant difference is memory usage.  In the MIPS32 architecture,
-which Yams emulates, the memory is divided into segments.  Kernel code can
+which YAMS emulates, the memory is divided into segments.  Kernel code can
 access all these segments, while user programs can only access the first segment
 called the *user mapped segment*.  In this segment the first bit of the address
 is 0.  If the first bit is 1, the address belongs to one of the kernel segments
@@ -196,7 +196,7 @@ never be held for a long time.
 Floating point numbers
 ----------------------
 
-Yams does not support floating point numbers, so they cannot be used with
+YAMS does not support floating point numbers, so they cannot be used with
 KUDOS' ``mips32`` target either.  If an attempt to execute a floating point
 instruction is made, a co-processor unusable exception will occur (since the
 floating point unit is co-processor 1 in the MIPS32 architecture.)
