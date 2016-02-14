@@ -22,6 +22,6 @@ if echo "$prog" | grep -qv '^\['; then
     prog="[$vname]$prog"
 fi
 
-echo quit | yams-sim kudos/kudos-mips initprog="$prog" \
+echo quit | yams-sim kudos/kudos-mips32 initprog="$prog" \
     | grep -E '(Running time|Actual performance|Simulated second length)' \
     | sed -r 's/^ +//'
