@@ -76,9 +76,10 @@ mentioned below the arguments and return value semantics can of course be
 defined as desired.
 
 Halting the Operating System
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``void syscall_halt(void)``
+"""""""""""""""""""""""""""
 
 This is the only system call already implemented in KUDOS. It will unmount all
 mounted filesystems and then power off the machine (YAMS will terminate). This
@@ -86,9 +87,10 @@ system call is the *only* method for userland processes to cause the machine to
 halt.
 
 File-System Related
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 ``int syscall_read(int filehandle, void *buffer, int length)``
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 * Read at most *length* bytes from the file identified by
   ``filehandle`` into ``buffer``.
@@ -106,6 +108,7 @@ File-System Related
   always return an error code.
 
 ``int syscall_write(int filehandle, const void *buffer, int length)``
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 * Write *length* bytes from *buffer* to the open file
   identified by ``filehandle``.
