@@ -146,7 +146,7 @@ device descriptor (``device_t``) for this device, described in
 Device driver initialization code is called from ``init()`` on bootup.  The
 function called is:
 
-`void device_init(void)`
+``void device_init(void)``
 
 Finds all devices connected to the system and attempts to initialize
 device drivers for them.
@@ -165,7 +165,7 @@ Implementation:
 After device drivers are initialized, we must have some mechanism to get a
 handle of a specific device. This can be done with the ``device_get`` function:
 
-`device_t *device_get(uint32_t typecode, uint32_t n)`
+``device_t *device_get(uint32_t typecode, uint32_t n)``
 
 Finds initialized device driver based on the type of the device and sequence
 number.  Returns nth initialized driver for device with type ``typecode``.  The
