@@ -15,5 +15,6 @@ concepts. It is intended for:
    source-code-overview.rst
    bootstrapping-kudos.rst
    kernel-overview.rst
+   system-calls.rst
    device-drivers.rst
    builtin-drivers.rst
