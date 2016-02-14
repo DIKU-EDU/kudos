@@ -51,7 +51,7 @@ Currently, the kernel contains the following modules:
 
 Kernel initialization and entry point.  This directory contains the functions
 that KUDOS will execute to bootstrap itself. See :doc:`bootstrapping-kudos` for
-an overview of this module.
+documentation of this module.
 
 ``kudos/kernel/``
 ~~~~~~~~~~~~~~~~~
@@ -83,8 +83,8 @@ soon.
 ``kudos/drivers``
 ~~~~~~~~~~~~~~~~~
 
-Low level device drivers and their interfaces. See :doc:`device-drivers` for an
-overview of this module.
+Low level device drivers and their interfaces. See :doc:`device-drivers` and
+:doc:`builtin-drivers` for documentation of this module.
 
 ``kudos/lib``
 ~~~~~~~~~~~~~
