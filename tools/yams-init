@@ -6,6 +6,9 @@
 # Usage: yams-init <program> [<disk>]
 
 set -e # Exit on first error.
+
+DIR=$(dirname "$(readlink -f "$0")")
+
 (test -d kudos && test -d userland) || \
     (echo "error: missing directories 'kudos' and/or 'userland'"; exit 1)
 
@@ -22,6 +25,6 @@ if echo "$prog" | grep -qv '^\['; then
     prog="[$vname]$prog"
 fi
 
-echo quit | yams-sim kudos/kudos-mips32 initprog="$prog" \
+echo quit | "$DIR/yams-sim" kudos/kudos-mips32 initprog="$prog" \
     | grep -E '(Running time|Actual performance|Simulated second length)' \
     | sed -r 's/^ +//'
