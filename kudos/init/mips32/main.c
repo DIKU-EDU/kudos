@@ -54,8 +54,7 @@ void init(void)
 
   kwrite("KUDOS - Københavns Universitets Didactic Operating System\n");
   kwrite("=========================================================\n");
-  kwrite("KUDOS is a skeleton operating system for exploring\n");
-  kwrite("operating systems concepts.\n");
+  kwrite("KUDOS is a skeleton OS for exploring OS concepts.\n");
   kwrite("\n");
   kwrite("KUDOS is heavily based on BUENOS.\n");
   kwrite("\n");
