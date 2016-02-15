@@ -52,9 +52,8 @@ void init(void)
   /* Initialize polling TTY driver for kprintf() usage. */
   polltty_init();
 
-  kwrite("KUDOS - Københavns Universitets Didactic Operating System\n");
-  kwrite("=========================================================\n");
-  kwrite("KUDOS is a skeleton OS for exploring OS concepts.\n");
+  kwrite("KUDOS - a skeleton OS for exploring OS concepts\n");
+  kwrite("===============================================\n");
   kwrite("\n");
   kwrite("KUDOS is heavily based on BUENOS.\n");
   kwrite("\n");
@@ -66,6 +65,7 @@ void init(void)
   kwrite("\n");
   kwrite("Copyright (C) 2003-2012 Juha Aatrokoski, Timo Lilja,\n");
   kwrite("      Leena Salmela, Teemu Takanen, Aleksi Virtanen.\n");
+  kwrite("\n");
   kwrite("See the file COPYING for licensing details.\n");
   kwrite("\n");
 
