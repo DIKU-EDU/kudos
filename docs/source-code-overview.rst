@@ -89,8 +89,8 @@ Low level device drivers and their interfaces. See :doc:`device-drivers` and
 ``kudos/lib``
 ~~~~~~~~~~~~~
 
-Miscellaneous library code (e.g. string handling and random number generation).
-Documentation coming soon.
+Miscellaneous library code (``kwrite``, ``kprintf``, various string-handling
+functions, a random number generator, etc.).  Documentation coming soon.
 
 ``kudos/util``
 ~~~~~~~~~~~~~~
