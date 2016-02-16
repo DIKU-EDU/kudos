@@ -161,7 +161,7 @@ To get a summary of the arguments that ``tfstool`` accepts you may run it
 without arguments::
 
   $ kudos/util/tfstool 
-  KUDOS Trivial Filesystem (TFS) Tool -- Version 1.01
+  KUDOS Trivial Filesystem (TFS) Tool
   ...
 
 The accepted commands are also explained below:
