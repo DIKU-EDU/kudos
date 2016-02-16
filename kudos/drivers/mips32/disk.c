@@ -41,8 +41,7 @@ static uint32_t disk_total_blocks(gbd_t *gbd);
  *
  * @return Pointer to the device structure of the disk
  */
-device_t *disk_init(io_descriptor_t *desc)
-{
+device_t *disk_init(io_descriptor_t *desc) {
   device_t *dev;
   gbd_t    *gbd;
   disk_real_device_t *real_dev;
@@ -84,8 +83,7 @@ device_t *disk_init(io_descriptor_t *desc)
  *
  * @param device Pointer to the device data structure
  */
-static void disk_interrupt_handle(device_t *device)
-{
+static void disk_interrupt_handle(device_t *device) {
   disk_real_device_t *real_dev = device->real_device;
   disk_io_area_t *io = (disk_io_area_t *)device->io_address;
 
@@ -131,8 +129,7 @@ static void disk_interrupt_handle(device_t *device)
  *
  * @return Returns 1 if success, 0 otherwise
  */
-static int disk_read_block(gbd_t *gbd, gbd_request_t *request)
-{
+static int disk_read_block(gbd_t *gbd, gbd_request_t *request) {
   request->operation = GBD_OPERATION_READ;
   return disk_submit_request(gbd, request);
 }
@@ -174,8 +171,7 @@ static int disk_write_block(gbd_t *gbd, gbd_request_t *request)
  *
  * @return 1 if success, 0 otherwise.
  */
-static int disk_submit_request(gbd_t *gbd, gbd_request_t *request)
-{
+static int disk_submit_request(gbd_t *gbd, gbd_request_t *request) {
   int sem_null;
   interrupt_status_t intr_status;
   disk_real_device_t *real_dev = gbd->device->real_device;
@@ -238,8 +234,7 @@ static int disk_submit_request(gbd_t *gbd, gbd_request_t *request)
  *
  * @param gbd pointer to the general block device.
  */
-static void disk_next_request(gbd_t *gbd)
-{
+static void disk_next_request(gbd_t *gbd) {
   disk_real_device_t *real_dev = gbd->device->real_device;
   disk_io_area_t *io = (disk_io_area_t *)gbd->device->io_address;
   volatile gbd_request_t *req;
@@ -284,8 +279,7 @@ static void disk_next_request(gbd_t *gbd)
  *
  * @return Block size in bytes of the disk.
  */
-static uint32_t disk_block_size(gbd_t *gbd)
-{
+static uint32_t disk_block_size(gbd_t *gbd) {
   interrupt_status_t intr_status;
   disk_real_device_t *real_dev = gbd->device->real_device;
   disk_io_area_t *io = (disk_io_area_t *)gbd->device->io_address;
@@ -313,8 +307,7 @@ static uint32_t disk_block_size(gbd_t *gbd)
  *
  * @return Number of blocks of the disk.
  */
-static uint32_t disk_total_blocks(gbd_t *gbd)
-{
+static uint32_t disk_total_blocks(gbd_t *gbd) {
   interrupt_status_t intr_status;
   disk_real_device_t *real_dev = gbd->device->real_device;
   disk_io_area_t *io = (disk_io_area_t *)gbd->device->io_address;
