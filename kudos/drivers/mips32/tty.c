@@ -162,8 +162,7 @@ void tty_interrupt_handle(device_t *device) {
  *
  * @return Number of succesfully writeten characters.
  */
-static int tty_write(gcd_t *gcd, const void *buf, int len)
-{
+static int tty_write(gcd_t *gcd, const void *buf, int len) {
   interrupt_status_t intr_status;
   volatile tty_io_area_t *iobase = (tty_io_area_t *)gcd->device->io_address;
   volatile tty_real_device_t *tty_rd
@@ -224,8 +223,7 @@ static int tty_write(gcd_t *gcd, const void *buf, int len)
  *
  * @return Number of succesfully read characters.
  */
-static int tty_read(gcd_t *gcd, void *buf, int len)
-{
+static int tty_read(gcd_t *gcd, void *buf, int len) {
   interrupt_status_t intr_status;
   volatile tty_real_device_t *tty_rd
     = (tty_real_device_t *)gcd->device->real_device;
