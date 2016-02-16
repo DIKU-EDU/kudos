@@ -37,11 +37,11 @@ void polltty_init() {
 
   /* Find first TTY and store its io base */
   while(io_desc->type != 0) {
-      if (io_desc->type == 0x201) {
-          polltty_iobase = (tty_io_area_t *) io_desc->io_area_base;
-          return;
-      }
-      io_desc++;
+    if (io_desc->type == 0x201) {
+      polltty_iobase = (tty_io_area_t *) io_desc->io_area_base;
+      return;
+    }
+    io_desc++;
   }
 
   /* No TTY found */
@@ -80,15 +80,15 @@ void polltty_putchar(int c) {
   /* Check that the iobase is valid */
   if (polltty_iobase != 0) {
 
-      /* Wait until the TTY is no longer busy */
-      while(TTY_STATUS_WBUSY(polltty_iobase->status) != 0);
-      polltty_iobase->data = c;
-      while(TTY_STATUS_WBUSY(polltty_iobase->status) != 0);
+    /* Wait until the TTY is no longer busy */
+    while(TTY_STATUS_WBUSY(polltty_iobase->status) != 0);
+    polltty_iobase->data = c;
+    while(TTY_STATUS_WBUSY(polltty_iobase->status) != 0);
 
-      /* We can't clear the interrupt here because it will break the
-       * interrupt driven tty driver. The IRQ will be handled later
-       * by the interrupt driven tty driver.
-       */
+    /* We can't clear the interrupt here because it will break the
+     * interrupt driven tty driver. The IRQ will be handled later
+     * by the interrupt driven tty driver.
+     */
   }
 }
 
