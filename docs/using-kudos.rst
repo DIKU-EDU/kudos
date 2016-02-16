@@ -190,8 +190,8 @@ The accepted commands are also explained below:
   ``<local-filename>`` will be used.
 
   Note that you probably want to give a ``<TFS-filename>``, since otherwise you
-  end up with a TFS volume with files named like ``userland/foobar.mips32``,
-  which can cause confusion since **TFS does not support directories**.
+  end up with a TFS volume with files named like ``userland/halt.mips32``, which
+  can cause confusion since **TFS does not support directories**.
 
 ``read <filename> <TFS-filename> [<local-filename>]``
 
