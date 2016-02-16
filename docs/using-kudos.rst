@@ -117,7 +117,7 @@ halt messages (since it's running a program compiled from ``userland/halt.c``,
 which calls ``syscall_halt``).  Instead of writing that long ``yams-sim`` line,
 you can just write::
 
-    ~/kudos$ tools/yams-init halt.mips32
+    ~/kudos$ tools/yams-init halt
 
 which should do the same, except not print as much filler text.
 
