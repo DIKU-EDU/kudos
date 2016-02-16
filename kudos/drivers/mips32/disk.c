@@ -41,7 +41,7 @@ static uint32_t disk_total_blocks(gbd_t *gbd);
  *
  * @return Pointer to the device structure of the disk
  */
-device_t *disk_init(io_descriptor_t *desc) 
+device_t *disk_init(io_descriptor_t *desc)
 {
   device_t *dev;
   gbd_t    *gbd;
@@ -51,9 +51,9 @@ device_t *disk_init(io_descriptor_t *desc)
   dev = (device_t*)stalloc(sizeof(device_t));
   gbd = (gbd_t*)stalloc(sizeof(gbd_t));
   real_dev = (disk_real_device_t*)stalloc(sizeof(disk_real_device_t));
-  if (dev == NULL || gbd == NULL || real_dev == NULL) 
+  if (dev == NULL || gbd == NULL || real_dev == NULL)
     KERNEL_PANIC("Could not allocate memory for disk driver.");
-    
+
   dev->generic_device = gbd;
   dev->real_device = real_dev;
   dev->descriptor = desc;
@@ -84,7 +84,7 @@ device_t *disk_init(io_descriptor_t *desc)
  *
  * @param device Pointer to the device data structure
  */
-static void disk_interrupt_handle(device_t *device) 
+static void disk_interrupt_handle(device_t *device)
 {
   disk_real_device_t *real_dev = device->real_device;
   disk_io_area_t *io = (disk_io_area_t *)device->io_address;
@@ -100,13 +100,13 @@ static void disk_interrupt_handle(device_t *device)
   /* Just reset both flags, since the handling is identical */
   io->command = DISK_COMMAND_WIRQ;
   io->command = DISK_COMMAND_RIRQ;
-    
+
   /* If this assert fails, disk has caused an interrupt without any
      service request. */
   KERNEL_ASSERT(real_dev->request_served != NULL);
 
   real_dev->request_served->return_value = 0;
-        
+
   /* Wake up the function that is waiting this request to be
      handled.  In case of synchronous request that is
      disk_submit_request. In case of asynchronous call it is
@@ -114,7 +114,7 @@ static void disk_interrupt_handle(device_t *device)
   semaphore_V(real_dev->request_served->sem);
   real_dev->request_served = NULL;
   disk_next_request(device->generic_device);
-    
+
   spinlock_release(&real_dev->slock);
 }
 
@@ -159,7 +159,7 @@ static int disk_write_block(gbd_t *gbd, gbd_request_t *request)
 
 /**
  * Submits a request to the request queue. Request is inserted in the
- * queue by disk scheduler. 
+ * queue by disk scheduler.
  *
  * If request is synchronous (request->sem == NULL) call will block
  * and wait until the request is handled. Appropriate return value is
@@ -174,10 +174,10 @@ static int disk_write_block(gbd_t *gbd, gbd_request_t *request)
  *
  * @return 1 if success, 0 otherwise.
  */
-static int disk_submit_request(gbd_t *gbd, gbd_request_t *request) 
-{ 
-  int sem_null; 
-  interrupt_status_t intr_status; 
+static int disk_submit_request(gbd_t *gbd, gbd_request_t *request)
+{
+  int sem_null;
+  interrupt_status_t intr_status;
   disk_real_device_t *real_dev = gbd->device->real_device;
 
   request->internal = NULL;
@@ -188,7 +188,7 @@ static int disk_submit_request(gbd_t *gbd, gbd_request_t *request)
   if(sem_null) {
     /* Semaphore is null so this is synchronous request.
        Create a new semaphore with value 0. This will cause
-       this function to block until the interrupt handler has 
+       this function to block until the interrupt handler has
        handled the request.
     */
     request->sem = semaphore_create(0);
@@ -218,11 +218,11 @@ static int disk_submit_request(gbd_t *gbd, gbd_request_t *request)
     request->sem = NULL;
 
     /* Request is handled. Check the retrun value. */
-    if(request->return_value == 0) 
+    if(request->return_value == 0)
       return 1;
     else
       return 0;
-     
+
   } else {
     /* Asynchronous call. Assume success, because request is not yet
        handled. */
@@ -244,7 +244,7 @@ static void disk_next_request(gbd_t *gbd)
   disk_io_area_t *io = (disk_io_area_t *)gbd->device->io_address;
   volatile gbd_request_t *req;
 
-  KERNEL_ASSERT(!(DISK_STATUS_RBUSY(io->status) || 
+  KERNEL_ASSERT(!(DISK_STATUS_RBUSY(io->status) ||
                   DISK_STATUS_WBUSY(io->status)));
   KERNEL_ASSERT(real_dev->request_served == NULL);
 
@@ -255,7 +255,7 @@ static void disk_next_request(gbd_t *gbd)
   }
   real_dev->request_queue = req->next;
   req->next = NULL;
-    
+
   real_dev->request_served = req;
 
 
@@ -266,7 +266,7 @@ static void disk_next_request(gbd_t *gbd)
   } else if(req->operation == GBD_OPERATION_WRITE) {
     io->command = DISK_COMMAND_WRITE;
   } else {
-    KERNEL_PANIC("disk_next_request: Unknown gbd operation."); 
+    KERNEL_PANIC("disk_next_request: Unknown gbd operation.");
   }
 
   if(DISK_STATUS_ERRORS(io->status)) {
@@ -290,11 +290,11 @@ static uint32_t disk_block_size(gbd_t *gbd)
   disk_real_device_t *real_dev = gbd->device->real_device;
   disk_io_area_t *io = (disk_io_area_t *)gbd->device->io_address;
   uint32_t ret;
-    
- 
+
+
   intr_status = _interrupt_disable();
   spinlock_acquire(&real_dev->slock);
-    
+
   io->command = DISK_COMMAND_BLOCKSIZE;
   ret = io->data;
 
@@ -319,11 +319,11 @@ static uint32_t disk_total_blocks(gbd_t *gbd)
   disk_real_device_t *real_dev = gbd->device->real_device;
   disk_io_area_t *io = (disk_io_area_t *)gbd->device->io_address;
   uint32_t ret;
-    
- 
+
+
   intr_status = _interrupt_disable();
   spinlock_acquire(&real_dev->slock);
-    
+
   io->command = DISK_COMMAND_BLOCKS;
   ret = io->data;
 
