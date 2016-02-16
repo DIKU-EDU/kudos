@@ -96,7 +96,8 @@ functions, a random number generator, etc.).  Documentation coming soon.
 ~~~~~~~~~~~~~~
 
 Utilities for using KUDOS (e.g. ``tfstool`` used for writing the Trivial
-Filesystem disk files).
+Filesystem disk files). See :doc:`appendix` for more information about
+``tfstool``.
 
 .. _userland:
 
