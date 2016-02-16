@@ -18,3 +18,4 @@ concepts. It is intended for:
    system-calls.rst
    device-drivers.rst
    builtin-drivers.rst
+   appendix.rst
