@@ -21,7 +21,7 @@
 #define VFS_UNUSABLE -9
 
 /* Maximum length of filename without mountpoint and directory names. */
-#define VFS_NAME_LENGTH 32
+#define VFS_NAME_LENGTH 16
 
 /* Maximum length of the full name of a file, including mountpoint and
    directories. */
