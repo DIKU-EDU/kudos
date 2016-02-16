@@ -30,8 +30,7 @@ static volatile tty_io_area_t *polltty_iobase;
  * polling TTY. If no TTY is found sets \texttt{polltty\_iobase} to
  * zero.
  */
-void polltty_init()
-{
+void polltty_init() {
   io_descriptor_t *io_desc;
 
   io_desc = (io_descriptor_t *)IO_DESCRIPTOR_AREA;
@@ -56,8 +55,7 @@ void polltty_init()
  * \texttt{polltty_iobase} is invalid, returns 0.
  *
  */
-int polltty_getchar()
-{
+int polltty_getchar() {
   /* Check that the iobase is valid */
   if (polltty_iobase == 0)
       return 0;
@@ -78,8 +76,7 @@ int polltty_getchar()
  * @param c The character to be output to the TTY.
  *
  */
-void polltty_putchar(int c)
-{
+void polltty_putchar(int c) {
   /* Check that the iobase is valid */
   if (polltty_iobase != 0) {
 
