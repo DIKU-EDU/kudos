@@ -205,5 +205,3 @@ void process_start(const char *executable, const char **argv)
 
   thread_goto_userland(&user_context);
 }
-
-/** @} */
