@@ -12,9 +12,6 @@
 /**
  * Handle system calls. Interrupts are enabled when this function is
  * called.
- *
- * @param user_context The userland context (CPU registers as they
- * where when system call instruction was called in userland)
  */
 uintptr_t syscall_entry(uintptr_t syscall, uintptr_t arg0, uintptr_t arg1, uintptr_t arg2)
 {
