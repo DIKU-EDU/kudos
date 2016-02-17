@@ -15,6 +15,7 @@ concepts. It is intended for:
    using-kudos.rst
    bootstrapping-kudos.rst
    kernel-overview.rst
+   userland-processes.rst
    system-calls.rst
    device-drivers.rst
    builtin-drivers.rst
