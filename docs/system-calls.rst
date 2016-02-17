@@ -79,88 +79,82 @@ Halting the Operating System
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``void syscall_halt(void)``
-"""""""""""""""""""""""""""
 
-This is the only system call already implemented in KUDOS. It will unmount all
-mounted filesystems and then power off the machine (YAMS will terminate). This
-system call is the *only* method for userland processes to cause the machine to
-halt.
+  This is the only system call already implemented in KUDOS. It will unmount
+  all mounted filesystems and then power off the machine (YAMS will terminate).
+  This system call is the *only* method for userland processes to cause the
+  machine to halt.
 
 Process Related
 ^^^^^^^^^^^^^^^
 
 ``int syscall_spawn(char const* filename)``
-"""""""""""""""""""""""""""""""""""""""""""
 
-* Create a new (child) user process which loads the file identified by
-  ``filename`` and executes the code in it.
+  * Create a new (child) user process which loads the file identified by
+    ``filename`` and executes the code in it.
 
-* Returns the process ID of the new process, or a negative number on
-  error.
+  * Returns the process ID of the new process, or a negative number on
+    error.
 
 ``void syscall_exit(int retval)``
-"""""""""""""""""""""""""""""""""
 
-* Terminate the running process with the exit code ``retval``.
+  * Terminate the running process with the exit code ``retval``.
 
-* This function halts the process and never returns.
+  * This function halts the process and never returns.
 
-* ``retval`` must be positive, as a negative value indicates a system
-  call error in ``syscall_join()`` (see next).
+  * ``retval`` must be positive, as a negative value indicates a system
+    call error in ``syscall_join()`` (see next).
 
 ``int syscall_join(int pid)``
-"""""""""""""""""""""""""""""
 
-* Wait until the child process identified by ``pid`` is finished
-  (i.e. calls ``process_exit()``).
+  * Wait until the child process identified by ``pid`` is finished
+    (i.e. calls ``process_exit()``).
 
-* Returns the exit code of the child, i.e., the value the child passed
-  to ``syscall_exit()`` (or returned from ``main()``).
+  * Returns the exit code of the child, i.e., the value the child passed
+    to ``syscall_exit()`` (or returned from ``main()``).
 
-* Returns a negative value on error.
+  * Returns a negative value on error.
 
 
 File-System Related
 ^^^^^^^^^^^^^^^^^^^
 
 ``int syscall_read(int filehandle, void *buffer, int length)``
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-* Read at most *length* bytes from the file identified by
-  ``filehandle`` into ``buffer``.
+  * Read at most ``length`` bytes from the file identified by
+    ``filehandle`` into ``buffer``.
 
-* The read starts at the current file position, and the file
-  position is advanced by the number of bytes actually read.
+  * The read starts at the current file position, and the file
+    position is advanced by the number of bytes actually read.
 
-* Returns the number of bytes actually read (e.g. ``0`` if the file
-  position is at the end of file), or a negative value on error.
+  * Returns the number of bytes actually read (e.g. ``0`` if the file
+    position is at the end of file), or a negative value on error.
 
-* If the ``filehandle`` is 0, the read is done from ``stdin``
-  (the console), which is always considered to be an open file.
+  * If the ``filehandle`` is 0, the read is done from ``stdin``
+    (the console), which is always considered to be an open file.
 
-* Filehandles 1 and 2 cannot be read from, and attempt to do so will
-  always return an error code.
+  * Filehandles 1 and 2 cannot be read from, and attempt to do so will
+    always return an error code.
 
 ``int syscall_write(int filehandle, const void *buffer, int length)``
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-* Write *length* bytes from *buffer* to the open file
-  identified by ``filehandle``.
+  * Write *length* bytes from *buffer* to the open file
+    identified by ``filehandle``.
 
-* Writing starts at the current file position, and the file
-  position is advanced by the number of bytes actually written.
+  * Writing starts at the current file position, and the file
+    position is advanced by the number of bytes actually written.
 
-* Returns the number of bytes actually written, or a negative
-  value on error. (If the return value is less than *length* but
-  ≥ 0, it means that some error occured but that the file was still
-  partially written).
+  * Returns the number of bytes actually written, or a negative
+    value on error. (If the return value is less than *length* but
+    ≥ 0, it means that some error occured but that the file was still
+    partially written).
 
-* If the ``filehandle`` is 1, the write is done to ``stdout`` (the
-  console), which is always considered to be an open file.
+  * If the ``filehandle`` is 1, the write is done to ``stdout`` (the
+    console), which is always considered to be an open file.
 
-* If the ``filehandle`` is 2, the write is done to ``stderr`` (
-  typically, also the console), which is always considered to be an open
-  file.
+  * If the ``filehandle`` is 2, the write is done to ``stderr`` (
+    typically, also the console), which is always considered to be an open
+    file.
 
-* Filehandle 0 cannot be written to and attempt to do so will always
-  return an error code.
+  * Filehandle 0 cannot be written to and attempt to do so will always
+    return an error code.
