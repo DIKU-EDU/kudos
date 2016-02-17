@@ -13,7 +13,8 @@
  * Handle system calls. Interrupts are enabled when this function is
  * called.
  */
-uintptr_t syscall_entry(uintptr_t syscall, uintptr_t arg0, uintptr_t arg1, uintptr_t arg2)
+uintptr_t syscall_entry(uintptr_t syscall,
+                        uintptr_t arg0, uintptr_t arg1, uintptr_t arg2)
 {
   arg0 = arg0;
   arg1 = arg1;
@@ -27,15 +28,13 @@ uintptr_t syscall_entry(uintptr_t syscall, uintptr_t arg0, uintptr_t arg1, uintp
    * returning from this function the userland context will be
    * restored from user_context.
    */
-  switch(syscall)
-    {
-    case SYSCALL_HALT:
-      halt_kernel();
-      break;
-    default:
-      KERNEL_PANIC("Unhandled system call\n");
-    }
+  switch(syscall) {
+  case SYSCALL_HALT:
+    halt_kernel();
+    break;
+  default:
+    KERNEL_PANIC("Unhandled system call\n");
+  }
 
-  /* No return code / value if we reach here */
   return 0;
 }
