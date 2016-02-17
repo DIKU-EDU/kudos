@@ -86,6 +86,40 @@ mounted filesystems and then power off the machine (YAMS will terminate). This
 system call is the *only* method for userland processes to cause the machine to
 halt.
 
+Process Related
+^^^^^^^^^^^^^^^
+
+``int syscall_spawn(char const* filename)``
+"""""""""""""""""""""""""""""""""""""""""""
+
+* Create a new (child) user process which loads the file identified by
+  ``filename`` and executes the code in it.
+
+* Returns the process ID of the new process, or a negative number on
+  error.
+
+``void syscall_exit(int retval)``
+"""""""""""""""""""""""""""""""""
+
+* Terminate the running process with the exit code ``retval``.
+
+* This function halts the process and never returns.
+
+* ``retval`` must be positive, as a negative value indicates a system
+  call error in ``syscall_join()`` (see next).
+
+``int syscall_join(int pid)``
+"""""""""""""""""""""""""""""
+
+* Wait until the child process identified by ``pid`` is finished
+  (i.e. calls ``process_exit()``).
+
+* Returns the exit code of the child, i.e., the value the child passed
+  to ``syscall_exit()`` (or returned from ``main()``).
+
+* Returns a negative value on error.
+
+
 File-System Related
 ^^^^^^^^^^^^^^^^^^^
 
