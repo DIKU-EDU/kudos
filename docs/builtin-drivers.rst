@@ -6,7 +6,6 @@ target are all designed to work with YAMS hardware.  The purpose of this section
 is to show how one can create actual drivers for for the KUDOS device driver
 interface.
 
-
 Polling TTY Driver
 ------------------
 
@@ -201,3 +200,8 @@ CPU Status
 
 Each processor has its own status device.  These devices can be used to count
 the number of CPUs on the system or to generate interrupts on any CPU.
+
+Exercises
+---------
+
+1. Both ``kwrite`` and ``kprintf`` use the polling TTY driver. Why?

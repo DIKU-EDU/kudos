@@ -158,3 +158,20 @@ File-System Related
 
   * Filehandle 0 cannot be written to and attempt to do so will always
     return an error code.
+
+Exercises
+---------
+
+1. ⌨ Implement a new system call ``syscall_hello`` in KUDOS with the system
+   call number ``0xAAA``. As a result of issuing the system call, KUDOS should
+   print "Hello, World!" to the terminal and return to the user.
+
+   You will need to define this system call number in ``kudos/proc/syscall.h``,
+   handle it in ``kudos/proc/syscall.c``, define a wrapper for it in
+   ``userland/lib.h``, and write the wrapper itself in ``userland/lib.c``. Last,
+   but not least, write a userland program ``userland/hello.c`` (similar to
+   ``userland/halt.c``) to test it.
+
+   You can use either the polling TTY, or the interrupt-driven TTY :doc:`device
+   driver <builtin-drivers>`.
+

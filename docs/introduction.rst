@@ -146,9 +146,9 @@ operating system project courses.
 
 The exercises look like this:
 
-1. *This is a theoretical exercise.*
+1. This is a theoretical exercise.
 
-2. ⌨ *This is a programming task.*
+2. ⌨ This is a programming task.
 
 References
 ----------
