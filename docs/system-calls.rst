@@ -145,7 +145,7 @@ File-System Related
     position is advanced by the number of bytes actually written.
 
   * Returns the number of bytes actually written, or a negative
-    value on error. (If the return value is less than *length* but
+    value on error. (If the return value is less than ``length`` but
     ≥ 0, it means that some error occured but that the file was still
     partially written).
 
