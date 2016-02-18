@@ -138,7 +138,7 @@ File-System Related
 
 ``int syscall_write(int filehandle, const void *buffer, int length)``
 
-  * Write *length* bytes from *buffer* to the open file
+  * Write ``length`` bytes from ``buffer`` to the open file
     identified by ``filehandle``.
 
   * Writing starts at the current file position, and the file
