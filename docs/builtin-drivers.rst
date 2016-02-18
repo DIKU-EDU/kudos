@@ -20,9 +20,10 @@ The polling driver is needed when booting up, since interrupts are disabled.  It
 is also useful in kernel panic situations, because interrupt handlers might not
 be relied on in such error cases.
 
-See ``kudos/drivers/polltty.h`` and ``kudos/drivers/$ARCH/polltty.c`` for code
-implementation and documentation.
-
+Perhaps the easiest way to use the polling TTY driver is using the builtin
+functions ``kwrite`` and ``kprintf`` (defined in ``kudos/lib/libc.h``). See
+``kudos/drivers/polltty.h`` and ``kudos/drivers/$ARCH/polltty.c`` for the
+implementation and documentation of the driver itself.
 
 Interrupt-driven TTY Driver
 ---------------------------
