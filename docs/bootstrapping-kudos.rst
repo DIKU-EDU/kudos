@@ -40,55 +40,45 @@ to coordinate resource usage. These are started in the respective,
 architecture-specific ``init`` functions in ``init/$ARCH/main.c``.
 
 ``stalloc``
-
   Provides permanent, static kernel memory allocation.
 
 ``polltty``
-
   Allows input from the keyboard, and text output to the display. This is a
   *polling* device, so getting input/putting output requires repeatedly checking
   the status of the keyboard/display in a busy-wait loop.
 
 ``interrupt``
-
   Allows devices and user processes to *interrupt* the CPU when they have an
   event that must be handled. This can be used to prevent the CPU from having to
   poll. The same subsystem handles *exceptions*.
 
 ``thread_table``
-
   Allows the operating system to have mutiple threads of execution. It is
   initialised, by creating a *thread table* to keep track of the threads. A
   *thread* of execution is (the state of) some running code, e.g. registers such
   as the instruction pointer.
 
 ``sleep_queue``
-
   A syncronization mechanism, allowing threads to wait on resources currently
   in use by other threads.
 
 ``semaphore``
-
   Another, high-level, inter-thread syncronization mechanism.
 
 ``device``
-
   Stores information about I/O devices, such as the TTY device, in a *device
   table*. In KUDOS, devices implement generic interfaces, minimizing code
   duplication.
 
 ``vfs``
-
   The Virtual File-System (VFS) is a generic file-system abstraction over more
   specific file-systems, such as the KUDOS Trivial File System (TFS).
 
 ``sheduler``
-
   Performs the actual switching of threads on and off CPU cores, saving the
   context of the thread, such as its registers.
 
 ``vm``
-
   Allows the operating system to place pages non-contiguously in memory, by
   mapping addresses from *physical addresses* to *virtual addresses*. Once this
   subsystem has been initialised, the ``stalloc`` subsystem is disabled.
