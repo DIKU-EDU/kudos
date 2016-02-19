@@ -21,15 +21,23 @@ for this purpose. The system call number is placed in ``a0``, and its three
 arguments in ``a1``, ``a2`` and ``a3``. If there is a need to pass more
 arguments for a system call, this can be easily achieved by making one of the
 arguments a memory pointer which points to a structure containing rest of the
-arguments.
+arguments. The return value of the system call is placed in a predefined
+register by the system call handler. In KUDOS the standard return value
+register ``v0`` is used.
 
 After the arguments are in place, the special machine instruction ``syscall``
-is executed. It generates a system call exception and thus transfers control to
-the kernel exception handler. The return value of the system call is placed in
-a predefined register by the system call handler. In KUDOS the standard return
-value register ``v0`` is used.
+is executed. The ``syscall`` instruction, in one, atomic instruction, does the
+following:
 
-The system call exception is handled then as follows (note that not all details
+1. sets the CPU core into **kernel mode**,
+2. **disables interrupts**, and
+3. causes a system call exception.
+
+When an instruction causes an exception, while the CPU core is in user mode,
+control is transfered to the user exception handler (defined in
+``kudos/proc/$ARCH/exception.c``).
+
+The system call exception is then handled as follows (note that not all details
 are mentioned here):
 
 1. The context is saved as with any exception or interrupt.
@@ -53,6 +61,14 @@ are mentioned here):
    as an exception handler.
 
 6. The context is restored, which also restores the thread to user mode.
+
+The last step above uses a "return from exception" instruction, ``eret``, which
+in one, atomic instruction, does the following:
+
+1. clears the exception flag,
+2. **enables interrupts**,
+3. sets the CPU core into **user mode**, and finally,
+4. jumps to the address in the ``EPC`` register on MIPS co-processor 0.
 
 **Note:** You cannot directly change thread/process (i.e. call scheduler) when
 in syscall or other exception handlers, since it will mess up the stack. All
