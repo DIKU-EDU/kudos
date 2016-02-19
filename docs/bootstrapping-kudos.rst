@@ -2,18 +2,50 @@ Bootstrapping KUDOS
 ===================
 
 This section explains the bootup process of KUDOS from the first instruction
-ever executed by the CPU to the point when userland processes can be started.
-This is **not** an introduction to *running* KUDOS in YAMS, for that, we refer
-you to :doc:`using-kudos`.
+ever executed by the CPU(s) to the point when userland processes can be
+started.  This is **not** an introduction to *running* KUDOS in YAMS, for that,
+we refer you to :doc:`using-kudos`.
 
-In the beginning there was ``_boot.S``
---------------------------------------
+Modern CPUs have at least two modes of operation: a *kernel mode*, which allows
+for all assembly instructions, including *privileged instructions*, to be
+executed, and *user mode*, which *does not* allow privileged instructions to be
+executed.
 
-When YAMS is powered up, its program counter is set to value ``0x80010000`` for
-all processors. This is the address where the KUDOS binary image is also
-loaded. Code in ``kudos/init/_boot.S`` is the very first code that YAMS will
-execute.  Because no initializations are done (ie. there is no stack),
-``_boot.S`` is written in assembly.
+Assembly code is both architecture-specific, and difficult to write and
+maintain. We therefore wish to keep the amount of assembly code in the kernel
+source code to the absolute minimum, running C code as soon as possible after
+boot.
+
+In order to run C code, an expandable region of memory called a "stack" is
+required. When a function is called, depending upon the specific call
+conventions, function parameters are *pushed* onto the stack (or placed in
+registers), and space for local variables is allocated. The *return address* of
+the function, i.e. the address of the next instruction to be executed after the
+function completes execution is also pushed onto the stack.
+
+The *stack pointer* is a CPU register that contains the memory address
+corresponding to the top of the stack. The *program counter / instruction
+pointer* registers contain the memory address of the next instruction to be
+executed by the CPU. This instruction is fetched from memory, and the CPU
+performs the corresponding operation on the values contained in the specified
+CPU registers. Machine instructions can read and write data from specified
+memory addresses into CPU registers.
+
+Booting ``kudos-mips32`` in YAMS
+--------------------------------
+
+When YAMS is powered up, the program counter register for every CPU (YAMS can
+simulate multiple CPU cores) is set to ``0x80010000``. This is where the
+``.text`` segment of ``kudos-mips32`` begins, i.e. where the first
+``kudos-mips32`` instruction is stored.
+
+All MIPS32-specific bootstrapping code is found in ``kudos/init/mips32/``.
+
+The assembly code in ``_boot.S`` is the very first code that ``kudos-mips32``
+will execute. The processor number is detected and all processors except number
+0 will enter a wait loop until kernel initialization is finished. Later, when
+the kernel initialization (in ``main.c``) is complete, processor 0 will signal
+the other processors to continue.
 
 The first thing that the ``boot.S`` code will do is processor separation. The
 processor number is detected and all processors except number 0 will enter a
@@ -21,16 +53,12 @@ wait loop waiting for the kernel initialization to be finished. Later, when the
 kernel initialization (in ``main.c``) is finished, processor 0 will signal the
 other processors to continue.
 
-So that further initialization code could be written in a high-level language,
-we need a stack. A temporary stack will be located at address ``0x8000fffc``,
-just below the starting point of the KUDOS binary image. The stack will grow
-downward. Setting up the base address of the stack is done after processor
-separation in ``_boot.S``. Later, after initialization code, every kernel
-thread will have own stack areas.
+The stack pointer is set to ``0x8000fffc``, which is just below the kernel
+image. This provides a temporary stack for the init C code. Later, each kernel
+thread will have its own stack area.
 
-After this we have a stack and high-level language routines may be used. On the
-next line of ``_boot.S``, we’ll jump to the high-level initialization code
-``init()`` located in ``kudos/init/main.c``.
+Once the init stack has been set up, we can jump to the ``init`` function in
+the (still) architecture-specific ``main.c``.
 
 Starting Subsystems
 -------------------
