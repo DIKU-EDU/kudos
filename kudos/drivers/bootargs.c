@@ -31,10 +31,13 @@ static struct bootargs_t {
 } bootargs_values[CONFIG_BOOTARGS_MAX];
 
 
-static void bmemcopy(void *target, const void *source, int len)
+static void bmemcopy(void *void_target, const void *void_source, int len)
 {
+  uint8_t *target = (uint8_t*)void_target;
+  const uint8_t *source = (const uint8_t*)void_source;
+
   while(len-- > 0) {
-    *((uint8_t *) target++) = *((uint8_t *) source++);
+    *(target++) = *(source++);
   }
 }
 

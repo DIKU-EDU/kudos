@@ -9,8 +9,10 @@
 #include "lib/libc.h"
 
 void vm_memwrite(pagetable_t *pagetable, unsigned int buflen,
-                 virtaddr_t target, const void *source)
+                 virtaddr_t target, const void *void_source)
 {
+  const uint8_t *source = (const uint8_t*)void_source;
+
   while (buflen > 0) {
     /* Find offset in target virtual page. */
     virtaddr_t voffset = target & PAGE_OFFSET_MASK;
