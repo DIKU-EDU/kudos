@@ -20,7 +20,10 @@ X86_64SYSLIBS := x86_64/crt.x86_64.o x86_64/_syscall.x86_64.o lib.x86_64.o
 CC      := mips-elf-gcc
 AS      := mips-elf-as
 LD      := mips-elf-ld
-CFLAGS  += -G0 -I../kudos -Wall -W -Werror -fno-builtin
+
+SHARED_CFLAGS=-I../kudos -Wall -Wextra -Werror -pedantic -std=c11
+
+CFLAGS  += $(SHARED_CFLAGS) -G0 -fno-builtin
 LDFLAGS := --script=mips32/ld.userland.script --cref -s -G0
 ASFLAGS := -I../kudos -Wa,-mips32
 
@@ -28,7 +31,7 @@ CCX86_64	:= x86_64-elf-gcc
 ASX86_64	:= x86_64-elf-as
 LDX86_64	:= x86_64-elf-ld
 
-CFLAGSX86_64  += -O2 -I../kudos -Wall -Werror -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding
+CFLAGSX86_64  += $(SHARED_CFLAGS) -O2 -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding
 LDFLAGSX86_64 := --script=x86_64/ld.userland.script -z max-page-size=0x1000
 ASFLAGSX86_64 := -I../kudos
 

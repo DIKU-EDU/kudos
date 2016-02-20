@@ -18,13 +18,14 @@ TARGET_MIPS32 := kudos-mips32
 TARGET_X86_64	:= kudos-x86_64
 UTILTARGET 		:= util/tfstool
 
-
 # Compiler and tar configuration
 CC      := mips-elf-gcc
 AS      := mips-elf-as
 LD      := mips-elf-ld
 
-CFLAGS  += -g -G0 -O2 -I. -Wall -W -Werror $(CHANGEDFLAGS)
+SHARED_CFLAGS=-g -O2 -I. -Wall -Wextra -Werror -std=c11
+
+CFLAGS  += $(SHARED_CFLAGS) -G0 $(CHANGEDFLAGS)
 LDFLAGS := --script=ldmips32.script --cref -G0 -Map kudos-mips32.map
 ASFLAGS := -gstabs+ -I. -Wa,-mips32 $(CHANGEDFLAGS)
 
@@ -32,7 +33,7 @@ CCX86_64	:= x86_64-elf-gcc
 ASX86_64	:= x86_64-elf-as
 LDX86_64	:= x86_64-elf-ld
 
-CFLAGSX86_64  += -O2 -I. -g -fverbose-asm -Wall -Werror -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding -D SMALL_ENDIAN $(CHANGEDFLAGS)
+CFLAGSX86_64  += $(SHARED_CFLAGS) -fverbose-asm -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding -D SMALL_ENDIAN $(CHANGEDFLAGS)
 LDFLAGSX86_64 := --script=ldx86_64.script -z max-page-size=0x1000 -Map kudos-x86_64.map
 ASFLAGSX86_64 := -I.
 
