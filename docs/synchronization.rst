@@ -107,6 +107,11 @@ interface specified in ``kudos/kernel/spinlock.h``.  Recall that **interrupts
 must always be disabled when a spinlock is held**, otherwise Bad Things™ will
 happen.
 
+``void spinlock_reset(spinlock_t *slock)``
+  Initializes the specified spinlock to be free. Should be done before any
+  processor attempts to acquire the spinlock. This is really an alias to
+  ``spinlock_release``.
+
 ``void spinlock_acquire(spinlock_t *slock)``
   Acquire specified spinlock; while waiting for lock to be free, spin.
 
@@ -130,10 +135,6 @@ happen.
   +===========================+
   |  1. Write 0 to ``slock``. |
   +---------------------------+
-
-``void spinlock_reset(spinlock_t *slock)``
-  Initializes the specified spinlock to be free. This is really an alias to
-  ``spinlock_release``.
 
 Exercises
 ^^^^^^^^^
