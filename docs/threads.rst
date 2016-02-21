@@ -6,7 +6,9 @@ A *thread of execution* is the execution of a sequence of instructions. The
 execution, including things like the *program counter*, *stack pointer*, and
 *co-processor* registers. A thread may be *interrupted*, or *pre-empted*, its
 context stored in memory, only to be restored, and thread *re-entered* at a
-later point in time.
+later point in time. A thread may be pre-empted to let another thread re-enter
+and do some other useful work. A *scheduler* decides which thread gets to go
+next.
 
 On a *uniprocessor* system threads offer the illusion of having multiple,
 co-operating CPUs, while offering truly *concurrent* execution on a
