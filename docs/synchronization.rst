@@ -33,6 +33,10 @@ execution <threads>`, while sharing the same physical memory. This can lead to
 a whole new class of race conditions, where multiple concurrent threads access
 the same memory location at (what appears to be) exactly the same time.
 
+If you would like to keep things simple, YAMS *can* be configured to run with
+just 1 CPU core. See the :doc:`appendix` for more details. We recommend to get
+started with spinlocks right away.
+
 A spinlock is the most basic, low-level synchronization primitive for
 multiprocessor systems. A spinlock is acquired by repeatedly checking the
 lock's value until it is available (busy-waiting or "spinning"), and then
