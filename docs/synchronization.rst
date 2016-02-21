@@ -69,8 +69,8 @@ managed by the virtual memory subsystem, and so must be statically allocated in
 kernel memory. This should not be a problem, as spinlocks are purely a
 **kernel-level synchronization primitive**.
 
-MIPS Load-Linked/Store-Conditional
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+MIPS' Read-Modify-Write
+^^^^^^^^^^^^^^^^^^^^^^^
 
 MIPS does not provide a test-and-set instruction, but instead provides a pair
 of instructions for implementing a read-modify-write (RMW) sequence. A RMW
