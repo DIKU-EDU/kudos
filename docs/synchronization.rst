@@ -99,8 +99,8 @@ cache line.
 For an implementation of an RMW sequence in MIPS32, see
 ``kudos/mips32/_spinlock.S``.
 
-Spinlocks API
-^^^^^^^^^^^^^
+Spinlock API
+^^^^^^^^^^^^
 
 The low-level assembly routines implement the architecture-independent
 interface specified in ``kudos/kernel/spinlock.h``.  Recall that **interrupts
