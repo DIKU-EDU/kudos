@@ -100,7 +100,9 @@ a file.
 YAMS can then attach this file as a block device. This is done by adding a
 ``disk`` section to the YAMS configuration file. Handout KUDOS will attach a
 file named ``store.file``. Change the ``filename`` string if you prefer a
-different name.
+different name, or add another ``disk`` section if you want multiple disks.
+
+Note: the disks should have different volume names.
 
 Number of processors
 ^^^^^^^^^^^^^^^^^^^^
