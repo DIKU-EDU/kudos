@@ -78,7 +78,9 @@ with KUDOS. The file is structured into sections as follows:
 | Name          | Purpose                                         |
 +===============+=================================================+
 | ``simulator`` | Configuration of the simulator itself.          |
++---------------+-------------------------------------------------+
 | ``disk``      | Configuration of the attached block devices.    |
++---------------+-------------------------------------------------+
 | ``tty``       | Configuration of the attached terminal devices. |
 +---------------+-------------------------------------------------+
 
