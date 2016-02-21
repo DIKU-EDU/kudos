@@ -89,6 +89,19 @@ configuration. For a more in-depth documentation of YAMS, we refer you to the
 `YAMS 1.4.1 Reference Manual
 <https://www.niksula.hut.fi/~buenos/dist/yams-1.4.1.pdf>`_.
 
+Disk filename
+^^^^^^^^^^^^^
+
+KUDOS implements a trivial file system (TFS), which can be used to read, write,
+and execute files in KUDOS. The ``tfstool`` (documented above) can be used to
+create TFS volumes, read from, write to such volumes. A TFS volume is stored in
+a file.
+
+YAMS can then attach this file as a block device. This is done by adding a
+``disk`` section to the YAMS configuration file. Handout KUDOS will attach a
+file named ``store.file``. Change the ``filename`` string if you prefer a
+different name.
+
 Number of processors
 ^^^^^^^^^^^^^^^^^^^^
 
