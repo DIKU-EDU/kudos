@@ -3,7 +3,7 @@ Synchronization
 
 KUDOS is designed to support multiple :doc:`threads of execution <threads>`. To
 avoid threads getting in the way of one another, KUDOS provides a number of
-synchronization primitives. These can be used to demarcate a critical region
+synchronization primitives. These can be used to demarcate a critical region,
 and ensure exclusive access to a kernel resource.
 
 Interrupts
