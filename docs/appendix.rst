@@ -67,3 +67,34 @@ The accepted commands are also explained below:
 
   Delete the file with name ``<TFS-filename>`` from the TFS volume residing in
   the file ``<filename>``.
+
+YAMS Configuration
+------------------
+
+A sample YAMS configuration file, called ``yams.conf``, is handed out together
+with KUDOS. The file is structured into sections as follows:
+
++---------------+-------------------------------------------------+
+| Name          | Purpose                                         |
++===============+=================================================+
+| ``simulator`` | Configuration of the simulator itself.          |
+| ``disk``      | Configuration of the attached block devices.    |
+| ``tty``       | Configuration of the attached terminal devices. |
++---------------+-------------------------------------------------+
+
+The following subsections document some of the relevant parts of this
+configuration. For a more in-depth documentation of YAMS, we refer you to the
+`YAMS 1.4.1 Reference Manual
+<https://www.niksula.hut.fi/~buenos/dist/yams-1.4.1.pdf>`_.
+
+Number of processors
+^^^^^^^^^^^^^^^^^^^^
+
+KUDOS is designed to be a *symmetric multiprocessing (SMP)* system, which means
+that it supports multiple CPU cores, having each their own :doc:`thread of
+execution <threads>`, while sharing the same physical memory. This can lead to
+a whole class of race conditions, where multiple concurrent threads access the
+same memory location at (what appears to be) exactly the same time.
+
+To avoid problems with simultaneity you can set the ``cpus`` number to 1 in the
+``simulator`` section. Handout KUDOS typically sets this number to 4.
