@@ -56,9 +56,9 @@ void interrupt_init(int num_cpus) {
    * will contain the same code.
    */
   for(i = 0 ; i < INTERRUPT_VECTOR_LENGTH ; i++) {
-    iv_area1[i] = ((uint32_t *) &_cswitch_vector_code)[i];
-    iv_area2[i] = ((uint32_t *) &_cswitch_vector_code)[i];
-    iv_area3[i] = ((uint32_t *) &_cswitch_vector_code)[i];
+    iv_area1[i] = ((uint32_t *) (uintptr_t) &_cswitch_vector_code)[i];
+    iv_area2[i] = ((uint32_t *) (uintptr_t) &_cswitch_vector_code)[i];
+    iv_area3[i] = ((uint32_t *) (uintptr_t) &_cswitch_vector_code)[i];
   }
 
   /* Initialize the handler table to empty */
