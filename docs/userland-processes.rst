@@ -47,7 +47,7 @@ New processes can currently be started by calling the function
 implement the ``spawn`` system call, but it can be used to fire up test
 processes::
 
-    void process_start(char *executable, const char **argv)
+    void process_start(char const *executable, char const **argv)
 
 * Starts one userland process. The code and data for the process is
   loaded from file \texttt{executable}.

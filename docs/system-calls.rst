@@ -104,10 +104,14 @@ Halting the Operating System
 Process Related
 ^^^^^^^^^^^^^^^
 
-``int syscall_spawn(char const* filename)``
+``int syscall_spawn(char const *filename, char const **argv)``
 
   * Create a new (child) user process which loads the file identified by
     ``filename`` and executes the code in it.
+
+  * ``argv`` specifies the arguments passed to the ``main()`` function
+    of the new process, *not* including the name of the process
+    itself.
 
   * Returns the process ID of the new process, or a negative number on
     error.
