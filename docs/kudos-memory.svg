@@ -17,12 +17,12 @@
    height="641.25"
    viewBox="0 0 417.5 641.25"
    sodipodi:docname="kudos-memory.svg"
-   inkscape:export-filename="/home/niels/diku/osm/kudos/docs/kudos-memory.png"
+   inkscape:export-filename="/home/nicklas/Documents/Uni/instruktor/kudos/docs/kudos-memory.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6" /><sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -32,15 +32,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1080"
+     inkscape:window-width="1918"
+     inkscape:window-height="1042"
      id="namedview4"
      showgrid="false"
-     inkscape:zoom="1.4019493"
-     inkscape:cx="199.4772"
-     inkscape:cy="320.625"
+     inkscape:zoom="3.2598802"
+     inkscape:cx="208.75"
+     inkscape:cy="206.49819"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="37"
      inkscape:window-maximized="0"
      inkscape:current-layer="g22" /><g
      id="g10"
@@ -106,8 +106,8 @@
              sodipodi:role="line"
              id="tspan42"
              y="-54">  kernel image</tspan><tspan
-             x="162 171.6012 176.39639 184.7988 190.19881 193.7952 199.19521 201.8952 206.6904 209.69279 212.69521 218.0952 222.8904 227.68559 230.688 235.4832 240.88319 243.58321 248.9832 254.38319 257.08319 262.48318 270.88559 275.68079 278.6832 281.68561 287.0856"
+             x="162 171.6012 176.39639 184.7988 190.19881 193.7952 199.19521 201.8952 206.6904 209.69279 212.69521 218.0952 222.8904 227.68559 230.688 235.4832 240.88319 243.58321 248.9832 254.38319"
              y="-157.5"
              sodipodi:role="line"
-             id="tspan44">Memory allocated by kmalloc</tspan></text>
+             id="tspan44">Memory allocated by stalloc</tspan></text>
 </g></g></g></svg>
