@@ -20,6 +20,7 @@ concepts. It is intended for:
    advanced-synchronization.rst
    userland-processes.rst
    system-calls.rst
+   virtual-memory.rst
    device-drivers.rst
    builtin-drivers.rst
    appendix.rst
