@@ -19,12 +19,12 @@ the TLB and are currently put in place by calling ``tlb_fill`` after the
 scheduler has changed threads. The system does not handle *TLB exceptions*,
 and thus the kernel implementation does not use mapped memory.
 
-Since kernel needs both virtual addresses for actual usage and physical address for
-hardware, simple mapping macros are available for easy conversion. These macros
-are ``ADDR_PHYS_TO_KERNEL()`` and ``ADDR_KERNEL_TO_PHYS()`` and they are defined in
-vm/mips32/mem.h. Note that the macros can support only kernel region addresses
-which are within the first 512MB of physical memory. See below for description on
-address regions.
+A proper system uses virtual addresses for processes, and uses physical
+addresses for hardware.  Because of this, simple mapping macros are available
+for easy conversion. These macros are ``ADDR_PHYS_TO_KERNEL()`` and
+``ADDR_KERNEL_TO_PHYS()``, defined in `kudos/vm/mips32/mem.h`. Note that the
+macros can support only kernel region addresses which are within the first 512MB
+of physical memory. See below for description on address regions.
 
 Hardware Support for Virtual Memory
 -----------------------------------
@@ -33,18 +33,18 @@ The hardware in YAMS supports virtual memory with two main mechanisms: memory
 segmentation and the TLB. The system doesn't support
 hardware page tables. All page table operations and data structures are defined
 by the operating system. The page size of the hardware is 4 KiB (4096 bytes). All
-mappings are done in page sized chunks.
+mappings are done in page-sized chunks.
 
 Memory segmentation means that addresses of different regions of the address space
 behaves differently. The system has a 32-bit address space.
 
 If the topmost bit of an address is 0 (the first 2GiB of address space), the address
-is valid to use even if the CPU is in user mode (not in kernel mode). This region of
-addresses is called the user mapped region and it is used by userland programs and
+is valid to use even if the CPU is in user mode (i.e. not in kernel mode). This region of
+addresses is called the "user-mapped region" and it is used by userland programs and
 in the kernel when userland memory is manipulated. This region is mapped. Mapping
 means that the addresses do not refer to real memory addresses, but the real memory
 page is looked up from TLB when an address in this region is used. The TLB is
-described in more detail in its own section (see section XX).
+described in more detail in its own subsection.
 
 The rest of the address space is reserved for the operating system kernel and
 will generate an exception if used while the CPU is in user (non-privileged) mode.
@@ -54,10 +54,10 @@ size. The supervisor mapped region is not used in KUDOS. The kernel unmapped
 uncached region is also not used in KUDOS except for memory mapped I/O-devices
 (YAMS doesn’t have caches).
 
-The kernel mapped region behaves just like the user mapped region, except that
+The kernel-mapped region behaves just like the user-mapped region, except that
 it is usable only in kernel mode. This region can be used for mapping memory areas
 for kernel threads. The area is currently unused, but its usage might be needed in
-proper VM implementation.
+a proper VM implementation.
 
 The kernel unmapped region is used for static data structures in the kernel and
 also for the kernel binary itself. The region maps directly to the first 512MiB of
