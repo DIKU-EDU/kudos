@@ -216,7 +216,7 @@ one by one with the ``vm_unmap()`` function. The dirty bit of a mapping can be c
     3. If the mapping is not found, ``PANIC``.
 
 TLB
-===
+---
 
 Most modern processors access virtual memory through a Translation Lookaside
 Buffer (TLB). It is an associative table inside the memory management unit (MMU,
