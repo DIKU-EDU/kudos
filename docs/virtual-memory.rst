@@ -6,12 +6,13 @@ so that they cannot see or manipulate memory allocated by other processes. The
 current KUDOS implementation does not achieve these goals. Instead, it provides
 tools and utility functions which are useful when implementing a real and working
 virtual memory subsystem.
+
 Currently the VM subsystem has primitive page tables for threads and processes,
 utilities to manipulate hardware Translation Lookaside Buffer (TLB) and a simple
-mechanism for allocating and
-freeing physical pages. There is no swapping, the pagetables are inefficient to use
-and hardware TLB is used in a very limited way. Kernel threads must also manipulate
-allocated memory directly by pages. 
+mechanism for allocating and freeing physical pages. There is no swapping, the
+pagetables are inefficient to use and hardware TLB is used in a very limited
+way. Kernel threads must also manipulate allocated memory directly by pages.
+
 As result of this simple approach, the system can support only 16 pages of
 mappings (64 kB) for each (userland) process. These 16 mappings can be fit into
 the TLB and are currently put in place by calling ``tlb_fill`` after the
@@ -27,13 +28,16 @@ address regions.
 
 Hardware Support for Virtual Memory
 -----------------------------------
+
 The hardware in YAMS supports virtual memory with two main mechanisms: memory
 segmentation and the TLB. The system doesn't support
 hardware page tables. All page table operations and data structures are defined
 by the operating system. The page size of the hardware is 4 KiB (4096 bytes). All
 mappings are done in page sized chunks.
+
 Memory segmentation means that addresses of different regions of the address space
 behaves differently. The system has a 32-bit address space.
+
 If the topmost bit of an address is 0 (the first 2GiB of address space), the address
 is valid to use even if the CPU is in user mode (not in kernel mode). This region of
 addresses is called the user mapped region and it is used by userland programs and
@@ -41,6 +45,7 @@ in the kernel when userland memory is manipulated. This region is mapped. Mappin
 means that the addresses do not refer to real memory addresses, but the real memory
 page is looked up from TLB when an address in this region is used. The TLB is
 described in more detail in its own section (see section XX).
+
 The rest of the address space is reserved for the operating system kernel and
 will generate an exception if used while the CPU is in user (non-privileged) mode.
 This space is divided into four segments: kernel unmapped uncached, kernel
@@ -48,10 +53,12 @@ unmapped, supervisor mapped and kernel mapped. Each segment is 512MiB in
 size. The supervisor mapped region is not used in KUDOS. The kernel unmapped
 uncached region is also not used in KUDOS except for memory mapped I/O-devices
 (YAMS doesn’t have caches).
+
 The kernel mapped region behaves just like the user mapped region, except that
 it is usable only in kernel mode. This region can be used for mapping memory areas
 for kernel threads. The area is currently unused, but its usage might be needed in
 proper VM implementation.
+
 The kernel unmapped region is used for static data structures in the kernel and
 also for the kernel binary itself. The region maps directly to the first 512MiB of
 system memory (just strip the most significant bit of an address).
@@ -66,6 +73,7 @@ and in device drivers when doing DMA data transfers.
 
 KUDOS Virtual Memory Initialization
 -----------------------------------
+
 During the virtual memory Initialization (functions ``vm_init`` and ``physmem_init``) a
 bitmap data structure ``physmem_free_pages`` is created to keep track of available
 physical memory pages. The ability to do arbitrary length permanent memory reservations
@@ -74,6 +82,7 @@ reserved pages.
 
 Page bitmap
 <<<<<<<<<<<
+
 The page bitmap (also called a *page pool*) is a data structure containing the status
 of all physical pages.
 The status of a physical page is either free or reserved. The status information
@@ -151,6 +160,7 @@ with proper mappings manually before running threads (userland processes) which
 needs them. This can be achieved by calling ``tlb_fill()`` (see ``proc/mips32/_proc.c``:
 ``process_set_pagetable()`` and ``kernel/mips32/interrupt.c``: ``interrupt_handle()`` for current
 usage).
+
 When the thread no longer needs its memory mappings, it must destroy its
 pagetable by calling ``vm_destroy_pagetable()``. Note that this only clears the mappings,
 but does not invalidate the pagetable entry in thread information structure,
@@ -207,10 +217,12 @@ one by one with the ``vm_unmap()`` function. The dirty bit of a mapping can be c
 
 TLB
 ===
+
 Most modern processors access virtual memory through a Translation Lookaside
 Buffer (TLB). It is an associative table inside the memory management unit (MMU,
 ``CP0`` in MIPS32) which consists of a small number of entries similar to page table
 entries mapping virtual memory pages to physical pages.
+
 When the address of a memory reference falls into a mapped memory range
 (``0x00000000-0x7fffffff`` or ``0xc0000000-0xffffffff`` in MIPS) the virtual page
 of the address is translated into a physical page by the MMU hardware by looking
@@ -219,21 +231,25 @@ virtual page has no entry in the TLB, a TLB exception occurs.
 
 TLB dual entries and ASID in MIPS32 architectures
 -------------------------------------------------
+
 In the MIPS32 architecture, one TLB entry always maps two consecutive pages, even
 and odd. This needs to be taken into account when implementing the TLB handling
 routines, as a new mapping may need to be added to an already existing TLB entry.
 One might think that the consecutive pages could be mapped in separate entries,
 leaving the other page in the entry as invalid, but this would result in duplicate
 TLB matches and thus cause undefined behavior.
+
 A MIPS32 TLB entry also has an Address Space ID (``ASID``) field. When the
 ``CP0`` is checking for a TLB match, the ``ASID`` of the entry must match the
 current ``ASID`` for the processor, specified in the ``EntryHi`` register (or the global bit
 is on). Thus, when using different
 ``ASID`` for each thread, the TLB need not necessarily be invalidated when switching
 between threads.
+
 KUDOS uses the ``tlb_entry_t`` structure to store page mappings. The entries in
 this structure are compatible with the hardware TLB. The fields are described in
 table below.
+
 The exception handler in ``kernel/mips32/exception.c`` should dispatch TLB exceptions
 to the following functions, implemented in ``vm/mips32/tlb.c`` (note that the current implementation
 does not dispatch TLB exceptions):
@@ -252,6 +268,7 @@ does not dispatch TLB exceptions):
 
 TLB miss exception, Load reference
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 The cause of this exception is a memory load operation for which either no entry
 was found in the TLB (TLB refill) or the entry found was invalid (TLB invalid).
 These cases can be distinguished by probing the TLB for the failing page number.
@@ -259,11 +276,13 @@ The exception code is ``EXCEPTION_TLBL``.
 
 TLB miss exception, Store reference
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 This exception is the same as the previous except that the operation which caused
 it was a memory store. The exception code is ``EXCEPTION_TLBS``.
 
 TLB modified exception
 <<<<<<<<<<<<<<<<<<<<<<
+
 This exception occurs if an entry was found for a memory store reference but the
 entry’s D bit is zero, indicating the page is not writable. The D bit can be used both
 for write protection and pagetable coherence when swapping is enabled (dirty/not
@@ -271,6 +290,7 @@ dirty). The exception code is ``EXCEPTION_TLBM``.
 
 TLB wrapper functions in KUDOS
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 The following wrapper functions to CP0 TLB operations, implemented in ``vm/mips32/_tlb.S``,
 are provided so that writing assembler code is not required.
 
