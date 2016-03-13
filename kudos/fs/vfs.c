@@ -556,8 +556,8 @@ openfile_t vfs_open(char *pathname)
 }
 
 /**
- * Verifies that given open file is actually open. This should only be called
- * while the open file table lock is held.
+ * Verifies that given open file is actually open. Ideally, this should
+ * only be called while the open file table lock is held.
  *
  * @param file Openfile id.
  *
@@ -679,7 +679,6 @@ int vfs_read(openfile_t file, void *buffer, int bufsize)
 
   openfile = vfs_verify_open(file);
   if (openfile == NULL) {
-    semaphore_V(openfile_table.sem);
     return VFS_INVALID_PARAMS;
   }
 
@@ -728,7 +727,6 @@ int vfs_write(openfile_t file, void *buffer, int datasize)
 
   openfile = vfs_verify_open(file);
   if (openfile == NULL) {
-    semaphore_V(openfile_table.sem);
     return VFS_INVALID_PARAMS;
   }
 
