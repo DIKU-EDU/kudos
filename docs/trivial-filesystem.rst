@@ -28,3 +28,39 @@ data blocks. The following figure illustrates the structure of a TFS volume:
 
      An illustration of the disk blocks on a TFS volume.
 
+Note that all multibyte data in TFS is *big-endian*. This is not a problem in
+the MIPS32 version of KUDOS, since YAMS is big-endian also, but in the x86-64
+version of KUDOS this is a problem, since x86-64 is small-endian. This has been
+fixed by implementing a transparent function that you will find in the source
+code of TFS, a function ``to_small_endian`` which is called on a lot of data.
+In x86-64 this function translates it to small endian, in MIPS this function
+does nothing.
+
+The volume header block has the following structure. Other data may be present
+after these fields, but it is ignored by TFS.
+
++----------+-------------------------------+-------------+----------------------+
+| Offset   | Type                          | Name        | Description          |
++==========+===============================+=============+======================+
+| ``0x00`` | ``uint32_t``                  | ``magic``   | Magic number, must   |
+|          |                               |             | be 3745 (``0x0EA1``) |
+|          |                               |             | TFS volumes.         |
++----------+-------------------------------+-------------+----------------------+
+| ``0x04`` | ``char[TFS_VOLUMENAME_MAX]``  | ``volname`` | Name of the volume,  |
+|          |                               |             | including the        |
+|          |                               |             | terminating zero     |
++----------+-------------------------------+-------------+----------------------+
+ 
+When compiling for x86_64, these field are big-endian, so the conversion
+function must be used.
+
+The block allocation table is a bitmap which records the free and reserved
+blocks on the disk, one bit per block, 0 meaning free and 1 reserved. For a
+512-byte block size, the allocation table can hold 4096 bits, resulting in a
+2MB disk. Note that the allocation table includes also the three first blocks,
+which are always reserved.
+
+The master directory consists of a single disk block, containing a table of the
+following 20-byte entries. This means that a disk with a 512-byte block size
+can have at most 25 files (512/20 = 25.6).
+
