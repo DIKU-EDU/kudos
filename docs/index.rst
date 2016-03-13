@@ -24,4 +24,6 @@ concepts. It is intended for:
    device-drivers.rst
    builtin-drivers.rst
    filesystems.rst
+   virtual-filesystem.rst
+   trivial-filesystem.rst
    appendix.rst
