@@ -83,6 +83,92 @@ for the end of string marker, i.e. ``VFS_PATH_LENGTH`` is set to 256.
 Internal Data Structures
 ------------------------
 
+VFS has two primary data structures: the table of all attached filesystems and
+the table of open files.
+
+The table of all filesystems, ``vfs_table``, is structured as follows:
+
+
++-----------------------------------------+-----------------+-------------------------------+
+| Type                                    | Name            | Description                   |
++=========================================+=================+===============================+
+| ``sempahore_t *``                       | ``sem``         | A binary semaphore used for   |
+|                                         |                 | exclusive access to the       |
+|                                         |                 | filesystems table.            |
++-----------------------------------------+-----------------+-------------------------------+
+| ``vfs_entry_t[CONFIG_MAX_FILESYSTEMS]`` | ``filesystems`` | The filesystems table itself. |
++-----------------------------------------+-----------------+-------------------------------+
+
+A ``vfs_entry_t`` itself has the following fields:
+
++---------------------------+----------------+--------------------------------+
+| Type                      | Name           | Description                    |
++===========================+================+================================+
+| ``fs_t *``                | ``filesystem`` | The filesystem driver for this |
+|                           |                | mount-point. If ``NULL``, this |
+|                           |                | entry is unused.               |
++---------------------------+----------------+--------------------------------+
+| ``char[VFS_NAME_LENGTH]`` | ``mountpoint`` | The name of this mount-point.  |
++---------------------------+----------------+--------------------------------+
+
+The table is initialized to contain only ``NULL`` filesystems. All access to
+this table must be protected by acquiring the semaphore used to lock the table
+(``vfs_table.sem``). New filesystems can be added to this table whenever there
+are free rows, but only filesystems with no open files can be removed from the
+table.
+
+The table of open files (``openfile_table``) is structured as follows:
+
++---------------------------------------------+-----------+-----------------------+
+| Type                                        | Name      | Description           |
++=============================================+===========+=======================+
+| ``semaphore_t *``                           | ``sem``   | A binary semaphore    |
+|                                             |           | used for exclusive    |
+|                                             |           | access to this        |
+|                                             |           | table.                |
++---------------------------------------------+-----------+-----------------------+
+| ``openfile_entry_t[CONFIG_MAX_OPEN_FILES]`` | ``files`` | Table of open files.  |
++---------------------------------------------+-----------+-----------------------+
+
+The open files table is also protected by a semaphore (``openfile_table.sem``).
+Whenever the table is altered, this semaphore must be held.
+
+An ``openfile_entry_t`` itself has the following fields:
+
++-------------+-------------------+-------------------------------------+
+| Type        | Name              | Description                         |
++=============+===================+=====================================+
+| ``fs_t *``  | ``filesystem``    | The filesystem in which this        |
+|             |                   | open file is located. If ``NULL``,  |
+|             |                   | this is a free entry.               |
++-------------+-------------------+-------------------------------------+
+| ``int``     | ``fileid``        | A filesystem defined id for         |
+|             |                   | this open file. Every file in a     |
+|             |                   | filesystem must have a              |
+|             |                   | unique id. Ids do not need          |
+|             |                   | to be globally unique.              |
++-------------+-------------------+-------------------------------------+
+| ``int``     | ``seek_position`` | The current seek position in        |
+|             |                   | the file.                           |
++-------------+-------------------+-------------------------------------+
+
+If access to both tables is needed, the semaphore for ``vfs_table`` must be
+held before the ``openfile_table`` semaphore can be lowered. This convention is
+used to prevent deadlocks.
+
+In addition to these, VFS uses two semaphores and two integer variables to
+track active filesystem operations. The first semaphore is ``vfs_op_sem``,
+which is used as a lock to synchronize access to the three other variables. The
+second semaphore, ``vfs_unmount_sem``, is used to signal pending unmount
+operations when the VFS becomes idle.
+
+The initial value of ``vfs_op_sem`` is one and ``vfs_unmount_sem`` is initially
+zero. The integer ``vfs_ops`` is a zero initialized counter which indicates the
+number of active filesystem operations on any given moment. Finally, the
+boolean ``vfs_usable`` indicates whether VFS subsystem is in use. VFS is out of
+use before it has been initialized and it is turned out of use when a forceful
+unmount is started by the shutdown process.
+
 .. _vfs_operations:
 
 VFS Operations
