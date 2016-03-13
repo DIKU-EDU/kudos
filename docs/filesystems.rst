@@ -54,3 +54,13 @@ fully virtual filesystems. An example of a "fully virtual filesystem" is the
 information available from under the ``/proc`` directory. The actual filesystem
 driver is recognized from the volume name part of a full absolute pathname
 provided to the access functions.
+
++-----------------------+------------------------------------------+
+| Files                 | Purpose                                  |
++=======================+==========================================+
+| ``vfs.[hc]``          | :doc:`virtual-filesystem` implementation |
++-----------------------+------------------------------------------+
+| ``filesystems.[hc]``  | Available filesystems                    |
++-----------------------+------------------------------------------+
+| ``tfs.[hc]``          | :doc:`trivial-filesystem` implementation |
++-----------------------+------------------------------------------+
