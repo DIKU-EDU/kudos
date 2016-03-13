@@ -140,44 +140,77 @@ File-System Related
 ^^^^^^^^^^^^^^^^^^^
 
 ``int syscall_read(int filehandle, void *buffer, int length)``
-
   * Read at most ``length`` bytes from the file identified by
     ``filehandle`` into ``buffer``.
-
   * The read starts at the current file position, and the file
     position is advanced by the number of bytes actually read.
-
   * Returns the number of bytes actually read (e.g. ``0`` if the file
     position is at the end of file), or a negative value on error.
-
   * If the ``filehandle`` is 0, the read is done from ``stdin``
     (the console), which is always considered to be an open file.
-
   * Filehandles 1 and 2 cannot be read from, and attempt to do so will
     always return an error code.
 
 ``int syscall_write(int filehandle, const void *buffer, int length)``
-
   * Write ``length`` bytes from ``buffer`` to the open file
     identified by ``filehandle``.
-
   * Writing starts at the current file position, and the file
     position is advanced by the number of bytes actually written.
-
   * Returns the number of bytes actually written, or a negative
     value on error. (If the return value is less than ``length`` but
     ≥ 0, it means that some error occured but that the file was still
     partially written).
-
   * If the ``filehandle`` is 1, the write is done to ``stdout`` (the
     console), which is always considered to be an open file.
-
   * If the ``filehandle`` is 2, the write is done to ``stderr`` (
     typically, also the console), which is always considered to be an open
     file.
-
   * Filehandle 0 cannot be written to and attempt to do so will always
     return an error code.
+
+``int syscall_open(const char *path)``
+  * Open the file identified by ``path`` for reading and writing.
+  * Returns the file handle of the opened file (non-negative), or a negative
+    value on error.
+  * Never returns values 0, 1 or 2, because they are reserved for ``stdin``,
+    ``stdout`` and ``stderr``.
+
+``int syscall_close(int filehandle)``
+  * Close the open file identified by ``filehandle``.
+  * ``filehandle`` is no longer a valid file handle after this call.
+  * Returns zero on success, other numbers indicate failure (e.g.
+    ``filehandle`` is not open so it can't be closed).
+
+``int syscall_create(const char *path, int size)``
+  * Create a file with at ``path`` with an initial size of ``size``.
+  * The initial size means that at least size bytes, starting from the
+    beginning of the file, can be written to the file at any point in the
+    future (as long as it is not deleted), i.e. the file is initially
+    allocated ``size`` bytes of disk space.
+  * Returns 0 on success, or a negative value on error.
+
+``int syscall_delete(const char *path)``
+  * Remove the file identified by ``path`` from the filesystem it resides
+    on.
+  * Returns 0 on success, or a negative value on error.
+  * Note that it is impossible to implement a clean solution for the delete
+    interaction with open files at the system call level. You are not
+    expected to do that at this time (filesystem chapter has a separate
+    exercise for this particular issue).
+
+``int syscall_seek(int filehandle, int offset)``
+  * Set the file position of the open file identified by ``filehandle`` to
+    ``offset``.
+  * Returns 0 on success, or a negative value on error.
+
+``int syscall_filecount(const char *path)``
+  * Get the number of files in a directory.
+  * Returns 0 on success, or a negative value on error.
+
+``int syscall_file(const char *path, int nth, char *buffer)``
+  * Put the name of the ``nth`` file in the directory identified by ``path``
+    into ``buffer``.
+  * Returns 0 on success, or a negative value on error.
 
 Exercises
 ---------
