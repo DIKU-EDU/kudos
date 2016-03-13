@@ -556,22 +556,27 @@ openfile_t vfs_open(char *pathname)
 }
 
 /**
- * Verifies that given open file is actually open.
+ * Verifies that given open file is actually open. This should only be called
+ * while the open file table lock is held.
  *
  * @param file Openfile id.
  *
- * @return Pointer to openfile table row. Note that the row might be
- * for invalid entry.
- *
+ * @return Pointer to openfile table row, or NULl on invalid file.
  */
 
 static openfile_entry_t *vfs_verify_open(openfile_t file)
 {
   openfile_entry_t *openfile;
 
-  KERNEL_ASSERT(file >= 0 && file < CONFIG_MAX_OPEN_FILES);
+  if (file < 0 && file >= CONFIG_MAX_OPEN_FILES) {
+    return NULL;
+  }
+
   openfile = &openfile_table.files[file];
-  KERNEL_ASSERT(openfile->filesystem != NULL);
+
+  if (openfile->filesystem == NULL) {
+    return NULL;
+  }
 
   return openfile;
 }
@@ -598,6 +603,11 @@ int vfs_close(openfile_t file)
   semaphore_P(openfile_table.sem);
 
   openfile = vfs_verify_open(file);
+  if (openfile == NULL) {
+    semaphore_V(openfile_table.sem);
+    return VFS_INVALID_PARAMS;
+  }
+
   fs = openfile->filesystem;
 
   ret = fs->close(fs, openfile->fileid);
@@ -633,6 +643,11 @@ int vfs_seek(openfile_t file, int seek_position)
   semaphore_P(openfile_table.sem);
 
   openfile = vfs_verify_open(file);
+  if (openfile == NULL) {
+    semaphore_V(openfile_table.sem);
+    return VFS_INVALID_PARAMS;
+  }
+
   openfile->seek_position = seek_position;
 
   semaphore_V(openfile_table.sem);
@@ -668,6 +683,11 @@ int vfs_read(openfile_t file, void *buffer, int bufsize)
     return VFS_UNUSABLE;
 
   openfile = vfs_verify_open(file);
+  if (openfile == NULL) {
+    semaphore_V(openfile_table.sem);
+    return VFS_INVALID_PARAMS;
+  }
+
   fs = openfile->filesystem;
 
   KERNEL_ASSERT(bufsize >= 0 && buffer != NULL);
@@ -712,6 +732,11 @@ int vfs_write(openfile_t file, void *buffer, int datasize)
     return VFS_UNUSABLE;
 
   openfile = vfs_verify_open(file);
+  if (openfile == NULL) {
+    semaphore_V(openfile_table.sem);
+    return VFS_INVALID_PARAMS;
+  }
+
   fs = openfile->filesystem;
 
   KERNEL_ASSERT(datasize >= 0 && buffer != NULL);
