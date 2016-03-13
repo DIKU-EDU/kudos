@@ -174,6 +174,73 @@ unmount is started by the shutdown process.
 VFS Operations
 --------------
 
+The virtual filesystem is initialized at the system bootup by calling the
+following function:
+
+``void vfs_init(void)``
+  * Initializes the virtual filesystem. This function is called before virtual
+    memory is initialized.
+  * Implementation:
+
+    1. Create the semaphore ``vfs_table.sem`` (initial value 1) and the semaphore
+       ``openfile_table.sem`` (initial value 1).
+    2. Set all entries in both ``vfs_table`` and ``openfile_table`` to free.
+    3. Create the semaphore ``vfs_op_sem`` (initial value 1) and the semaphore
+       ``vfs_unmount_sem`` (initial value 0).
+    4. Set the number of active operations (``vfs_ops``) to zero.
+    5. Set the VFS usable flag (``vfs_usable``).
+
+When the system is being shut down, the following function is called to unmount
+all filesystems:
+
+``void vfs_deinit(void)``
+  * Force unmounts on all filesystems. This function must be used only at
+    system shutdown.
+  * Sets VFS into unusable state and waits until all active filesystem
+    operations have been completed. After that, unmounts all filesystems.
+  * Implementation:
+
+    1. Call ``semaphore_P`` on ``vfs_op_sem``.
+    2. Set VFS usable flag to false.
+    3. If there are active operations (``vfs_ops`` > 0): call ``semaphore_V``
+       on ``vfs_op_sem``, wait for operations to complete by calling
+       ``semaphore_P`` on ``vfs_unmount_sem``, re-acquire the ``vfs_op_sem``
+       with a call to ``semaphore_P``.
+    4. Lock both data tables by calling ``semaphore_P`` on both
+       ``vfs_table.sem`` and ``openfile_table.sem``.
+    5. Loop through all filesystems and unmount them.
+    6. Release semaphores by calling ``semaphore_V`` on
+       ``openfile_table.sem``, ``vfs_table.sem`` and ``vfs_op_sem``.
+
+To maintain count on active filesystem operations and to wake up pending
+forceful unmount, the following two internal functions are used. The first one
+is always called before any filesystem operation is started and the latter when
+the operation has finished.
+
+``static int vfs_start_op(void)``
+  * Start a new VFS operation. A VFS operation is anything that touches a
+    filesystem.
+  * Returns ``VFS_OK`` if the operation can continue, or error (negative value)
+    if the operation cannot be started (VFS is unusable). If the operation
+    cannot continue, it should not later call ``vfs_end_op``.
+  * Implementation:
+
+    1. Call ``semaphore_P`` on ``vfs_op_sem``.
+    2. If VFS is usable, increment ``vfs_ops`` by one.
+    3. Call ``semaphore_V`` on ``vfs_op_sem``.
+    4. If VFS was usable, return ``VFS_OK``, else return ``VFS_UNUSABLE``.
+
+``static void vfs_end_op(void)``
+  * End a started VFS operation.
+  * Implementation:
+
+    1. Call ``semaphore_P`` on ``vfs_op_sem``.
+    2. Decrement ``vfs_ops`` by one.
+    3. If VFS is not usable and the number of active operations is zero, wake
+       up pending forceful unmount by calling ``semaphore_V`` on
+       ``vfs_unmount sem``.
+    4. Call ``semaphore_V`` on ``vfs_op_sem``.
+
 .. _file_operations:
 
 File Operations
