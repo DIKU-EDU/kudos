@@ -30,29 +30,25 @@ data blocks. The following figure illustrates the structure of a TFS volume:
 
 Note that all multibyte data in TFS is *big-endian*. This is not a problem in
 the MIPS32 version of KUDOS, since YAMS is big-endian also, but in the x86-64
-version of KUDOS this is a problem, since x86-64 is small-endian. This has been
-fixed by implementing a transparent function that you will find in the source
-code of TFS, a function ``to_small_endian`` which is called on a lot of data.
-In x86-64 this function translates it to small endian, in MIPS this function
-does nothing.
+version of KUDOS this is a problem, since x86-64 is little-endian. This means
+that we need to go through the function ``from_big_endian32`` (defined in
+``kudos/lib/libc.h``) when dealing with TFS.  For x86-64 this function
+translates the value into little-endian, for MIPS32 this function does nothing.
 
 The volume header block has the following structure. Other data may be present
 after these fields, but it is ignored by TFS.
 
-+----------+-------------------------------+-------------+----------------------+
-| Offset   | Type                          | Name        | Description          |
-+==========+===============================+=============+======================+
-| ``0x00`` | ``uint32_t``                  | ``magic``   | Magic number, must   |
-|          |                               |             | be 3745 (``0x0EA1``) |
-|          |                               |             | TFS volumes.         |
-+----------+-------------------------------+-------------+----------------------+
-| ``0x04`` | ``char[TFS_VOLUMENAME_MAX]``  | ``volname`` | Name of the volume,  |
-|          |                               |             | including the        |
-|          |                               |             | terminating zero     |
-+----------+-------------------------------+-------------+----------------------+
- 
-When compiling for x86_64, these field are big-endian, so the conversion
-function must be used.
++----------+----------------------------+-------------+----------------------+
+| Offset   | Type                       | Name        | Description          |
++==========+============================+=============+======================+
+| ``0x00`` | ``uint32_t``               | ``magic``   | Magic number, must   |
+|          |                            |             | be 3745 (``0x0EA1``) |
+|          |                            |             | TFS volumes.         |
++----------+----------------------------+-------------+----------------------+
+| ``0x04`` | ``char[TFS_VOLNAME_MAX]``  | ``volname`` | Name of the volume,  |
+|          |                            |             | including the        |
+|          |                            |             | terminating zero     |
++----------+----------------------------+-------------+----------------------+
 
 The block allocation table is a bitmap which records the free and reserved
 blocks on the disk, one bit per block, 0 meaning free and 1 reserved. For a
@@ -60,7 +56,31 @@ blocks on the disk, one bit per block, 0 meaning free and 1 reserved. For a
 2MB disk. Note that the allocation table includes also the three first blocks,
 which are always reserved.
 
-The master directory consists of a single disk block, containing a table of the
+The mater directory consists of a single disk block, containing a table of the
 following 20-byte entries. This means that a disk with a 512-byte block size
 can have at most 25 files (512/20 = 25.6).
+
++-----------+----------------------------+------------+-------------------------+
+| Offset    | Type                       | Name       | Description             |
++===========+============================+============+=========================+
+| ``0x00``  | ``uint32_t``               | ``inode``  | Number of the disk      |
+|           |                            |            | block containing the    |
+|           |                            |            | file header (inode) of  |
+|           |                            |            | this file.              |
++-----------+----------------------------+------------+-------------------------+
+| ``0x04``  | ``char[TFS_FILENAME_MAX]`` | ``name``   | Name of the file,       |
+|           |                            |            | including the           |
+|           |                            |            | terminating zero.       |
++-----------+----------------------------+------------+-------------------------+
+
+This means that the maximum file name length is actually
+``TFS_FILENAME_MAX-1``.
+
+A file header block ("inode") describes the location of the file on the disk and its actual size.
+The contents of the file is stored to the allocated blocks in the order they appear in the block list
+(the first BLOCKSIZE bytes are stored to the first block in the list etc.). A file header block has
+the following structure:
+
+With a 512-byte block size, the maximum size of a file is limited to 127 blocks (512/4 − 1) or
+65024 bytes.
 
