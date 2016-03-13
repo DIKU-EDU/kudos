@@ -623,15 +623,7 @@ int vfs_close(openfile_t file)
 /**
  * Seek given file to given position. The position is not verified
  * to be within the file's size.
- *
- * @param file Open file
- *
- * @param seek_position New positive seek position.
- *
- * @return VFS_OK, panics on invalid arguments.
- *
  */
-
 int vfs_seek(openfile_t file, int seek_position)
 {
   openfile_entry_t *openfile;
@@ -639,7 +631,10 @@ int vfs_seek(openfile_t file, int seek_position)
   if (vfs_start_op() != VFS_OK)
     return VFS_UNUSABLE;
 
-  KERNEL_ASSERT(seek_position >= 0);
+  if (seek_position < 0) {
+    return VFS_INVALID_PARAMS;
+  }
+
   semaphore_P(openfile_table.sem);
 
   openfile = vfs_verify_open(file);
