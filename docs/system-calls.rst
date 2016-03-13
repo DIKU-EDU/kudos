@@ -168,8 +168,8 @@ File-System Related
   * Filehandle 0 cannot be written to and attempt to do so will always
     return an error code.
 
-``int syscall_open(const char *path)``
-  * Open the file identified by ``path`` for reading and writing.
+``int syscall_open(const char *pathname)``
+  * Open the file addressed by ``pathname`` for reading and writing.
   * Returns the file handle of the opened file (non-negative), or a negative
     value on error.
   * Never returns values 0, 1 or 2, because they are reserved for ``stdin``,
@@ -181,16 +181,16 @@ File-System Related
   * Returns zero on success, other numbers indicate failure (e.g.
     ``filehandle`` is not open so it can't be closed).
 
-``int syscall_create(const char *path, int size)``
-  * Create a file with at ``path`` with an initial size of ``size``.
+``int syscall_create(const char *pathname, int size)``
+  * Create a file addressed by ``pathname`` with an initial size of ``size``.
   * The initial size means that at least size bytes, starting from the
     beginning of the file, can be written to the file at any point in the
     future (as long as it is not deleted), i.e. the file is initially
     allocated ``size`` bytes of disk space.
   * Returns 0 on success, or a negative value on error.
 
-``int syscall_delete(const char *path)``
-  * Remove the file identified by ``path`` from the filesystem it resides
+``int syscall_delete(const char *pathname)``
+  * Remove the file addressed by ``pathname`` from the filesystem it resides
     on.
   * Returns 0 on success, or a negative value on error.
   * Note that it is impossible to implement a clean solution for the delete
@@ -203,13 +203,13 @@ File-System Related
     ``offset``.
   * Returns 0 on success, or a negative value on error.
 
-``int syscall_filecount(const char *path)``
+``int syscall_filecount(const char *pathname)``
   * Get the number of files in a directory.
   * Returns 0 on success, or a negative value on error.
 
-``int syscall_file(const char *path, int nth, char *buffer)``
-  * Put the name of the ``nth`` file in the directory identified by ``path``
-    into ``buffer``.
+``int syscall_file(const char *pathname, int nth, char *buffer)``
+  * Put the name of the ``nth`` file in the directory addressed by
+    ``pathname`` into ``buffer``.
   * Returns 0 on success, or a negative value on error.
 
 Exercises
