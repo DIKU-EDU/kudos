@@ -23,4 +23,5 @@ concepts. It is intended for:
    virtual-memory.rst
    device-drivers.rst
    builtin-drivers.rst
+   filesystems.rst
    appendix.rst
