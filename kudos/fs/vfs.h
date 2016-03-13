@@ -9,16 +9,16 @@
 
 /* Return codes for filesytem functions. Positive return values equal
    to VFS_OK */
-#define VFS_OK 0
-#define VFS_NOT_SUPPORTED -1
-#define VFS_ERROR -2
-#define VFS_INVALID_PARAMS -3
-#define VFS_NOT_OPEN -4
-#define VFS_NOT_FOUND -5
-#define VFS_NO_SUCH_FS -6
-#define VFS_LIMIT -7
-#define VFS_IN_USE -8
-#define VFS_UNUSABLE -9
+#define VFS_OK              (0)
+#define VFS_NOT_SUPPORTED   (-1)
+#define VFS_ERROR           (-2)
+#define VFS_INVALID_PARAMS  (-3)
+#define VFS_NOT_OPEN        (-4)
+#define VFS_NOT_FOUND       (-5)
+#define VFS_NO_SUCH_FS      (-6)
+#define VFS_LIMIT           (-7)
+#define VFS_IN_USE          (-8)
+#define VFS_UNUSABLE        (-9)
 
 /* Maximum length of filename without mountpoint and directory names. */
 #define VFS_NAME_LENGTH 16
