@@ -56,7 +56,7 @@ blocks on the disk, one bit per block, 0 meaning free and 1 reserved. For a
 2MB disk. Note that the allocation table includes also the three first blocks,
 which are always reserved.
 
-The mater directory consists of a single disk block, containing a table of the
+The master directory consists of a single disk block, containing a table of the
 following 20-byte entries. This means that a disk with a 512-byte block size
 can have at most 25 files (512/20 = 25.6).
 
