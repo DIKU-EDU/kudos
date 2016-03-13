@@ -24,13 +24,13 @@ void syscall_halt(void)
 }
 
 
-/* Load the file indicated by 'filename' as a new process and execute
+/* Load the file indicated by 'pathname' as a new process and execute
  * it, passing the given argv. Returns the process ID of the created
  * process. Negative values are errors.
  */
-int syscall_spawn(const char *filename, const char **argv)
+int syscall_spawn(const char *pathname, const char **argv)
 {
-  return (int)_syscall(SYSCALL_SPAWN, (uintptr_t)filename,
+  return (int)_syscall(SYSCALL_SPAWN, (uintptr_t)pathname,
                        (uintptr_t)argv, 0);
 }
 
@@ -77,13 +77,13 @@ void *syscall_memlimit(void *heap_end)
 }
 
 
-/* Open the file identified by 'filename' for reading and
+/* Open the file identified by 'pathname' for reading and
  * writing. Returns the file handle of the opened file (positive
  * value), or a negative value on error.
  */
-int syscall_open(const char *filename)
+int syscall_open(const char *pathname)
 {
-  return (int)_syscall(SYSCALL_OPEN, (uintptr_t)filename, 0, 0);
+  return (int)_syscall(SYSCALL_OPEN, (uintptr_t)pathname, 0, 0);
 }
 
 
@@ -129,21 +129,21 @@ int syscall_write(int filehandle, const void *buffer, int length)
 }
 
 
-/* Create a file with the name 'filename' and initial size of
+/* Create a file with the name 'pathname' and initial size of
  * 'size'. Returns 0 on success and a negative value on error.
  */
-int syscall_create(const char *filename, int size)
+int syscall_create(const char *pathname, int size)
 {
-  return (int)_syscall(SYSCALL_CREATE, (uintptr_t)filename, (uintptr_t)size, 0);
+  return (int)_syscall(SYSCALL_CREATE, (uintptr_t)pathname, (uintptr_t)size, 0);
 }
 
 
-/* Remove the file identified by 'filename' from the file system it
+/* Remove the file identified by 'pathname' from the file system it
  * resides on. Returns 0 on success or a negative value on error.
  */
-int syscall_delete(const char *filename)
+int syscall_delete(const char *pathname)
 {
-  return (int)_syscall(SYSCALL_DELETE, (uintptr_t)filename, 0, 0);
+  return (int)_syscall(SYSCALL_DELETE, (uintptr_t)pathname, 0, 0);
 }
 
 /* Count the amount of files in the given directory. */
