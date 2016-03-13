@@ -768,7 +768,9 @@ int vfs_create(char *pathname, int size)
   fs_t *fs = NULL;
   int ret;
 
-  KERNEL_ASSERT(size >= 0);
+  if (size < 0) {
+    return VFS_INVALID_PARAMS;
+  }
 
   if (vfs_start_op() != VFS_OK)
     return VFS_UNUSABLE;
