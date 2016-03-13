@@ -3,7 +3,7 @@ Virtual Filesystem
 
 Virtual Filesystem (VFS) is a subsystem which unifies all available filesystems
 into one big virtual filesystem. All filesystem operations are done through it.
-Different attached filesystems are referenced with names, which are called
+Different mounted filesystems are referenced with names, which are called
 mount-points or volumes.
 
 VFS provides a set of file access functions (see :ref:`file_operations`) and a
@@ -83,7 +83,7 @@ for the end of string marker, i.e. ``VFS_PATH_LENGTH`` is set to 256.
 Internal Data Structures
 ------------------------
 
-VFS has two primary data structures: the table of all attached filesystems and
+VFS has two primary data structures: the table of all mounted filesystems and
 the table of open files.
 
 The table of all filesystems, ``vfs_table``, is structured as follows:
@@ -245,6 +245,174 @@ the operation has finished.
 
 File Operations
 ---------------
+
+The primary function of the virtual filesystem is to provide unified access to
+all mounted filesystems. The filesystems are accessed through file operation
+functions.
+
+Before a file can be read or written it must be opened by calling ``vfs_open``:
+
+``openfile_t vfs_open(char *pathname)``
+  * Opens the file addressed by ``pathname``. The name must include both the full
+    pathname and the filename. (e.g. ``[root]shell.mips32``)
+  * Returns an open file identifier. Open file identifiers are non-negative
+    integers. On error, negative value is returned.
+  * Implementation:
+
+    1. Call ``vfs_start_op``. If an error is returned by it, return immediately
+       with the error code ``VFS_UNUSABLE``.
+    2. Parse ``pathname`` into volume name and filename parts.
+    3. If filename is not valid (too long, no mount point, etc.), call
+       ``vfs_end_op`` and return with error code ``VFS_ERROR``.
+    4. Acquire locks to the filesystem table and the open file table.
+    5. Find a free entry in the open file table. If no free entry is found (the
+       table is full), free the locks, call ``vfs_end_op``, and return with the
+       error code ``VFS_LIMIT``.
+    6. Find the filesystem specified by the volume name part of the pathname
+       in the filesystem table. If the volume is not found, return with the same
+       procedure as for a full open file table, except that the error code is
+       ``VFS_NO_SUCH_FS``.
+    7. Allocate the found free open file entry by setting its filesystem field.
+    8. Free the filesystem and the open file table locks.
+    9. Call the filesystem's internal open function. If the return value
+       indicates an error, lock the open file table, mark the entry free and
+       free the lock. Call ``vfs_end_op`` and return the error given by the
+       filesystem.
+    10. Save the file identifier returned by the filesystem in the
+        open file table.
+    11. Set file's seek position to zero (beginning of the file).
+    12. Call ``vfs_end_op``.
+    13. Return the row number in the open file table as the open file
+        identifier.
+
+Open files must be properly closed. If a filesystem has open files, the
+filesystem cannot be unmounted except on shutdown where unmount is forced. The
+closing is done by calling ``vfs_close``:
+
+``int vfs_close(openfile_t file)``
+  * Closes an open file ``file``.
+  * Returns ``VFS_OK`` (zero) on success, negative on error.
+  * Implementation:
+
+    1. Call ``vfs_start_op``. If an error is returned by it, return immediately
+       with the error code ``VFS_UNUSABLE``.
+    2. Lock the open file table.
+    3. Verify that the given file is really open, otherwise, free the open file
+       table lock and return ``VFS_INVALID_PARAMS``.
+    4. Call close on the actual filesystem for the file.
+    5. Mark the entry in the open file table free.
+    6. Free the open file table lock.
+    7. Call ``vfs_end_op``.
+    8. Return the return value given by the filesystem when close was called.
+
+The seek position within the file can be changed by calling:
+
+``int vfs_seek(openfile_t file, int seek position)``
+  * Seek the given open file to the given seek position.
+  * The position is not verified to be within the file's size and behavior on
+    exceeding the current size of the file is filesystem dependent.
+  * Returns ``VFS_OK`` on success, negative on error.
+  * Implementation:
+
+    1. Call ``vfs_start_op``. If an error is returned by it, return immediately
+       with the error code ``VFS_UNUSABLE``.
+    2. Lock the open file table.
+    3. Verify that the given file is really open, otherwise, free the open file
+       table lock and return ``VFS_INVALID_PARAMS``.
+    4. Set the new seek position in open file table.
+    5. Free the open file table.
+    6. Call ``vfs_end_op``.
+    7. Return ``VFS_OK``.
+
+``int vfs_read(openfile_t file, void *buffer, int bufsize)``
+  * Reads at most ``bufsize`` bytes from the given file into the buffer. The read
+    is started from the current seek position and the seek position is updated to
+    match the new position in the file after the read.
+  * Returns the number of bytes actually read. On most filesystems, the
+    requested number of bytes is always read when available, but this behaviour
+    is not guaranteed. At least one byte is always read, unless the end of file
+    or error is encountered. Zero indicates the end of file and negative values
+    are errors.
+  * Implementation:
+
+    1. Call ``vfs_start_op``. If an error is returned by it, return immediately
+       with the error code ``VFS_UNUSABLE``.
+    2. Verify that the given file is really open, otherwise return
+       ``VFS_INVALID_PARAMS``.
+    3. Call the internal ``read`` function of the filesystem.
+    4. Lock the open file table.
+    5. Update the seek position in the open file table.
+    6. Free the open file table.
+    7. Call ``vfs_end_op``.
+    8. Return the value returned by the filesystem's ``read``.
+
+``int vfs_write(openfile_t file, void *buffer, int datasize)``
+  * Writes at most ``datasize`` bytes from the given ``buffer`` into the open
+    ``file``.
+  * The write is started from the current seek position and the seek position
+    is updated to match the new place in the file.
+  * Returns the number of bytes written. All bytes are always written unless
+    an unrecoverable error occurs (filesystem full, for example). Negative
+    values are error conditions on which nothing was written.
+  * Implementation:
+
+    1. Call ``vfs_start_op``. If an error is returned by it, return immediately
+       with the error code ``VFS_UNUSABLE``.
+    2. Verify that the given file is really open, otherwise return
+       ``VFS_INVALID_PARAMS``.
+    3. Call the internal ``write`` function of the filesystem.
+    4. Lock the open file table.
+    5. Update the seek position in the open file table.
+    6. Free the open file table.
+    7. Call ``vfs_end_op``.
+    8. Return the value returned by the filesystem's ``write``.
+
+Files can be created and removed by the following two functions:
+
+``int vfs_create(char *pathname, int size)``
+  * Creates a new file with given ``pathname``. The size of the file will be
+    ``size``. The ``pathname`` must include the mount-point (full name would
+    be ``[root]shell.mips32``, for example).
+  * Returns ``VFS_OK`` on success, negative on error.
+  * Implementation:
+
+    1. Call ``vfs_start_op``. If an error is returned by it, return immediately
+       with the error code ``VFS_UNUSABLE``.
+    2. Parse the ``pathname`` into volume name and file name parts.
+    3. If the ``pathname`` was badly formatted or too long, call ``vfs_end_op``
+       and return with the error code ``VFS_ERROR``.
+    4. Lock the filesystem table. (This is to prevent unmounting of the
+       filesystem during the operation. Unlike read or write, we do not have an
+       open file to guarantee that unmount does not happen.)
+    5. Find the filesystem from the filesystem table. If it is not found, free
+       the table, call ``vfs_end_op`` and return with the error code
+       ``VFS_NO_SUCH_FS``.
+    6. Call the internal ``create`` function of the filesystem.
+    7. Free the filesystem table.
+    8. Call ``vfs_end_op``.
+    9. Return the value returned by the filesystem's ``create``.
+
+``int vfs_remove(char *pathname)``
+  * Removes the file with the given ``pathname``. The pathname must include the
+    mount-point (a full name would be ``[root]shell.mips32``, for example).
+  * Returns ``VFS_OK`` on success, negative on failure.
+  * Implementation:
+
+    1. Call ``vfs_start_op``. If an error is returned by it, return immediately
+       with the error code ``VFS_UNUSABLE``.
+    2. Parse the pathname into the volume name and file name parts.
+    3. If the ``pathname`` was badly formatted or too long, call ``vfs_end_op``
+       and return with the error code ``VFS_ERROR``.
+    4. Lock the filesystem table. (This is to prevent unmounting of the
+       filesystem during the operation. Unlike read or write, we do not have an
+       open file to guarantee that unmount does not happen.)
+    5. Find the filesystem from the filesystem table. If it is not found, free
+       the filesystem table, call vfs end op and return with the error code
+       ``VFS_NO_SUCH_FS``.
+    6. Call the internal ``remove`` function of the filesystem.
+    7. Free the filesystem table by calling semaphore V on vfs table.sem.
+    8. Call ``vfs_end_op``.
+    9. Return the value returned by the filesystem's ``remove``.
 
 .. _filesystem_operations:
 
