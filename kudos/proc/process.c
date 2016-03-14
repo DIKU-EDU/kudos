@@ -109,6 +109,9 @@ int setup_new_process(TID_t thread,
            elf.rw_vaddr + i*PAGE_SIZE, 1);
   }
 
+  /* Done with the file. */
+  vfs_close(file);
+
   /* Set up argc and argv on the stack. */
 
   /* Start by preparing ancillary information for the new process argv. */
