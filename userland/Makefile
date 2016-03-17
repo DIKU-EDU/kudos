@@ -21,7 +21,7 @@ CC      := mips-elf-gcc
 AS      := mips-elf-as
 LD      := mips-elf-ld
 
-SHARED_CFLAGS=-I../kudos -Wall -Wextra -Werror -pedantic -std=c11
+SHARED_CFLAGS=-I../kudos -Wall -Wextra -Werror -pedantic -std=c99
 
 CFLAGS  += $(SHARED_CFLAGS) -G0 -fno-builtin
 LDFLAGS := --script=mips32/ld.userland.script --cref -s -G0
