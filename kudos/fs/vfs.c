@@ -290,8 +290,9 @@ static int vfs_parse_pathname(char *pathname,
   if (pathname[0] == '[') {
     pathname++;
     for(i = 0; i < VFS_NAME_LENGTH - 1; i++) {
-      if (*pathname == '\0')
+      if (*pathname == '\0') {
         return VFS_ERROR;
+      }
       if (*pathname == ']') {
         pathname++;
         break;
