@@ -309,10 +309,6 @@ static int vfs_parse_pathname(char *pathname,
   for(i = 0; i < VFS_NAME_LENGTH; i++) {
     *filenamebuf = *pathname;
     if (*pathname == '\0') {
-      /* Empty filenames are not allowed. */
-      if(i == 0)
-        return VFS_ERROR;
-
       return VFS_OK;
     }
     pathname++;
