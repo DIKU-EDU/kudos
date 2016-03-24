@@ -15,13 +15,6 @@
  * @{
  */
 
-
-/* Check whether given (virtual) address is even or odd mapping
-   in a pair of mappings for TLB. */
-#define ADDR_IS_ON_ODD_PAGE(addr)  ((addr) & 0x00001000)
-#define ADDR_IS_ON_EVEN_PAGE(addr) (!((addr) & 0x00001000))
-
-
 /**
  * Initializes virtual memory system. Initialization consists of page
  * pool initialization and disabling static memory reservation. After

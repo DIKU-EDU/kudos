@@ -8,6 +8,11 @@
 #include "lib/libc.h"
 #include <tlb.h>
 
+/* Check whether given (virtual) address is even or odd mapping
+   in a pair of mappings for TLB. */
+#define ADDR_IS_ON_ODD_PAGE(addr)  ((addr) & 0x00001000)
+#define ADDR_IS_ON_EVEN_PAGE(addr) (!((addr) & 0x00001000))
+
 /* Number of mapping entries in one pagetable. This is the number
    of entries that fits on a single hardware memory page (4k). */
 #define PAGETABLE_ENTRIES 340
@@ -21,6 +26,5 @@ typedef struct pagetable_struct_t{
     /* Actual virtual memory mapping entries*/
     tlb_entry_t entries[PAGETABLE_ENTRIES];
 } pagetable_t;
-
 
 #endif /* KUDOS_VM_PAGETABLE_H */
