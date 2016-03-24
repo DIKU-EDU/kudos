@@ -1,7 +1,3 @@
-/*
- * Pagetable.
- */
-
 #ifndef KUDOS_VM_PAGETABLE_H
 #define KUDOS_VM_PAGETABLE_H
 
