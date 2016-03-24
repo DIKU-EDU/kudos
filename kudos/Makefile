@@ -3,15 +3,15 @@
 # <URL:http://www.tip.net.au/~millerp/rmch/recu-make-cons-harm.html>
 
 ## User configurable variables
-MODULES  := init kernel lib drivers proc vm fs util lib/gcc
-ARCHMIPS := init/mips32 kernel/mips32 vm/mips32 lib/mips32 drivers/mips32 proc/mips32
-ARCH64   := init/x86_64 kernel/x86_64 vm/x86_64 lib/x86_64 drivers/x86_64 proc/x86_64
+MODULES    := init kernel lib drivers proc vm fs util lib/gcc
+ARCHMIPS32 := init/mips32 kernel/mips32 vm/mips32 lib/mips32 drivers/mips32 proc/mips32
+ARCHX86_64 := init/x86_64 kernel/x86_64 vm/x86_64 lib/x86_64 drivers/x86_64 proc/x86_64
 #CHANGEDFLAGS := -DCHANGED_1 -DCHANGED_2 -DCHANGED_3 -DCHANGED_4 -DCHANGED_5
 PHASE        := 1
 
 #IncludePaths
-MIPS_INC = -I./drivers/mips32/ -I./lib/mips32/ -I./kernel/mips32/ -I./vm/mips32/
-X64_INC = -I./drivers/x86_64/ -I./lib/x86_64/ -I./kernel/x86_64/ -I./vm/x86_64
+MIPS32_INC = -I./drivers/mips32/ -I./lib/mips32/ -I./kernel/mips32/ -I./vm/mips32/
+X86_64_INC = -I./drivers/x86_64/ -I./lib/x86_64/ -I./kernel/x86_64/ -I./vm/x86_64
 
 ## Below this point, you shouldn't have to change anything.
 TARGET_MIPS32 := kudos-mips32
@@ -61,8 +61,8 @@ copy:
 
 # include the description for each module
 include $(patsubst %, %/module.mk, $(MODULES))
-include $(patsubst %, %/module.mk, $(ARCHMIPS))
-include $(patsubst %, %/module.mk, $(ARCH64))
+include $(patsubst %, %/module.mk, $(ARCHMIPS32))
+include $(patsubst %, %/module.mk, $(ARCHX86_64))
 
 # determine the object files
 MIPS32OBJS :=  $(patsubst %.s,%.mips32.o,$(filter %.s,$(SRC))) \
@@ -95,7 +95,7 @@ $(TARGET_MIPS32): $(MIPS32OBJS)
 
 # Compile rule for C source
 %.mips32.o: %.c
-	$(CC) $(MIPS_INC) -o $@  $(CFLAGS) -c $<
+	$(CC) $(MIPS32_INC) -o $@  $(CFLAGS) -c $<
 
 $(TARGET_X86_64): $(X86_64OBJS)
 	$(LDX86_64) -o $@ $(LDFLAGSX86_64) $^
@@ -109,7 +109,7 @@ $(TARGET_X86_64): $(X86_64OBJS)
 
 # Compile rule for C source
 %.x86_64.o: %.c
-	$(CCX86_64) $(X64_INC) -o $@  $(CFLAGSX86_64) -c $<
+	$(CCX86_64) $(X86_64_INC) -o $@  $(CFLAGSX86_64) -c $<
 
 
 ## Dependencies
