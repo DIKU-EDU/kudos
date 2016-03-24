@@ -6,24 +6,22 @@
 
 #include "kernel/panic.h"
 #include "kernel/assert.h"
-#include <tlb.h>
 #include <pagetable.h>
+#include <tlb.h>
+#include <types.h>
 
-void tlb_modified_exception(bool in_userland)
+void tlb_modified_exception(UNUSED bool in_userland)
 {
-  in_userland = in_userland;
   KERNEL_PANIC("Unhandled TLB modified exception");
 }
 
-void tlb_load_exception(bool in_userland)
+void tlb_load_exception(UNUSED bool in_userland)
 {
-  in_userland = in_userland;
   KERNEL_PANIC("Unhandled TLB load exception");
 }
 
-void tlb_store_exception(bool in_userland)
+void tlb_store_exception(UNUSED bool in_userland)
 {
-  in_userland = in_userland;
   KERNEL_PANIC("Unhandled TLB store exception");
 }
 
