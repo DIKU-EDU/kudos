@@ -26,7 +26,7 @@
 #define TFS_DIRECTORY_BLOCK  2
 
 /* Names are limited to 16 characters */
-#define TFS_VOLUMENAME_MAX 16
+#define TFS_VOLNAME_MAX 16
 #define TFS_FILENAME_MAX 16
 
 /*

@@ -18,7 +18,7 @@
 #include "lib/bitmap.h"
 #include "util/tfstool.h"
 
-void tfstool_createvol(char *diskname, int size, char *volumename);
+void tfstool_createvol(char *diskname, int size, char *volname);
 void tfstool_list(char *filename);
 void tfstool_write(char *diskname, char *source, char *target);
 unsigned long getfilesize(FILE *fp);
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
   char diskfilename[FILENAME_MAX];
   char localfilename[FILENAME_MAX];
   char tfsfilename[TFS_FILENAME_MAX];
-  char volumename[TFS_VOLUMENAME_MAX];
+  char volname[TFS_VOLNAME_MAX];
   size_t size;
 
 
@@ -75,10 +75,10 @@ int main(int argc, char *argv[])
 
     strncpy(diskfilename, argv[2], FILENAME_MAX);
     size = (size_t)strtoul(argv[3], NULL, 10);
-    strncpy(volumename, argv[4], TFS_VOLUMENAME_MAX);
-    volumename[TFS_FILENAME_MAX - 1] = '\0';
+    strncpy(volname, argv[4], TFS_VOLNAME_MAX);
+    volname[TFS_FILENAME_MAX - 1] = '\0';
 
-    tfstool_createvol(diskfilename, size, volumename);
+    tfstool_createvol(diskfilename, size, volname);
   } else if (!strncmp(argv[1], "list", 4)) {
     if (argc != 3)
       print_usage();
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 
 /* Creates a disk volume named 'diskname', the size of the disk is
    'size' blocks (a block is 512 bytes). */
-void tfstool_createvol(char *diskfilename, int size, char *volumename)
+void tfstool_createvol(char *diskfilename, int size, char *volname)
 {
   int i;
 
@@ -164,7 +164,7 @@ void tfstool_createvol(char *diskfilename, int size, char *volumename)
 
   /* set up the header block and write it */
   memcpy(header, &tfsmagic, 4);
-  memcpy(&header[4], volumename, TFS_VOLUMENAME_MAX);
+  memcpy(&header[4], volname, TFS_VOLNAME_MAX);
   write_block(header, TFS_HEADER_BLOCK);
 
   /* set up the block allocation table block and write it */
@@ -185,7 +185,7 @@ void tfstool_createvol(char *diskfilename, int size, char *volumename)
   fclose(disk);
 
   printf("Disk image '%s', volume name '%s', size %d blocks created.\n",
-         diskfilename, volumename, size);
+         diskfilename, volname, size);
 }
 
 /* Copy a file 'source' from host file system to kudos tfs filesystem
