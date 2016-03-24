@@ -117,7 +117,7 @@ void interrupt_register(uint32_t irq,
  */
 void interrupt_handle(virtaddr_t cause) {
   int this_cpu, i;
-    
+
   if(cause & INTERRUPT_CAUSE_SOFTWARE_0) {
     _interrupt_clear_sw0();
   }
@@ -138,7 +138,7 @@ void interrupt_handle(virtaddr_t cause) {
   for (i=0; i<CONFIG_MAX_DEVICES; i++) {
     if (interrupt_handlers[i].device == NULL)
       break;
-        
+
     /* If this handler is registered for any of the interrupts
      * that occured, call it.
      */
@@ -154,7 +154,7 @@ void interrupt_handle(virtaddr_t cause) {
                INTERRUPT_CAUSE_HARDWARE_5)) ||
      scheduler_current_thread[this_cpu] == IDLE_THREAD_TID) {
     scheduler_schedule();
-        
+
     /* Until we have proper VM we must manually fill
        the TLB with pagetable entries before running code using
        given pagetable. Note that this method limits pagetable
@@ -172,7 +172,7 @@ void interrupt_handle(virtaddr_t cause) {
 interrupt_status_t _interrupt_is_disabled(void)
 {
   interrupt_status_t intr_state = _interrupt_get_state();
-  if(!(intr_state & INTERRUPT_MASK_ALL) 
+  if(!(intr_state & INTERRUPT_MASK_ALL)
      || !(intr_state & INTERRUPT_MASK_MASTER))
     return 1;
   else
