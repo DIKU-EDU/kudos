@@ -38,17 +38,22 @@ int init(uint64_t magic, uint8_t *multiboot)
   /* Setup video printing */
   polltty_init();
 
-  kwrite("Kudos is an educational operating system by the University of Copenhagen\n");
-  kwrite("========================================================================\n");
-  kwrite("Based on the Buenos operating system skeleton\n");
+  kwrite("KUDOS - a skeleton OS for exploring OS concepts\n");
+  kwrite("===============================================\n");
   kwrite("\n");
-
-  kprintf("Copyright (C) 2003-2016  Juha Aatrokoski, Timo Lilja,\n");
-  kprintf("  Leena Salmela, Teemu Takanen, Aleksi Virtanen, Philip Meulengracht,\n");
-  kprintf("  Troels Henriksen, Annie Jane Pinder, Niels Gustav Westphal Serup,\n");
-  kprintf("  Nicklas Warming Jacobsen, Oleksandr Shturmov.\n");
-  kprintf("See the file COPYING for licensing details.\n");
-  kprintf("\n");
+  kwrite("KUDOS is heavily based on BUENOS.\n");
+  kwrite("\n");
+  kwrite("Copyright (C) 2015-2016 Troels Henriksen, Annie Jane Pinder,\n");
+  kwrite("      Niels Gustav Westphal Serup, Oleksandr Shturmov,\n");
+  kwrite("      Nicklas Warming Jacobsen.\n");
+  kwrite("\n");
+  kwrite("Copyright (C) 2014 Philip Meulengracht.\n");
+  kwrite("\n");
+  kwrite("Copyright (C) 2003-2012 Juha Aatrokoski, Timo Lilja,\n");
+  kwrite("      Leena Salmela, Teemu Takanen, Aleksi Virtanen.\n");
+  kwrite("\n");
+  kwrite("See the file COPYING for licensing details.\n");
+  kwrite("\n");
 
   /* Setup GDT/IDT/Exceptions */
   kprintf("Initializing interrupt handling\n");

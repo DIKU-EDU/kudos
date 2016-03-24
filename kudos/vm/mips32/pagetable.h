@@ -1,5 +1,5 @@
-#ifndef KUDOS_VM_PAGETABLE_H
-#define KUDOS_VM_PAGETABLE_H
+#ifndef KUDOS_VM_PAGETABLE
+#define KUDOS_VM_PAGETABLE
 
 #include "lib/libc.h"
 #include <tlb.h>
@@ -15,7 +15,7 @@
 
 /* A pagetable. This structure fits on one physical page (4k). */
 typedef struct pagetable_struct_t{
-    /* Address space identifier. We use Thread Ids in Buenos. */
+    /* Address space identifier. We use Thread Ids in KUDOS. */
     uint32_t ASID;
     /* Number of valid consecutive mappings in this pagetable. */
     uint32_t valid_count;
@@ -23,4 +23,4 @@ typedef struct pagetable_struct_t{
     tlb_entry_t entries[PAGETABLE_ENTRIES];
 } pagetable_t;
 
-#endif /* KUDOS_VM_PAGETABLE_H */
+#endif /* KUDOS_VM_PAGETABLE */

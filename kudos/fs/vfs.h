@@ -2,8 +2,8 @@
  * Virtual Filesystem (VFS).
  */
 
-#ifndef BUENOS_FS_VFS_H
-#define BUENOS_FS_VFS_H
+#ifndef KUDOS_FS_VFS
+#define KUDOS_FS_VFS
 
 #include "drivers/gbd.h"
 
@@ -142,4 +142,4 @@ int vfs_getfree(char *filesystem);
 int vfs_filecount(char *pathname);
 int vfs_file(char *pathname, int idx, char *buffer);
 
-#endif
+#endif // KUDOS_FS_VFS

@@ -1,5 +1,5 @@
 /*                                            (for emacs: -*- c -*-)
- *  A linker script for BUENOS
+ *  A linker script for KUDOS
  */
 
 ENTRY(_start)

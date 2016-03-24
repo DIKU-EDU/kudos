@@ -20,7 +20,7 @@ typedef struct {
     unsigned int VPN2:19    __attribute__ ((packed));
     unsigned int dummy1:5   __attribute__ ((packed));
     /* Address space identifier. When ASID matches CP0 setted ASID
-       this entry is valid. In Buenos, we use mapping ASID = Thread Id. */
+       this entry is valid. In KUDOS, we use mapping ASID = Thread Id. */
     unsigned int ASID:8     __attribute__ ((packed));
 
     unsigned int dummy2:6   __attribute__ ((packed));
