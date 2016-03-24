@@ -5,6 +5,8 @@
 #ifndef KUDOS_VM_TLB_H
 #define KUDOS_VM_TLB_H
 
+#include <stdbool.h>
+
 #include "lib/libc.h"
 
 /* TLB-entry. These fields match CP0 registers, which means
@@ -59,9 +61,9 @@ typedef struct {
 } tlb_exception_state_t;
 
 /* exception handlers */
-void tlb_modified_exception(void);
-void tlb_load_exception(void);
-void tlb_store_exception(void);
+void tlb_modified_exception(bool in_userland);
+void tlb_load_exception(bool in_userland);
+void tlb_store_exception(bool in_userland);
 
 /* Forward declare pagetable_t (== struct pagetable_struct_t) */
 struct pagetable_struct_t;

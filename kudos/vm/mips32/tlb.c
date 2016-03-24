@@ -2,23 +2,28 @@
  * TLB handling
  */
 
+#include <stdbool.h>
+
 #include "kernel/panic.h"
 #include "kernel/assert.h"
 #include <tlb.h>
 #include <pagetable.h>
 
-void tlb_modified_exception(void)
+void tlb_modified_exception(bool in_userland)
 {
+  in_userland = in_userland;
   KERNEL_PANIC("Unhandled TLB modified exception");
 }
 
-void tlb_load_exception(void)
+void tlb_load_exception(bool in_userland)
 {
+  in_userland = in_userland;
   KERNEL_PANIC("Unhandled TLB load exception");
 }
 
-void tlb_store_exception(void)
+void tlb_store_exception(bool in_userland)
 {
+  in_userland = in_userland;
   KERNEL_PANIC("Unhandled TLB store exception");
 }
 
