@@ -72,9 +72,9 @@ int setup_new_process(TID_t thread,
            (USERLAND_STACK_TOP & PAGE_SIZE_MASK) - i*PAGE_SIZE, 1);
   }
 
-  /* Allocate and map pages for the segments. We assume that
-     segments begin at page boundary. (The linker script in tests
-     directory creates this kind of segments) */
+  /* Allocate and map pages for the ELF segments. We assume that
+     the segments begin at a page boundary. (The linker script
+     in the userland directory helps users get this right.) */
   for(i = 0; i < (int)elf.ro_pages; i++) {
     int left_to_read = elf.ro_size - i*PAGE_SIZE;
     phys_page = physmem_allocblock();
