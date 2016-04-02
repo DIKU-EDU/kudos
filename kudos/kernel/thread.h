@@ -10,9 +10,9 @@
 #include <pagetable.h>
 #include <_thread.h>
 #include "proc/process.h"
+#include "kernel/types.h"   // TID_t
 
 /* Thread ID data type (index in thread table) */
-typedef int TID_t;
 typedef enum {
   THREAD_FREE,
   THREAD_RUNNING,
