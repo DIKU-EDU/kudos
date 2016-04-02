@@ -14,44 +14,44 @@
 /* Thread ID data type (index in thread table) */
 typedef int TID_t;
 typedef enum {
-    THREAD_FREE,
-    THREAD_RUNNING,
-    THREAD_READY,
-    THREAD_SLEEPING,
-    THREAD_NONREADY,
-    THREAD_DYING
+  THREAD_FREE,
+  THREAD_RUNNING,
+  THREAD_READY,
+  THREAD_SLEEPING,
+  THREAD_NONREADY,
+  THREAD_DYING
 } thread_state_t;
 
 #define IDLE_THREAD_TID 0
-#define THREAD_FLAG_USERMODE    0x1
+#define THREAD_FLAG_USERMODE  0x1
 #define THREAD_FLAG_ENTERUSER   0x2
 
 /* thread table data structure */
 typedef struct {
-    /* context save areas context and user_context*/
-    /* for interrupts */
-    context_t *context;
-    /* for traps (syscalls), if applicable */
-    context_t *user_context;
+  /* context save areas context and user_context*/
+  /* for interrupts */
+  context_t *context;
+  /* for traps (syscalls), if applicable */
+  context_t *user_context;
 
-    /* thread state */
-    thread_state_t state;
-    /* which resource this thread sleeps on (0 for none) */
-    uint32_t sleeps_on;
-    /* pointer to this thread's pagetable */
-    pagetable_t *pagetable;
+  /* thread state */
+  thread_state_t state;
+  /* which resource this thread sleeps on (0 for none) */
+  uint32_t sleeps_on;
+  /* pointer to this thread's pagetable */
+  pagetable_t *pagetable;
 
-    /* PID. Currently not used for anything, but might be useful
-       if process table is implemented. */
-    process_id_t process_id;
-    /* pointer to the next thread in list (<0 = end of list) */
-    TID_t next;
+  /* PID. Currently not used for anything, but might be useful
+     if process table is implemented. */
+  process_id_t process_id;
+  /* pointer to the next thread in list (<0 = end of list) */
+  TID_t next;
 
-    /* Attributes */
-    uint32_t attribs;
+  /* Attributes */
+  uint32_t attribs;
 
-    /* Internal thread structure */
-    _kthread_t thread_data;
+  /* Internal thread structure */
+  _kthread_t thread_data;
 
 } thread_table_t;
 
