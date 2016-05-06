@@ -19,3 +19,6 @@ Spaces
   * adjacent to data/function name
   Around binary/ternary operators (not unary)
   (Avoid trailing whitespace)
+
+Comments
+  Use // to allow easy commenting out of code sections using /* */.

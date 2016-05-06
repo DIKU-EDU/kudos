@@ -40,16 +40,15 @@ int kernel_bootstrap_finished = 0;
  * CPUs.
  *
  */
-
 void init(void)
 {
   TID_t startup_thread;
   int numcpus;
 
-  /* Initialise Static Allocation */
+  // Initialise static allocation.
   stalloc_init();
 
-  /* Initialize polling TTY driver for kprintf() usage. */
+  // Initialize polling TTY driver for kprintf() usage.
   polltty_init();
 
   kwrite("KUDOS - a skeleton OS for exploring OS concepts\n");
@@ -72,7 +71,7 @@ void init(void)
   kwrite("Reading boot arguments\n");
   bootargs_init((void*)BOOT_ARGUMENT_AREA);
 
-  /* Seed the random number generator. */
+  // Seed the random number generator.
   if (bootargs_get("randomseed") == NULL) {
     _set_rand_seed(0);
   } else {
@@ -115,17 +114,17 @@ void init(void)
 
   kprintf("Starting threading system and SMP\n");
 
-  /* Let other CPUs run */
+  // Let other CPUs run.
   kernel_bootstrap_finished = 1;
 
   _interrupt_clear_bootstrap();
   _interrupt_enable();
 
-  /* Enter context switch, scheduler will be run automatically,
-     since thread_switch() behaviour is identical to timer tick
-     (thread timeslice is over). */
+  // Enter context switch, scheduler will be run automatically,
+  // since thread_switch() behaviour is identical to timer tick
+  // (thread timeslice is over).
   thread_switch();
 
-  /* We should never get here */
+  // We should never get here
   KERNEL_PANIC("Threading system startup failed.");
 }
