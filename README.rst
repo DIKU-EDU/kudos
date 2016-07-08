@@ -33,7 +33,8 @@ local, working copy, `pulling`_ this remote as the course progresses.
 KUDOS Notes
 ===========
 
-    -KUDOS can only handle one device per ATA/IDE bus (master/slave don't work)
+
+    - KUDOS can only handle one device per ATA/IDE bus (master/slave don't work)
         Workaround is to start KUDOS from a disk on one bus and start the initial program from
         a disk on another bus. (The IDE driver is generally fucked-up!)
     - KUDOS x86_64 cannot halt
