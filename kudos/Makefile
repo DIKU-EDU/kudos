@@ -23,15 +23,15 @@ CC      := mips-elf-gcc
 AS      := mips-elf-as
 LD      := mips-elf-ld
 
-SHARED_CFLAGS=-g -O2 -I. -Wall -Wextra -Werror -std=c99 -pedantic
+SHARED_CFLAGS=-g -O2 -I. -Wall -Wextra -pedantic
 
 CFLAGS  += $(SHARED_CFLAGS) -G0 $(CHANGEDFLAGS)
 LDFLAGS := --script=ldmips32.script --cref -G0 -Map kudos-mips32.map
 ASFLAGS := -gstabs+ -I. -Wa,-mips32 $(CHANGEDFLAGS)
 
-CCX86_64	:= x86_64-elf-gcc
-ASX86_64	:= x86_64-elf-as
-LDX86_64	:= x86_64-elf-ld
+CCX86_64	:= gcc
+ASX86_64	:= as
+LDX86_64	:= ld
 
 CFLAGSX86_64  += $(SHARED_CFLAGS) -fverbose-asm -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding -D SMALL_ENDIAN $(CHANGEDFLAGS)
 LDFLAGSX86_64 := --script=ldx86_64.script -z max-page-size=0x1000 -Map kudos-x86_64.map
@@ -45,7 +45,7 @@ SRC     :=
 MIPSSRC :=
 X64SRC  :=
 
-all: mips32
+all: x86_64
 
 mips32: $(TARGET_MIPS32) $(UTILTARGET)
 
