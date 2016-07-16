@@ -18,6 +18,7 @@
 #include "drivers/bootargs.h"
 #include "fs/vfs.h"
 #include <keyboard.h>
+#include "drivers/modules.h"
 
 /**
  * Initialize the system. This function is called by CPU0 just
@@ -90,6 +91,10 @@ int init(uint64_t magic, uint8_t *multiboot)
   /* Start scheduler */
   kprintf("Initializing scheduler\n");
   scheduler_init();
+
+  /* Initialize modules */
+  kprintf("Initializing kernel modules\n");
+  modules_init();
 
   /* Setup Drivers */
   kprintf("Initializing device drivers\n");
