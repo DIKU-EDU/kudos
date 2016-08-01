@@ -108,10 +108,10 @@ int64_t physmem_getframes(int64_t count)
                 {
                   int64_t starting_bit = i * 64;
                   int64_t free = 0;
-                  starting_bit += bit;
+                  starting_bit += j;
 
                   /* Get the free bit in qword at index i */
-                  for(k = 0; k <= count; k++)
+                  for(k = 0; k < count; k++)
                     {
                       /* Test if it is free */
                       if(memmap_testbit(starting_bit + k) == 0)
