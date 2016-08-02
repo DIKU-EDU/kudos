@@ -119,7 +119,7 @@ int64_t physmem_getframes(int64_t count)
 
                       /* Did we have enough free blocks? */
                       if(free == count)
-                        return (int64_t)(i * 8 * 8 + j);
+                        return starting_bit;
                     }
                 }
             }
@@ -278,7 +278,7 @@ physaddr_t physmem_allocblocks(uint32_t count)
 
   /* Calculate Address */
   addr = (uint64_t)(frame * PMM_BLOCK_SIZE);
-  used_blocks++;
+  used_blocks += count;
 
   return addr;
 }
