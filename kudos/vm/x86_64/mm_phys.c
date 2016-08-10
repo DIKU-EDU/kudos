@@ -13,7 +13,6 @@
 
 /* PMM Defines */
 #define PMM_BLOCKS_PER_BYTE 0x8
-#define PMM_BLOCK_SIZE 0x1000
 
 /* Memory Map */
 uint64_t *_mem_bitmap;

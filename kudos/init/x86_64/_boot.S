@@ -111,6 +111,16 @@ _start:
 	movl $0,							 28(%eax)
 	movl $(1024 * 1024 * 8 + PAGE_FLAGS),32(%eax)
 	movl $0,							 36(%eax)
+	movl $(1024 * 1024 * 10 + PAGE_FLAGS),40(%eax)
+	movl $0,							 44(%eax)
+	movl $(1024 * 1024 * 12 + PAGE_FLAGS),48(%eax)
+	movl $0,							 52(%eax)
+	movl $(1024 * 1024 * 14 + PAGE_FLAGS),56(%eax)
+	movl $0,							 60(%eax)
+	movl $(1024 * 1024 * 16 + PAGE_FLAGS),64(%eax)
+	movl $0,							 68(%eax)
+	movl $(1024 * 1024 * 18 + PAGE_FLAGS),72(%eax)
+	movl $0,							 76(%eax)
 	/* Fill upper values with 0, we are still in 32 bit */
 
 	/* Setup PDPTE */
