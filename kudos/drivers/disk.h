@@ -28,7 +28,7 @@ typedef struct {
 
 
 /* functions */
-device_t *disk_init(io_descriptor_t *desc);
+int disk_init(io_descriptor_t *desc);
 
 
 #endif /* DRIVERS_DISK_H */

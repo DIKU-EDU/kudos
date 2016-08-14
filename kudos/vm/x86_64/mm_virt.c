@@ -29,9 +29,6 @@
 #define MM_HEAP_LOCATION 0x10000000
 #define MM_HEAP_END 0x20000000
 
-//Limit for kernel virtual address space
-#define VMM_KERNEL_SPACE 0x00007FFFFFFFFFFF
-
 /* Extern variables */
 extern uint64_t KERNEL_ENDS_HERE;   //physical address of kernel end
 extern physaddr_t stalloced_total;  //Total bytes stalloced

@@ -92,13 +92,13 @@ int init(uint64_t magic, uint8_t *multiboot)
   kprintf("Initializing scheduler\n");
   scheduler_init();
 
-  /* Initialize modules */
-  kprintf("Initializing kernel modules\n");
-  modules_init();
-
   /* Setup Drivers */
   kprintf("Initializing device drivers\n");
   device_init();
+
+  /* Initialize modules */
+  kprintf("Initializing kernel modules\n");
+  modules_init();
 
   kprintf("Initializing virtual filesystem\n");
   vfs_init();

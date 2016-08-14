@@ -17,6 +17,7 @@
 #include "drivers/disk.h"
 #include "drivers/disksched.h"
 
+extern int device_register(device_t *device);
 
 /**@name Disk driver
  *
@@ -110,7 +111,7 @@ void ide_delay(uint8_t channel)
  *
  * @return Pointer to the device structure of the controller
  */
-device_t *disk_init(io_descriptor_t *desc)
+int disk_init(io_descriptor_t *desc)
 {
   /* Cast it */
   pci_conf_t *pci = (pci_conf_t*)(uint64_t*) desc;
@@ -314,8 +315,12 @@ device_t *disk_init(io_descriptor_t *desc)
   ide_gbd.block_size     = ide_get_sectorsize;
   ide_gbd.total_blocks = ide_get_sectorcount;
 
-  return &ide_dev;
+  device_register(&ide_dev);
+
+  return 0;
 }
+
+pci_module_init(IDE_PCI_MODULE, disk_init, 0x1, 0x1);
 
 /**
  * Initialize disk device driver. Reserves memory for data structures

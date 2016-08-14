@@ -6,7 +6,9 @@
 #define __PCI_H__
 
 /* Includes */
+#include <arch.h>
 #include "lib/types.h"
+#include "drivers/modules.h"
 
 /* Defines */
 
@@ -72,5 +74,17 @@ typedef struct pci_conf_space
 
 } __attribute__((packed)) pci_conf_t;
 
-#endif
+#define pci_module_init(name, handler, classcode, subclass) \
+    static pci_device_module_t __module_pci__##name \
+    __attribute__ ((section ("real_modules_ptr"))) = \
+    {classcode, subclass, handler}; \
+    module_define(MODULE_TYPE_PCI, name, &__module_pci__##name)
 
+typedef int(*pci_device_handler)(io_descriptor_t*);
+
+typedef struct {
+    uint8_t classcode;
+    uint8_t subclass;
+    pci_device_handler device_handler;
+} pci_device_module_t;
+#endif

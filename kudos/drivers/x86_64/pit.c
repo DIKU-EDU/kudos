@@ -8,6 +8,7 @@
 #include "kernel/interrupt.h"
 #include "lib/types.h"
 #include "lib/libc.h"
+#include "drivers/modules.h"
 
 /* Globals */
 volatile uint32_t pit_counter = 0;
