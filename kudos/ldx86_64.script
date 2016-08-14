@@ -25,6 +25,10 @@ SECTIONS
         *(modules_ptr)
     }
     __modules_end = .;
+
+    real_modules_ptr : {
+        *(real_modules_ptr)
+    }
     
     /*
     * Kernel data
