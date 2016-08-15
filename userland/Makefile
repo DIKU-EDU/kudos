@@ -31,7 +31,7 @@ CCX86_64	:= gcc
 ASX86_64	:= as
 LDX86_64	:= ld
 
-CFLAGSX86_64  += $(SHARED_CFLAGS) -O2 -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding
+CFLAGSX86_64  += $(SHARED_CFLAGS) -O2 -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding -mcmodel=large
 LDFLAGSX86_64 := --script=x86_64/ld.userland.script -z max-page-size=0x1000
 ASFLAGSX86_64 := -I../kudos
 
