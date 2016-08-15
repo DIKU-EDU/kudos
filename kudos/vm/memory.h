@@ -39,7 +39,12 @@ pagetable_t *vm_create_pagetable(uint32_t asid);
 void vm_destroy_pagetable(pagetable_t *pagetable);
 void vm_update_mappings(virtaddr_t *thread);
 
-void vm_memwrite(pagetable_t *pagetable, unsigned int buflen,
-                 virtaddr_t target, const void *source);
+void* kmalloc(uint64_t size);
+
+//void vm_memwrite(pagetable_t *pagetable, unsigned int buflen,
+//                 virtaddr_t target, const void *source);
+
+void* kmalloc(uint64_t size);
+void kfree(void* ptr);
 
 #endif
