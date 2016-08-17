@@ -241,8 +241,6 @@ void vm_init(void){
     vm_map(pml4, phys, virt, 0);
   }
 
-  kprintf("Memory identity mapped to 0x%x\n", indentity_bound);
-
   kernel_pml4 = pml4;
   vmm_setcr3((uint64_t) pml4);
 }
@@ -267,8 +265,6 @@ void* kmalloc(uint64_t size){
   }
 
   kmalloc_addr += 0x1000*i;
-
-  kprintf("kmalloced(%x) address: %x\n", size, ret_addr);
 
   return ret_addr;
 }
