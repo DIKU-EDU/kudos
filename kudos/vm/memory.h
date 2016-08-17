@@ -23,7 +23,8 @@ void physmem_freeblock(void *ptr);
 void physmem_freeblocks(void *ptr, uint32_t size);
 
 /* Virtual Memory Management */
-#define USERLAND_STACK_TOP 0x7fffeffc
+define USERLAND_STACK_TOP 0xFFFFFFFFFFFFFFFF\
+    -(CONFIG_USERLAND_STACK_SIZE*PAGE_SIZE)
 
 /* For the architecture that supports it */
 void vm_init(void);
