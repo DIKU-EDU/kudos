@@ -10,8 +10,8 @@ ARCHX86_64 := init/x86_64 kernel/x86_64 vm/x86_64 lib/x86_64 drivers/x86_64 proc
 PHASE        := 1
 
 #IncludePaths
-MIPS32_INC = -I./drivers/mips32/ -I./lib/mips32/ -I./kernel/mips32/ -I./vm/mips32/
-X86_64_INC = -I./drivers/x86_64/ -I./lib/x86_64/ -I./kernel/x86_64/ -I./vm/x86_64
+MIPS32_INC = -I./drivers/mips32/ -I./lib/mips32/ -I./kernel/mips32/ -I./vm/mips32/ -I./proc/mips32/
+X86_64_INC = -I./drivers/x86_64/ -I./lib/x86_64/ -I./kernel/x86_64/ -I./vm/x86_64/ -I./proc/x86_64/
 
 ## Below this point, you shouldn't have to change anything.
 TARGET_MIPS32 := kudos-mips32
