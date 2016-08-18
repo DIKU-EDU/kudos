@@ -70,27 +70,6 @@ void vmm_cleartable(pagetable_t *p_table)
     memoryset(p_table, 0, sizeof(pagetable_t));
 }
 
-void vmm_cleardirectory(pagedirectory_t *p_dir)
-{
-  /* Null out page directory */
-  if(p_dir)
-    memoryset(p_dir, 0, sizeof(pagedirectory_t));
-}
-
-void vmm_clearpdp(pdp_t *p_pdp)
-{
-  /* Null out page directory pointer */
-  if(p_pdp)
-    memoryset(p_pdp, 0, sizeof(pdp_t));
-}
-
-void vmm_clearpml4(pml4_t *pml4)
-{
-  /* Null out pml4 */
-  if(pml4)
-    memoryset(pml4, 0, sizeof(pml4_t));
-}
-
 void vmm_setattribute(page_t *p, uint64_t attrib)
 {
   *p |= attrib;
