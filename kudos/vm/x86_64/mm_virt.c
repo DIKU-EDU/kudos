@@ -131,32 +131,6 @@ void vmm_install_ptable(pagetable_t *target, uint64_t pt_index,
     target->pages[pt_index] = entry;
 }
 
-void vmm_install_pdir(pdp_t *pdp, uint64_t pd_index,
-                      uint64_t phys, uint64_t flags)
-{
-  /* Set page directory attributes */
-  /* We only set attributes for the physical entry
-   * as the MMU will ignore the virtual one */
-  uint64_t pdir = phys | flags;
-
-  /* Now we modify the page directory pointer entry */
-  pdp->p_page_dirs[pd_index] = pdir;
-  pdp->v_page_dirs[pd_index] = phys;
-}
-
-void vmm_install_pdp(pml4_t *pml, uint64_t pm_index,
-                     uint64_t phys, uint64_t flags)
-{
-  /* Set pdp attributes */
-  /* We only set attributes for the physical entry
-   * as the MMU will ignore the virtual one */
-  uint64_t pdp = phys | flags;
-
-  /* Now we modify the page directory pointer entry */
-  pml->p_page_dir_pts[pm_index] = pdp;
-  pml->v_page_dir_pts[pm_index] = phys;
-}
-
 void __attribute((noinline)) vmm_reloadcr3()
 {
   /* Repoint CR3 */
