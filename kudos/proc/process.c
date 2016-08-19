@@ -94,6 +94,9 @@ int setup_new_process(TID_t thread,
                              MIN(PAGE_SIZE, left_to_read))
                     == (int) MIN(PAGE_SIZE, left_to_read));
     }
+    //Make the page read only
+    vm_map(pagetable, phys_page,
+            virt_page, PAGE_USER);
   }
 
   for(i = 0; i < (int)elf.rw_pages; i++) {
