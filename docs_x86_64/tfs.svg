@@ -1,0 +1,314 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: fig2dev Version 3.2 Patchlevel 5e -->
+<!-- CreationDate: Sun Mar 13 09:23:31 2016 -->
+<!-- Magnification: 1.000 -->
+<svg	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="10.3in" height="7.3in"
+	viewBox="285 300 12327 8790">
+<g style="stroke-width:.025in; fill:none">
+<!-- Line: box -->
+<rect x="900" y="600" width="2700" height="8100" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="600" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="1800" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="4200" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="4800" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="8100" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="5400" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="6000" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="6600" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line -->
+<polyline points="2250,7350
+2250,7830
+" style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Arrowhead on XXXpoint 2250 7350 - 2250 7965-->
+<polygon points="2220 7829
+2250 7949
+2280 7829
+2220 7829
+
+" style="stroke:#000000;stroke-width:7;stroke-miterlimit:8;
+fill:#000000;"/>
+<!-- Line: box -->
+<rect x="900" y="3600" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="900" y="2400" width="2700" height="600" rx="0" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="7500" y="1200" width="2400" height="2700" rx="105" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+fill:#87cfff;
+"/>
+<!-- Line: box -->
+<rect x="4800" y="1800" width="2400" height="2700" rx="105" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+fill:#87cfff;
+"/>
+<!-- Line: box -->
+<rect x="8100" y="6000" width="2400" height="2700" rx="105" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+fill:#87cfff;
+"/>
+<!-- Line: box -->
+<rect x="4800" y="4800" width="2400" height="2700" rx="105" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+fill:#87cfff;
+"/>
+<!-- Line: box -->
+<rect x="10200" y="600" width="2400" height="2700" rx="105" 
+style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+fill:#87cfff;
+"/>
+<!-- Line -->
+<polyline points="3600,900
+10200,900
+" style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line -->
+<polyline points="3600,1500
+7500,1500
+" style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line -->
+<polyline points="3600,2100
+4800,2100
+" style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line -->
+<polyline points="3600,8400
+8100,8400
+" style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="975" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="1575" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">1</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="2175" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">2</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="2775" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">3</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="3375" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">4</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="8475" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">N</text>
+<!-- Text -->
+<text xml:space="preserve" x="300" y="450" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Block</text>
+<!-- Text -->
+<text xml:space="preserve" x="1950" y="9075" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Disk</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="3975" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">5</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="4575" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">6</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="5175" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">7</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="5775" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">8</text>
+<!-- Text -->
+<text xml:space="preserve" x="450" y="6375" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">9</text>
+<!-- Text -->
+<text xml:space="preserve" x="375" y="6975" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">10</text>
+<!-- Text -->
+<text xml:space="preserve" x="1125" y="3375" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">File Header for "filename1"</text>
+<!-- Text -->
+<text xml:space="preserve" x="1125" y="2175" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Master Directory (MD)</text>
+<!-- Text -->
+<text xml:space="preserve" x="1125" y="1575" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Block Allocation Table (BAT)</text>
+<!-- Text -->
+<text xml:space="preserve" x="1125" y="975" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Header Block</text>
+<!-- Text -->
+<text xml:space="preserve" x="1125" y="4575" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">File Header for "filename7"</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="5175" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Size of file in blocks</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="5550" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">1st datablock number</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="5790" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">2nd datablock number</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="6030" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">3rd datablock number</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="6270" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">...</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="6750" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">...</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="6990" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">127th datablock number</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="3225" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">block     filename4</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="3450" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">block     filename5</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="3675" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">block     filename6</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="3900" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">block     filename7</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="4125" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">block     filename8</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="3000" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">block     filename3</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="2775" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">block     filename2</text>
+<!-- Text -->
+<text xml:space="preserve" x="5475" y="4350" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">...</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="2250" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">25 directory entries:</text>
+<!-- Text -->
+<text xml:space="preserve" x="7800" y="1800" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Bitmap, each bit</text>
+<!-- Text -->
+<text xml:space="preserve" x="7800" y="2040" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">corresponds to one block</text>
+<!-- Text -->
+<text xml:space="preserve" x="7800" y="2280" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">on disk.</text>
+<!-- Text -->
+<text xml:space="preserve" x="10500" y="1125" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Magic Number (3745)</text>
+<!-- Text -->
+<text xml:space="preserve" x="10500" y="1500" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Name of the volume</text>
+<!-- Text -->
+<text xml:space="preserve" x="10500" y="1725" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">      (16 bytes)</text>
+<!-- Text -->
+<text xml:space="preserve" x="8325" y="6450" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">This is the contents</text>
+<!-- Text -->
+<text xml:space="preserve" x="8325" y="6690" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">of the file at offset 1024</text>
+<!-- Text -->
+<text xml:space="preserve" x="8325" y="6930" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">from the beginning of</text>
+<!-- Text -->
+<text xml:space="preserve" x="8325" y="7170" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">the file.</text>
+<!-- Text -->
+<text xml:space="preserve" x="8325" y="7650" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">...</text>
+<!-- Text -->
+<text xml:space="preserve" x="8100" y="4725" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">All blocks are 512 bytes in size.</text>
+<!-- Text -->
+<text xml:space="preserve" x="1125" y="8475" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Third datablock for "filename7"</text>
+<!-- Text -->
+<text xml:space="preserve" x="1125" y="6975" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">Second datablock for "filename7"</text>
+<!-- Text -->
+<text xml:space="preserve" x="1125" y="5175" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">First datablock for "filename7"</text>
+<!-- Text -->
+<text xml:space="preserve" x="5100" y="2550" fill="#000000"  font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">block     filename1</text>
+<!-- Line -->
+<polyline points="5025,2475
+3807,3180
+" style="stroke:#000000;stroke-width:15;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Arrowhead on XXXpoint 5025 2475 - 3574 3315-->
+<polygon points="3779 3126
+3602 3299
+3839 3230
+3779 3126
+
+" style="stroke:#000000;stroke-width:15;stroke-miterlimit:8;
+fill:#000000;"/>
+<!-- Line -->
+<polyline points="5025,3825
+3820,4332
+" style="stroke:#000000;stroke-width:15;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Arrowhead on XXXpoint 5025 3825 - 3572 4436-->
+<polygon points="3799 4274
+3602 4423
+3846 4385
+3799 4274
+
+" style="stroke:#000000;stroke-width:15;stroke-miterlimit:8;
+fill:#000000;"/>
+<!-- Line -->
+<polyline points="5025,5475
+3831,5160
+" style="stroke:#000000;stroke-width:15;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Arrowhead on XXXpoint 5025 5475 - 3570 5092-->
+<polygon points="3848 5103
+3601 5100
+3817 5219
+3848 5103
+
+" style="stroke:#000000;stroke-width:15;stroke-miterlimit:8;
+fill:#000000;"/>
+<!-- Line -->
+<polyline points="5025,5700
+3783,6745
+" style="stroke:#000000;stroke-width:15;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Arrowhead on XXXpoint 5025 5700 - 3577 6919-->
+<polygon points="3746 6697
+3602 6898
+3824 6789
+3746 6697
+
+" style="stroke:#000000;stroke-width:15;stroke-miterlimit:8;
+fill:#000000;"/>
+<!-- Line -->
+<polyline points="5025,6000
+3722,8194
+" style="stroke:#000000;stroke-width:15;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Arrowhead on XXXpoint 5025 6000 - 3584 8425-->
+<polygon points="3672 8160
+3601 8397
+3775 8221
+3672 8160
+
+" style="stroke:#000000;stroke-width:15;stroke-miterlimit:8;
+fill:#000000;"/>
+<!-- Line -->
+<polyline points="3600,4575
+4800,5100
+" style="stroke:#000000;stroke-width:7;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+</g>
+</svg>
