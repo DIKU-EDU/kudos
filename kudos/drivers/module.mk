@@ -3,6 +3,6 @@
 # Set the module name
 MODULE := drivers
 
-FILES := bootargs.c disksched.c timer.c modules.c dummy_module.c
+FILES := bootargs.c disksched.c timer.c modules.c
 
 SRC += $(patsubst %, $(MODULE)/%, $(FILES))
