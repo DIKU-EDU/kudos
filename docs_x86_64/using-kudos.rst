@@ -79,7 +79,7 @@ the userland programs::
 
 Then transfer the userland program ``halt`` onto the ``store.file`` virtual disk::
 
-    ~/kudos$ ./kudos/utils/tfstool write store.file userland/halt.x86_64 halt
+    ~/kudos$ ./kudos/util/tfstool write store.file userland/halt.x86_64 halt
 
 To start qemu and boot qemu::
 
@@ -87,5 +87,5 @@ To start qemu and boot qemu::
 
 This should open a new qemu window and boot KUDOS.
 
-Run ``./kudos/utils/tfstool list store.file`` to list the files currently stored in the KUDOS TFS
+Run ``./kudos/util/tfstool list store.file`` to list the files currently stored in the KUDOS TFS
 disk.
