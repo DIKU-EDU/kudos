@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 ISO_PATH=./qemu/kudos.iso 
 KUDOS_PATH=./kudos/kudos-x86_64
