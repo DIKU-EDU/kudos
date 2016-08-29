@@ -14,7 +14,7 @@ grub-mkrescue -o $ISO_PATH ./qemu/grub/iso
 qemu-system-x86_64 \
   -gdb tcp::1234    \
   -monitor stdio    `# non graphical mode` \
-  -m 128            `# megst of RAM` \
+  -m 128            `# megs of RAM` \
   -net nic,vlan=0   \
   -net user,vlan=0  \
   -drive file=$ISO_PATH,if=ide,bus=0,unit=0,media=cdrom \
