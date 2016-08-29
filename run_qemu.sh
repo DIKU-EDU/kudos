@@ -1,4 +1,6 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+
+set -euo pipefail
 
 ISO_PATH=./qemu/kudos.iso
 KUDOS_PATH=./kudos/kudos-x86_64
