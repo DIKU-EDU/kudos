@@ -315,8 +315,25 @@ pagetable_t *vm_create_pagetable(uint32_t asid){
  */
 void vm_destroy_pagetable(pagetable_t *pagetable)
 {
-  pagetable=pagetable;
-  /* FIXME - we need to implement this! */
+  /* Sanity check, is the pagetable pointer greater than the base
+   * of the pagetable pool?
+   *
+   * Not sure if C allows comparison of pointers, so cast them.
+   */
+  if(((virtaddr_t)pagetable) < ((virtaddr_t)pt_pool))
+    KERNEL_PANIC("vm_destroy_pagetable: Bad pointer range");
+
+  //Calculate pagetable index
+  uint64_t pt_index = pagetable - pt_pool;
+
+  /* Sanity check, is the page table index less than the
+   * number of page tables?
+   */
+  if(pt_index >= VM_PTP_SIZE)
+    KERNEL_PANIC("vm_destroy_pagetable: Bad pointer ranger");
+
+  //Unset bit in page pool bitmap
+  ptmap_unsetbit(pt_index);
 }
 
 /* Compatability Functions */
