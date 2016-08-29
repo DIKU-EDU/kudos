@@ -19,6 +19,6 @@ qemu-system-x86_64 \
   -monitor stdio    `# non graphical mode` \
   -m 128            `# megs of RAM` \
   -net nic          `# emulate a network interface card` \
-  -netdev user      `# enable user mode networking` \
+  -net user         `# enable user mode networking` \
   -drive file="$ISO_PATH",if=ide,bus=0,unit=0,media=cdrom \
   -drive file="$KUDOS_DISK_PATH",format=raw,if=ide,bus=0,unit=1
