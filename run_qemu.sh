@@ -3,6 +3,7 @@
 set -euo pipefail
 
 ISO_PATH=./qemu/kudos.iso
+KUDOS_DISK_PATH=./store.file
 KUDOS_PATH=./kudos/kudos-x86_64
 
 if [ -f "$ISO_PATH" ]; then
@@ -19,5 +20,5 @@ qemu-system-x86_64 \
   -m 128            `# megs of RAM` \
   -net nic          `# emulate a network interface card` \
   -netdev user      `# enable user mode networking` \
-  -drive file=$ISO_PATH,if=ide,bus=0,unit=0,media=cdrom \
-  -drive format=raw,if=ide,file='./store.file',bus=0,unit=1
+  -drive file="$ISO_PATH",if=ide,bus=0,unit=0,media=cdrom \
+  -drive file="$KUDOS_DISK_PATH",format=raw,if=ide,bus=0,unit=1
