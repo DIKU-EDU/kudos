@@ -3,13 +3,13 @@
 ISO_PATH=./qemu/kudos.iso
 KUDOS_PATH=./kudos/kudos-x86_64
 
-if [ -f $ISO_PATH ]; then
-    rm $ISO_PATH
+if [ -f "$ISO_PATH" ]; then
+    rm "$ISO_PATH"
 fi
 
-cp -f $KUDOS_PATH ./qemu/grub/iso/boot/kudos-x86_64
+cp -f "$KUDOS_PATH" "./qemu/grub/iso/boot/kudos-x86_64"
 
-grub-mkrescue -o $ISO_PATH ./qemu/grub/iso
+grub-mkrescue -o "$ISO_PATH" "./qemu/grub/iso"
 
 qemu-system-x86_64 \
   -gdb tcp::1234    \
