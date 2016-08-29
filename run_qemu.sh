@@ -18,6 +18,6 @@ qemu-system-x86_64 \
   -monitor stdio    `# non graphical mode` \
   -m 128            `# megs of RAM` \
   -net nic          `# emulate a network interface card` \
-  -net user         `# enable user mode networking` \
+  -netdev user      `# enable user mode networking` \
   -drive file=$ISO_PATH,if=ide,bus=0,unit=0,media=cdrom \
   -drive format=raw,if=ide,file='./store.file',bus=0,unit=1
