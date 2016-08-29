@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ISO_PATH=./qemu/kudos.iso 
+ISO_PATH=./qemu/kudos.iso
 KUDOS_PATH=./kudos/kudos-x86_64
 
 if [ -f $ISO_PATH ]; then
