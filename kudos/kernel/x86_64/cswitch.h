@@ -13,7 +13,7 @@ typedef struct {
   uint64_t rip;
   uint64_t flags;
   uint64_t pml4;
-  pml4_t *virt_memory;
+  pagetable_t *virt_memory;
 
   void    *prev_context;   /* Previous context in a nested exception chain */
 } context_t;

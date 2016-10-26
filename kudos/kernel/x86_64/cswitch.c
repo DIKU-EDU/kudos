@@ -60,8 +60,8 @@ void _context_init(context_t *cxt, virtaddr_t entry, virtaddr_t endentry,
   cxt->stack = rsp;
 
   /* Setup memory */
-  cxt->pml4 = vmm_get_kernel_pml4();
-  cxt->virt_memory = vmm_get_kernel_vmem();
+  cxt->pml4 = (uint64_t)vmm_get_kernel_pml4();
+  cxt->virt_memory = vmm_get_kernel_pml4();
   cxt->flags = 0;
 }
 
@@ -133,8 +133,8 @@ void _context_enable_ints(context_t *cxt)
   cxt->flags |= EFLAGS_INTERRUPT_FLAG;
 
   /* Setup memory */
-  cxt->pml4 = vmm_get_kernel_pml4();
-  cxt->virt_memory = vmm_get_kernel_vmem();
+  cxt->pml4 = (uint64_t)vmm_get_kernel_pml4();
+  cxt->virt_memory = vmm_get_kernel_pml4();
   cxt->flags = 0;
 }
 

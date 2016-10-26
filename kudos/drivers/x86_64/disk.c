@@ -17,6 +17,7 @@
 #include "drivers/disk.h"
 #include "drivers/disksched.h"
 
+extern int device_register(device_t *device);
 
 /**@name Disk driver
  *
@@ -32,8 +33,8 @@ extern void ide_irq_handler1(void);
 /* Variables */
 ide_channel_t ide_channels[IDE_CHANNELS_PER_CTRL];
 ide_device_t ide_devices[IDE_CHANNELS_PER_CTRL * IDE_DEVICES_PER_CHANNEL];
-device_t ide_dev;
-gbd_t ide_gbd;
+device_t ide_dev[IDE_CHANNELS_PER_CTRL * IDE_DEVICES_PER_CHANNEL];
+gbd_t ide_gbd[IDE_CHANNELS_PER_CTRL * IDE_DEVICES_PER_CHANNEL];
 
 /* Prototypes */
 uint32_t ide_get_sectorsize(gbd_t *disk);
@@ -110,7 +111,7 @@ void ide_delay(uint8_t channel)
  *
  * @return Pointer to the device structure of the controller
  */
-device_t *disk_init(io_descriptor_t *desc)
+int disk_init(io_descriptor_t *desc)
 {
   /* Cast it */
   pci_conf_t *pci = (pci_conf_t*)(uint64_t*) desc;
@@ -296,10 +297,19 @@ device_t *disk_init(io_descriptor_t *desc)
             }
 
           /* Register filesystem */
-          ide_dev.real_device = &(ide_channels[0]);
-          ide_dev.type = TYPECODE_DISK;
-          ide_dev.generic_device = &ide_gbd;
-          ide_dev.io_address = count;
+          ide_dev[count].real_device = &(ide_channels[0]);
+          ide_dev[count].type = TYPECODE_DISK;
+          ide_dev[count].generic_device = &ide_gbd[count];
+          ide_dev[count].io_address = count;
+
+          /* Setup ide device */
+          ide_gbd[count].device = &ide_dev[count];
+          ide_gbd[count].write_block  = ide_write_block;
+          ide_gbd[count].read_block   = ide_read_block;
+          ide_gbd[count].block_size     = ide_get_sectorsize;
+          ide_gbd[count].total_blocks = ide_get_sectorcount;
+
+          device_register(&ide_dev[count]);
 
           /* Increase count */
           count++;
@@ -307,15 +317,10 @@ device_t *disk_init(io_descriptor_t *desc)
     }
 
 
-  /* Setup ide device */
-  ide_gbd.device = &ide_dev;
-  ide_gbd.write_block  = ide_write_block;
-  ide_gbd.read_block   = ide_read_block;
-  ide_gbd.block_size     = ide_get_sectorsize;
-  ide_gbd.total_blocks = ide_get_sectorcount;
-
-  return &ide_dev;
+  return 0;
 }
+
+pci_module_init(IDE_PCI_MODULE, disk_init, 0x1, 0x1);
 
 /**
  * Initialize disk device driver. Reserves memory for data structures

@@ -78,13 +78,13 @@ int elf_parse_header(elf_info_t *elf, openfile_t file)
 
   /* Get the entry point */
   if (use64)
-    elf->entry_point = (uint32_t)elf_hdr64.e_entry;
+    elf->entry_point = elf_hdr64.e_entry;
   else
     elf->entry_point = elf_hdr.e_entry;
 
   /* Seek to the program header table */
   if (use64)
-    current_position = (uint32_t)elf_hdr64.e_phoff;
+    current_position = elf_hdr64.e_phoff;
   else
     current_position = elf_hdr.e_phoff;
 

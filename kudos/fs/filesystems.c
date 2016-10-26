@@ -150,7 +150,7 @@ fs_t *filesystems_try_all(gbd_t *disk)
   uint8_t i;
 
   /* Go through partitions on disk if any avail */
-  physaddr_t addr = physmem_allocblock();
+  physaddr_t addr = kmalloc(4096);
   gbd_request_t req;
 
   /* Setup disk request */

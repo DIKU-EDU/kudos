@@ -19,10 +19,11 @@
 
 /* Special symbol, which is put to the end of the kernel binary by the
    linker */
-extern uint32_t KERNEL_ENDS_HERE;
+extern uint64_t KERNEL_ENDS_HERE;
 
 /**  The start of the free area. */
 static physaddr_t free_area_start;
+physaddr_t stalloced_total;
 
 
 /**
@@ -31,6 +32,7 @@ static physaddr_t free_area_start;
  */
 void stalloc_disable()
 {
+  stalloced_total = free_area_start-((physaddr_t)&KERNEL_ENDS_HERE);
   free_area_start = 0xffffffff;
 }
 
@@ -45,6 +47,7 @@ void stalloc_disable()
 void stalloc_init(void)
 {
   free_area_start = (physaddr_t) &KERNEL_ENDS_HERE;
+  stalloced_total = 0;
 
   if (free_area_start & 0x03) {
     free_area_start += 4;

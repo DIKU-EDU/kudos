@@ -4,6 +4,7 @@
 
 #include "vm/memory.h"
 #include "lib/libc.h"
+#include "kernel/panic.h"
 #include "kernel/spinlock.h"
 #include "kernel/interrupt.h"
 
@@ -28,10 +29,38 @@
 #define MM_HEAP_LOCATION 0x10000000
 #define MM_HEAP_END 0x20000000
 
+/* Extern variables */
+extern uint64_t KERNEL_ENDS_HERE;   //physical address of kernel end
+extern physaddr_t stalloced_total;  //Total bytes stalloced
+
+/* The virtual address for the next stalloc allocation */
+virtaddr_t kmalloc_addr;
+
+/* Page table space of 4mb*/
+pagetable_t pt_pool[VM_PTP_SIZE] __attribute__ ((aligned (4096)));
+/* Bitmap of free page tables */
+uint64_t pt_bitmap[VM_PTP_SIZE/64];
+/* Extern functions to manipulate the pt bitmap */
+
 /* Globals */
-static pml4_t *kernel_pml4;
-static uint64_t kernel_pdbr;
+static pagetable_t *kernel_pml4;
 static spinlock_t vm_lock;
+
+/* Page table Bitmap Helpers */
+void ptmap_setbit(int64_t bit)
+{
+  pt_bitmap[bit / 64] |= (1 << (bit % 64));
+}
+
+void ptmap_unsetbit(int64_t bit)
+{
+  pt_bitmap[bit / 64] &= ~(1 << (bit % 64));
+}
+
+int64_t ptmap_testbit(int64_t bit)
+{
+  return pt_bitmap[bit / 64] & (1 << (bit % 64));
+}
 
 /* Helpers */
 void vmm_cleartable(pagetable_t *p_table)
@@ -39,27 +68,6 @@ void vmm_cleartable(pagetable_t *p_table)
   /* Null out page table */
   if(p_table)
     memoryset(p_table, 0, sizeof(pagetable_t));
-}
-
-void vmm_cleardirectory(pagedirectory_t *p_dir)
-{
-  /* Null out page directory */
-  if(p_dir)
-    memoryset(p_dir, 0, sizeof(pagedirectory_t));
-}
-
-void vmm_clearpdp(pdp_t *p_pdp)
-{
-  /* Null out page directory pointer */
-  if(p_pdp)
-    memoryset(p_pdp, 0, sizeof(pdp_t));
-}
-
-void vmm_clearpml4(pml4_t *pml4)
-{
-  /* Null out pml4 */
-  if(pml4)
-    memoryset(pml4, 0, sizeof(pml4_t));
 }
 
 void vmm_setattribute(page_t *p, uint64_t attrib)
@@ -72,55 +80,34 @@ void vmm_setframe(page_t *p, uint64_t frame)
   *p = (*p & ~PAGE_MASK) | frame;
 }
 
-uint64_t vmm_get_kernel_pml4()
-{
-  return kernel_pdbr;
-}
-
-pml4_t *vmm_get_kernel_vmem()
-{
+pagetable_t* vmm_get_kernel_pml4(){
   return kernel_pml4;
 }
 
-/* More helpers */
-void vmm_install_ptable(pagedirectory_t *pdir, uint64_t pt_index,
+pagetable_t* vmm_new_pagetable(){
+  pagetable_t* pt;
+  uint64_t i;
+    for(i = 0; i < VM_PTP_SIZE; i++){
+      if(!ptmap_testbit(i)){
+        ptmap_setbit(i);
+        pt = &pt_pool[i];
+        break;
+      }
+    }
+  if(i == VM_PTP_SIZE)
+    KERNEL_PANIC("No more pagetables");
+
+  return pt;
+}
+
+void vmm_install_ptable(pagetable_t *target, uint64_t pt_index,
                         uint64_t phys, uint64_t flags)
 {
-  /* Set page table attributes */
-  /* We only set attributes for the physical entry
-   * as the MMU will ignore the virtual one */
-  uint64_t ptable = phys | flags;
+    /* Set page table attributes */
+    uint64_t entry = phys | flags;
 
-  /* Now we modify the page directory entry */
-  pdir->p_tables[pt_index] = ptable;
-  pdir->v_tables[pt_index] = phys;
-
-}
-
-void vmm_install_pdir(pdp_t *pdp, uint64_t pd_index,
-                      uint64_t phys, uint64_t flags)
-{
-  /* Set page directory attributes */
-  /* We only set attributes for the physical entry
-   * as the MMU will ignore the virtual one */
-  uint64_t pdir = phys | flags;
-
-  /* Now we modify the page directory pointer entry */
-  pdp->p_page_dirs[pd_index] = pdir;
-  pdp->v_page_dirs[pd_index] = phys;
-}
-
-void vmm_install_pdp(pml4_t *pml, uint64_t pm_index,
-                     uint64_t phys, uint64_t flags)
-{
-  /* Set pdp attributes */
-  /* We only set attributes for the physical entry
-   * as the MMU will ignore the virtual one */
-  uint64_t pdp = phys | flags;
-
-  /* Now we modify the page directory pointer entry */
-  pml->p_page_dir_pts[pm_index] = pdp;
-  pml->v_page_dir_pts[pm_index] = phys;
+    /* Add the page table entry to the page directory */
+    target->pages[pt_index] = entry;
 }
 
 void __attribute((noinline)) vmm_reloadcr3()
@@ -142,208 +129,150 @@ void vmm_invalidatepage(uint64_t virtual_addr)
   asm volatile("invlpg (%%rax)" : : "a"(virtual_addr));
 }
 
-pagetable_t *vmm_getptable(pagedirectory_t *pdir, virtaddr_t vaddr)
+pagetable_t* vmm_getptable(pagetable_t *pdir, virtaddr_t vaddr)
 {
   /* Get PDP index */
   uint64_t pindex = VMM_INDEX_PDIR(vaddr);
-  uint64_t ptr = pdir->p_tables[pindex];
-  uint64_t vptr = pdir->v_tables[pindex];
+  uint64_t ptr = pdir->pages[pindex];
 
   if(ptr & PAGE_PRESENT)
-    return (pagetable_t*)vptr;
+    return (pagetable_t*)(ptr & PAGE_MASK);
   else
     return 0;
 }
 
-pagedirectory_t *vmm_getpdir(pdp_t *pdp, virtaddr_t vaddr)
+pagetable_t* vmm_getpdir(pagetable_t *pdp, virtaddr_t vaddr)
 {
   /* Get PDP index */
   uint64_t pindex = VMM_INDEX_PDP(vaddr);
-  uint64_t ptr = pdp->p_page_dirs[pindex];
-  uint64_t vptr = pdp->v_page_dirs[pindex];
+  uint64_t ptr = pdp->pages[pindex];
 
   if(ptr & PAGE_PRESENT)
-    return (pagedirectory_t*)vptr;
+    return (pagetable_t*)(ptr & PAGE_MASK);
   else
     return 0;
 }
 
-pdp_t *vmm_getpdp(pml4_t *pml4, virtaddr_t vaddr)
+pagetable_t* vmm_getpdp(pagetable_t *pml4, virtaddr_t vaddr)
 {
   /* Get PDP index */
   uint64_t pindex = VMM_INDEX_PML4(vaddr);
-  uint64_t ptr = pml4->p_page_dir_pts[pindex];
-  uint64_t vptr = pml4->v_page_dir_pts[pindex];
+  uint64_t ptr = pml4->pages[pindex];
 
   if(ptr & PAGE_PRESENT)
-    return (pdp_t*)vptr;
+    return (pagetable_t*)(ptr & PAGE_MASK);
   else
     return 0;
 }
 
-/* Sets up a PML4, with the first 2mb identity mapped */
-void vm_init(void)
-{
-  /* Decls */
-  uint64_t i, phys = 0, virt  = 0;
-  pagetable_t *table2mb = (pagetable_t*)physmem_allocblock();
-  pagetable_t *table4mb = (pagetable_t*)physmem_allocblock();
-  pagedirectory_t *pdir = (pagedirectory_t*)physmem_allocblocks(2);
-  pdp_t *pdp = (pdp_t*)physmem_allocblocks(2);
-  kernel_pml4 = (pml4_t*)physmem_allocblocks(2);
-  kernel_pdbr = (uint64_t)kernel_pml4;
+void vm_init(void){
+  uint64_t i, phys, virt;
+  physaddr_t indentity_bound;
+  pagetable_t *pml4;
   spinlock_reset(&vm_lock);
 
-  /* Clear out allocated space */
-  vmm_cleartable(table2mb);
-  vmm_cleartable(table4mb);
-  vmm_cleardirectory(pdir);
-  vmm_clearpdp(pdp);
-  vmm_clearpml4(kernel_pml4);
+  /* The boundary for the indentity mapping */
+  indentity_bound = ((physaddr_t)&KERNEL_ENDS_HERE)+stalloced_total;
 
-  /* Step 1. Identity map first 4 mb */
+  indentity_bound += indentity_bound%PMM_BLOCK_SIZE;
 
-  /* We start at 1, because we dont want to map address 0x0,
-   * this is so we can catch null-pointers */
-  for(i = 1, phys = 0x1000, virt = 0x1000;
-      i < 512;
-      i++, phys += 0x1000, virt += 0x1000)
-    {
-      /* Create a page */
-      /* Page structure is */
-      /* Frame is the high 20 bit, which is the mapped physical
-       * and the lower 12 bits are page attributes */
-      page_t Page = phys | PAGE_PRESENT;
+  /* initialize kmalloc allocation address */
+  kmalloc_addr = indentity_bound;
+    
+  /* Clear page table bitmap */
+  for(uint64_t i = 0; i < VM_PTP_SIZE; i++)
+    ptmap_unsetbit(i);
 
-      /* Map it in */
-      table2mb->pages[i] = Page;
-    }
+  /* Create kernel pml4 */
+  pml4 = vmm_new_pagetable();
+  vmm_cleartable(pml4);
 
-  for(i = 0, phys = 0x200000, virt = 0x200000;
-      i < 512;
-      i++, phys += 0x1000, virt += 0x1000)
-    {
-      /* Create a page */
-      /* Page structure is */
-      /* Frame is the high 20 bit, which is the mapped physical
-       * and the lower 12 bits are page attributes */
-      page_t Page = phys | PAGE_PRESENT | PAGE_WRITE;
+ /* Identity map from page 1 to KERNEL_ENDS_HERE */
+  for(i = 1, phys = virt = 0x1000; phys < indentity_bound;
+      i++, phys = virt += 0x1000)
+  {
+    vm_map(pml4, phys, virt, 0);
+  }
 
-      /* Map it in */
-      table4mb->pages[i] = Page;
-    }
-
-  /* Now we setup the page directory */
-  vmm_install_ptable(pdir, 0, (physaddr_t)table2mb, PAGE_PRESENT | PAGE_WRITE);
-  vmm_install_ptable(pdir, 1, (physaddr_t)table4mb, PAGE_PRESENT | PAGE_WRITE);
-
-  /* Now that we have mapped the page table into the
-   * page directory, we need to map the page directory into
-   * the pdp */
-  vmm_install_pdir(pdp, 0, (physaddr_t)pdir, PAGE_PRESENT | PAGE_WRITE);
-
-  /* Finally, set it to the PML4 entry */
-  vmm_install_pdp(kernel_pml4, 0, (physaddr_t)pdp, PAGE_PRESENT | PAGE_WRITE);
-
-  /* As a last and final step to setting up VM, we want to support the
-   * dynamic allocation of everything to ease the kernel usage,
-   * so we premap every pagetable in the heap */
-  for(i = VMM_INDEX_PDIR(MM_HEAP_LOCATION);
-      i < VMM_INDEX_PDIR(MM_HEAP_END); i++)
-    {
-      /* Get page-table */
-      uint64_t *pt_entry_phys = &pdir->p_tables[i];
-      uint64_t *pt_entry_virt = &pdir->v_tables[i];
-
-      /* Get a block of memory */
-      physaddr_t block = physmem_allocblock();
-
-      /* Setup pagetable */
-      vmm_setattribute(pt_entry_phys, PAGE_PRESENT | PAGE_WRITE);
-      vmm_setframe(pt_entry_phys, block);
-      vmm_setframe(pt_entry_virt, block);
-    }
-
-  /* Set new paging directory */
-  vmm_setcr3(kernel_pdbr);
+  kernel_pml4 = pml4;
+  vmm_setcr3((uint64_t) pml4);
 }
 
-/* Its a simple, however still complex (programming is
- * just a lot of fun) situation. We need to check if the
- * containg pdp, pd and pagetable is present & writable,
- * else they need to get mapped aswell, its pretty tedious,
- * but whatever */
-void vm_map(pagetable_t *pagetable,
+void* kmalloc(uint64_t size){
+  physaddr_t frames;
+  virtaddr_t ret_addr;
+  uint64_t n_frames, i;
+  if(size+kmalloc_addr > VMM_KERNEL_SPACE)
+    KERNEL_PANIC("kmalloc: Out of virtual address space");
+
+  ret_addr = kmalloc_addr;
+
+  n_frames = size/PMM_BLOCK_SIZE;
+  if(size%PMM_BLOCK_SIZE)
+    n_frames++;
+
+  frames = physmem_getframes(n_frames);
+  for(i = 0; i < n_frames; i++){
+    vm_map(kernel_pml4, frames+(i*PMM_BLOCK_SIZE),
+        kmalloc_addr+(0x1000*i), 0);
+  }
+
+  kmalloc_addr += 0x1000*i;
+
+  return ret_addr;
+}
+
+void vm_map(pagetable_t *pml4,
             physaddr_t physaddr, virtaddr_t vaddr, int flags)
 {
   /* Get current paging structure */
-  pml4_t *pm;
-  pdp_t *pdp;
-  pagedirectory_t *pdir;
+  pagetable_t *pdp;
+  pagetable_t *pdir;
   pagetable_t *pt;
 
   /* Get a lock & disable ints */
   interrupt_status_t intr_status = _interrupt_disable();
   spinlock_acquire(&vm_lock);
 
-  /* Use external PML4? */
-  if(pagetable != 0)
-    pm = (pml4_t*)(virtaddr_t)pagetable;
-  else
-    pm = kernel_pml4;
-
   /* Get appropriate pdp */
-  pdp = vmm_getpdp(pm, vaddr);
+  pdp = vmm_getpdp(pml4, vaddr);
   if(pdp == 0)
-    {
-      /* Oh god, it isn't, allocate a new pdp */
-      pdp = (pdp_t*)physmem_allocblock();
-      physmem_allocblock();
-      vmm_clearpdp(pdp);
+  {
+    /* Oh god, it isn't, allocate a new pdp */
+    pdp = vmm_new_pagetable();
 
-      /* Install it */
-      vmm_install_pdp(pm, VMM_INDEX_PML4(vaddr),
-                      (physaddr_t)pdp, PAGE_PRESENT | PAGE_WRITE | flags);
+    vmm_cleartable(pdp);
 
-      /* Reload */
-      if(pagetable == 0)
-        vmm_reloadcr3();
-    }
+    /* Install it */
+    vmm_install_ptable(pml4, VMM_INDEX_PML4(vaddr),
+        (physaddr_t)pdp, PAGE_PRESENT | PAGE_WRITE | flags);
+  }
 
   /* Get appropriate pdir */
   pdir = vmm_getpdir(pdp, vaddr);
   if(pdir == 0)
-    {
-      /* Oh god, it isn't, allocate a new page directory */
-      pdir = (pagedirectory_t*)physmem_allocblock();
-      physmem_allocblock();
-      vmm_cleardirectory(pdir);
+  {
+    /* Oh god, it isn't, allocate a new page directory */
+    pdir = vmm_new_pagetable();
+    vmm_cleartable(pdir);
 
-      /* Install it */
-      vmm_install_pdir(pdp, VMM_INDEX_PDP(vaddr),
-                       (physaddr_t)pdir, PAGE_PRESENT | PAGE_WRITE | flags);
-
-      /* Reload */
-      if(pagetable == 0)
-        vmm_reloadcr3();
-    }
+    /* Install it */
+    vmm_install_ptable(pdp, VMM_INDEX_PDP(vaddr),
+        (physaddr_t)pdir, PAGE_PRESENT | PAGE_WRITE | flags);
+  }
 
   /* Get appropriate page directory */
   pt = vmm_getptable(pdir, vaddr);
   if(pt == 0)
-    {
-      /* Oh god, it isn't, allocate a new page table */
-      pt = (pagetable_t*)physmem_allocblock();
-      vmm_cleartable(pt);
+  {
+    /* Oh god, it isn't, allocate a new page table */
+    pt = vmm_new_pagetable();
+    vmm_cleartable(pt);
 
-      /* Install it */
-      vmm_install_ptable(pdir, VMM_INDEX_PDIR(vaddr),
-                         (physaddr_t)pt, PAGE_PRESENT | PAGE_WRITE | flags);
-
-      /* Reload */
-      if(pagetable == 0)
-        vmm_reloadcr3();
-    }
+    /* Install it */
+    vmm_install_ptable(pdir, VMM_INDEX_PDIR(vaddr),
+        (physaddr_t)pt, PAGE_PRESENT | PAGE_WRITE | flags);
+  }
 
   /* NOW, FINALLY, Get the appropriate page */
   pt->pages[VMM_INDEX_PTABLE(vaddr)] = physaddr |
@@ -354,8 +283,8 @@ void vm_map(pagetable_t *pagetable,
   _interrupt_set_state(intr_status);
 
   /* Invalidate page in TLB cache */
-  if(pagetable == 0)
-    vmm_invalidatepage(vaddr);
+  vmm_invalidatepage(vaddr);
+  vmm_reloadcr3();
 }
 
 void vm_unmap(pagetable_t *pagetable, virtaddr_t vaddr)
@@ -364,82 +293,17 @@ void vm_unmap(pagetable_t *pagetable, virtaddr_t vaddr)
   vaddr = vaddr;
 }
 
-physaddr_t vm_getmap(pagetable_t *pagetable, virtaddr_t vaddr)
-{
-  /* Get current paging structure */
-  pml4_t *pm;
-  pdp_t *pdp;
-  pagedirectory_t *pdir;
-  pagetable_t *pt;
-  page_t *page;
-  uint32_t pindex = 0;
-
-  /* Get a lock & disable ints */
-  interrupt_status_t intr_status = _interrupt_disable();
-  spinlock_acquire(&vm_lock);
-
-  /* Use external PML4? */
-  if(pagetable != 0)
-    pm = (pml4_t*)(virtaddr_t)pagetable;
-  else
-    pm = kernel_pml4;
-
-  /* Get appropriate pdp */
-  pdp = vmm_getpdp(pm, vaddr);
-  if(pdp == 0)
-    return 0;
-
-  /* Get appropriate pdir */
-  pdir = vmm_getpdir(pdp, vaddr);
-  if(pdir == 0)
-    return 0;
-
-  /* Get appropriate page directory */
-  pt = vmm_getptable(pdir, vaddr);
-  if(pt == 0)
-    return 0;
-
-  /* NOW, FINALLY, Get the appropriate page */
-  pindex = VMM_INDEX_PTABLE(vaddr);
-  page = &pt->pages[pindex];
-
-  /* Done, release lock */
-  spinlock_release(&vm_lock);
-  _interrupt_set_state(intr_status);
-
-  /* Return frame */
-  return (physaddr_t)((physaddr_t)page & 0xFFFFFFFFFFFFF000);
-}
-
-pagetable_t *vm_create_pagetable(uint32_t asid)
-{
-  /* Ok, this function creates a new page_table */
+pagetable_t *vm_create_pagetable(uint32_t asid){
   asid = asid;
-  pdp_t *pdp = (pdp_t*)physmem_allocblocks(2);
-  pml4_t *pml4 = (pml4_t*)physmem_allocblocks(2);
-  pdp_t *kpdp = 0;
-  uint64_t pdbr = (uint64_t)pml4;
-  pdbr = pdbr;
 
-  /* We need the first 4 mb identity mapped aswell, like
-   * kernel directory */
-  vmm_clearpdp(pdp);
-  vmm_clearpml4(pml4);
+  //Get page table from pool
+  pagetable_t *pml4 = vmm_new_pagetable();
 
-  /* Transfer the first pdir */
-  kpdp = vmm_getpdp(kernel_pml4, 0);
-  if(kpdp == 0)
-    {
-      kprintf("vm_create: error pdp!!\n");
-      for(;;);
-    }
+  //copy the kernel mappings into the new page table
+  memcopy(sizeof(pagetable_t), pml4, kernel_pml4);
 
-  /* Make the transfer! */
-  /* Install pdp and pdir */
-  vmm_install_pdp(pml4, 0, (physaddr_t)pdp, PAGE_PRESENT | PAGE_WRITE | PAGE_USER);
-  vmm_install_pdir(pdp, 0, kpdp->v_page_dirs[0], PAGE_PRESENT | PAGE_WRITE | PAGE_USER);
-
-  return (pagetable_t*)(uint64_t)pml4;
+  //every other level should be created under the first call to vm_map
+  return pml4;
 }
 
 /**
@@ -451,8 +315,25 @@ pagetable_t *vm_create_pagetable(uint32_t asid)
  */
 void vm_destroy_pagetable(pagetable_t *pagetable)
 {
-  pagetable=pagetable;
-  /* FIXME - we need to implement this! */
+  /* Sanity check, is the pagetable pointer greater than the base
+   * of the pagetable pool?
+   *
+   * Not sure if C allows comparison of pointers, so cast them.
+   */
+  if(((virtaddr_t)pagetable) < ((virtaddr_t)pt_pool))
+    KERNEL_PANIC("vm_destroy_pagetable: Bad pointer range");
+
+  //Calculate pagetable index
+  uint64_t pt_index = pagetable - pt_pool;
+
+  /* Sanity check, is the page table index less than the
+   * number of page tables?
+   */
+  if(pt_index >= VM_PTP_SIZE)
+    KERNEL_PANIC("vm_destroy_pagetable: Bad pointer ranger");
+
+  //Unset bit in page pool bitmap
+  ptmap_unsetbit(pt_index);
 }
 
 /* Compatability Functions */

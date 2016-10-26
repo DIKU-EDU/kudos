@@ -162,95 +162,94 @@ IsrCommon:
 
 /* IRQS */
 isr_handler0:
-	pushq 0
-	pushq 0
+	pushq $0
+	pushq $0
 	jmp IsrCommon
 
 isr_handler1:
-	pushq 0
-	pushq 1
+	pushq $0
+	pushq $1
 	jmp IsrCommon
 
 isr_handler2:
-	pushq 0
-	pushq 2
+	pushq $0
+	pushq $2
 	jmp IsrCommon
 
 isr_handler3:
-	pushq 0
-	pushq 3
+	pushq $0
+	pushq $3
 	jmp IsrCommon
 
 isr_handler4:
-	pushq 0
-	pushq 4
+	pushq $0
+	pushq $4
 	jmp IsrCommon
 
 isr_handler5:
-	pushq 0
-	pushq 5
+	pushq $0
+	pushq $5
 	jmp IsrCommon
 
 isr_handler6:
-	pushq 0
-	pushq 6
+	pushq $0
+	pushq $6
 	jmp IsrCommon
 
 isr_handler7:
-	pushq 0
-	pushq 7
+	pushq $0
+	pushq $7
 	jmp IsrCommon
 
 isr_handler8:
-	pushq 8
+	pushq $8
 	jmp IsrCommon
 
 isr_handler9:
-	pushq 0
-	pushq 9
+	pushq $0
+	pushq $9
 	jmp IsrCommon
 
 isr_handler10:
-	pushq 10
+	pushq $10
 	jmp IsrCommon
 
 isr_handler11:
-	pushq 11
+	pushq $11
 	jmp IsrCommon
 
 isr_handler12:
-	pushq 12
+	pushq $12
 	jmp IsrCommon
 
 isr_handler13:
-	pushq 13
+	pushq $13
 	jmp IsrCommon
 
 isr_handler14:
-	hlt
-	pushq 14
+	pushq $14
 	jmp IsrCommon
 
 isr_handler15:
-	pushq 0
-	pushq 15
+	pushq $0
+	pushq $15
 	jmp IsrCommon
 
 isr_handler16:
-	pushq 0
-	pushq 16
+	pushq $0
+	pushq $16
 	jmp IsrCommon
 
 isr_handler17:
-	pushq 17
+	pushq $17
 	jmp IsrCommon
 
 isr_handler18:
-	pushq 0
-	pushq 18
+	pushq $0
+	pushq $18
 	jmp IsrCommon
 
 isr_handler19:
-	pushq 0
-	pushq 19
+	pushq $0
+	pushq $19
 	jmp IsrCommon

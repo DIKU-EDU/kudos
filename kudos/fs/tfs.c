@@ -76,7 +76,7 @@ fs_t * tfs_init(gbd_t *disk, uint32_t sector)
     return NULL;
   }
 
-  addr = physmem_allocblock();
+  addr = kmalloc(4096);
 
   if(addr == 0) {
     semaphore_destroy(sem);
@@ -96,7 +96,8 @@ fs_t * tfs_init(gbd_t *disk, uint32_t sector)
   r = disk->read_block(disk, &req);
   if(r == 0) {
     semaphore_destroy(sem);
-    physmem_freeblock((physaddr_t*)ADDR_KERNEL_TO_PHYS(addr));
+    //NEED kfree function here
+    //physmem_freeblock((physaddr_t*)ADDR_KERNEL_TO_PHYS(addr));
     kprintf("tfs_init: Error during disk read. Initialization failed.\n");
     return NULL;
   }
@@ -106,7 +107,8 @@ fs_t * tfs_init(gbd_t *disk, uint32_t sector)
 
   if(magic != TFS_MAGIC) {
     semaphore_destroy(sem);
-    physmem_freeblock((physaddr_t*)ADDR_KERNEL_TO_PHYS(addr));
+    //NEED kfree function here
+    //physmem_freeblock((physaddr_t*)ADDR_KERNEL_TO_PHYS(addr));
     return NULL;
   }
 
@@ -170,7 +172,8 @@ int tfs_unmount(fs_t *fs)
 
   /* free semaphore and allocated memory */
   semaphore_destroy(tfs->lock);
-  physmem_freeblock((void*)(uintptr_t)ADDR_KERNEL_TO_PHYS((uintptr_t)fs));
+  //NEED kfree function here
+  //physmem_freeblock((void*)(uintptr_t)ADDR_KERNEL_TO_PHYS((uintptr_t)fs));
   return VFS_OK;
 }
 

@@ -13,7 +13,6 @@
 
 /* PMM Defines */
 #define PMM_BLOCKS_PER_BYTE 0x8
-#define PMM_BLOCK_SIZE 0x1000
 
 /* Memory Map */
 uint64_t *_mem_bitmap;
@@ -108,10 +107,10 @@ int64_t physmem_getframes(int64_t count)
                 {
                   int64_t starting_bit = i * 64;
                   int64_t free = 0;
-                  starting_bit += bit;
+                  starting_bit += j;
 
                   /* Get the free bit in qword at index i */
-                  for(k = 0; k <= count; k++)
+                  for(k = 0; k < count; k++)
                     {
                       /* Test if it is free */
                       if(memmap_testbit(starting_bit + k) == 0)
@@ -119,7 +118,7 @@ int64_t physmem_getframes(int64_t count)
 
                       /* Did we have enough free blocks? */
                       if(free == count)
-                        return (int64_t)(i * 8 * 8 + j);
+                        return starting_bit;
                     }
                 }
             }
@@ -278,7 +277,7 @@ physaddr_t physmem_allocblocks(uint32_t count)
 
   /* Calculate Address */
   addr = (uint64_t)(frame * PMM_BLOCK_SIZE);
-  used_blocks++;
+  used_blocks += count;
 
   return addr;
 }

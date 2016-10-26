@@ -30,6 +30,7 @@ uintptr_t syscall_entry(uintptr_t syscall,
    */
   switch(syscall) {
   case SYSCALL_HALT:
+    kprintf("CALLED syscall halt_kernel\n");
     halt_kernel();
     break;
   default:

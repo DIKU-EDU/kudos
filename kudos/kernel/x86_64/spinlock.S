@@ -14,16 +14,11 @@ spinlock_acquire:
 	mov $0x1, %rax
 	mov %rdi, %rbx
 
+spinlock_loop:
 	/* Xchg instruction is atomic */
 	xchg %eax, (%ebx)
 	test %eax, %eax
-	je lock_acquired
-
-	/* Acquire Loop */
-acquire_loop:
-	pause
-	cmp $0, (%ebx)
-	jne acquire_loop
+	jnz spinlock_loop
 
 	/* Done! */
 lock_acquired:

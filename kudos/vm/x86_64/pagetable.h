@@ -11,6 +11,9 @@
    of entries that fits on a single hardware memory page (4k). */
 #define PAGE_TABLE_ENTRIES 512
 
+//Limit for kernel virtual address space
+#define VMM_KERNEL_SPACE 0x00007FFFFFFFFFFF
+
 /* Page/Table/Ptr Attributes */
 #define PAGE_MASK       0xFFFFFFFFFFFFF000
 #define PAGE_ATTRIBS    0x0000000000000FFF

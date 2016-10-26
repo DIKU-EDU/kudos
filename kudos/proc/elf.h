@@ -7,6 +7,7 @@
 
 #include "lib/types.h"
 #include "fs/vfs.h"
+#include <elf_info.h>
 
 
 /* Return data type for the ELF header parser. This structure
@@ -26,19 +27,6 @@
  * NB: since the RW segment includes bss, pages needed may (of course)
  * be much larger than indicated by the size field.
  */
-typedef struct {
-    uint32_t entry_point; /* Entry point for the code */
-
-    uint32_t ro_location; /* Location of RO segment in the file */
-    uint32_t ro_size;     /* Size of RO segment in the file */
-    uint32_t ro_pages;    /* Pages needed by the RO segment */
-    uint32_t ro_vaddr;    /* Virtual address of the RO segment */
-
-    uint32_t rw_location; /* Location of RW segment in the file */
-    uint32_t rw_size;     /* Size of RW segment in the file */
-    uint32_t rw_pages;    /* Pages needed by the RW segment */
-    uint32_t rw_vaddr;    /* Virtual address of the RW segment */
-} elf_info_t;
 
 int elf_parse_header(elf_info_t *elf, openfile_t file);
 

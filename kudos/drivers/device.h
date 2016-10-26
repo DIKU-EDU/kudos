@@ -34,5 +34,6 @@ typedef struct {
 
 void device_init(void);
 device_t *device_get(uint32_t typecode, uint32_t n);
+int device_register(device_t *device);
 
 #endif /* DEVICE_H */

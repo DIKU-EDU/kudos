@@ -23,7 +23,7 @@ void physmem_freeblock(void *ptr);
 void physmem_freeblocks(void *ptr, uint32_t size);
 
 /* Virtual Memory Management */
-#define USERLAND_STACK_TOP 0x7fffeffc
+#define USERLAND_STACK_TOP 0xFFFFFFFFFFFFFFFF
 
 /* For the architecture that supports it */
 void vm_init(void);
@@ -39,7 +39,12 @@ pagetable_t *vm_create_pagetable(uint32_t asid);
 void vm_destroy_pagetable(pagetable_t *pagetable);
 void vm_update_mappings(virtaddr_t *thread);
 
-void vm_memwrite(pagetable_t *pagetable, unsigned int buflen,
-                 virtaddr_t target, const void *source);
+void* kmalloc(uint64_t size);
+
+//void vm_memwrite(pagetable_t *pagetable, unsigned int buflen,
+//                 virtaddr_t target, const void *source);
+
+void* kmalloc(uint64_t size);
+void kfree(void* ptr);
 
 #endif
