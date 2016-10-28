@@ -10,8 +10,10 @@ take it up with your TA, but your time is better spent working on the
 assignment.
 
 For more on (C) style guides, see Chapter 9 in `Modern C
-<http://icube-icps.unistra.fr/index.php/File:ModernC.pdf>`_. Here are some
-examples of *other* style guides for C programmers:
+<http://icube-icps.unistra.fr/index.php/File:ModernC.pdf>`_.
+
+Here are some examples of *other* style guides for C programmers (for your
+musing only):
 
 * `Linux kernel coding style <https://www.kernel.org/doc/Documentation/CodingStyle>`_
 * `NASA C Style Guide <http://homepages.inf.ed.ac.uk/dts/pm/Papers/nasa-c-style.pdf>`_
