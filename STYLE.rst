@@ -5,18 +5,17 @@ Coding style is a social construct. The following documents the conventions
 we've sought to employ with KUDOS throughout the years. We kindly ask you to
 adhere to this style.
 
-For more on C style, see Chapter 9 in `Modern C
-<http://icube-icps.unistra.fr/index.php/File:ModernC.pdf>`_. As examples of
-coding styles in other projects, we can recommend (do not spend time on these,
-these are merely here for your musing):
+We also try to give the reasons for our choices. If you disagree, you *can*
+take it up with your TA, but your time is better spent working on the
+assignment.
+
+For more on (C) style guides, see Chapter 9 in `Modern C
+<http://icube-icps.unistra.fr/index.php/File:ModernC.pdf>`_. Here are some
+examples of *other* style guides for C programmers:
 
 * `Linux kernel coding style <https://www.kernel.org/doc/Documentation/CodingStyle>`_
 * `NASA C Style Guide <http://homepages.inf.ed.ac.uk/dts/pm/Papers/nasa-c-style.pdf>`_
 * `GNU Coding Standards <https://www.gnu.org/prep/standards/standards.html>`_
-
-We also try to give the reasons for our choices. If you disagree, you *can*
-take it up with your TA, but your time is better spent working on the
-assignment.
 
 Indentation
 -----------
