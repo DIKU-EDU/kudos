@@ -22,10 +22,12 @@ Configuration
 
 Add the following line to your ``~/.vimrc``:
 
+.. code:: vim
     au BufNewFile,BufRead /path/to/kudos/* set expandtab tabstop=2
 
 If you like this as a global setting, you can simply write this instead:
 
+.. code:: vim
     set expandtab tabstop=2
 
 Naming
