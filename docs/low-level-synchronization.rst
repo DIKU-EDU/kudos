@@ -36,10 +36,6 @@ execution <threads>`, while sharing the same physical memory. This can lead to
 a whole new class of race conditions, where multiple concurrent threads access
 the same memory location at (what appears to be) exactly the same time.
 
-If you would like to keep things simple, YAMS *can* be configured to run with
-just 1 CPU core. See the :doc:`appendix` for more details. We recommend to get
-started with spinlocks right away.
-
 A spinlock is the most basic, low-level synchronization primitive for
 multiprocessor systems. A spinlock is acquired by repeatedly checking the
 lock's value until it is available (busy-waiting or "spinning"), and then
@@ -76,35 +72,28 @@ managed by the virtual memory subsystem, and so must be statically allocated in
 kernel memory. This should not be a problem, as spinlocks are purely a
 **kernel-level synchronization primitive**.
 
-MIPS' Read-Modify-Write
-^^^^^^^^^^^^^^^^^^^^^^^
+x86_64 Exchange and test
+^^^^^^^^^^^^^^^^^^^^^^^^
+The x86_64 architecture provides a instruction called ``xchg``
+(exchange), which exchanges two values, either from a register
+to a register or from a register to a memory location. The instruction
+is always atomic, which means no other process/processor can do
+the same with the same memory location, at the same time.
 
-MIPS does not provide a test-and-set instruction, but instead provides a pair
-of instructions for implementing a read-modify-write (RMW) sequence. A RMW
-sequence operates without any guarantee of atomicity, but is guaranteed to
-succeed only if it *was* atomic. This is deliberate, as a RMW sequence scales
-well with every-larger multiprocessors, and an ever-more distant shared memory,
-while an atomic test-and-set instruction does not.
+This mechanism can be used to implement a spinlock.
+The first thing to do is to load the value 1 into a register, say ``rax``. We
+can now use the instruction ``xchg`` to exchange the value
+of the spinlock with the value of the register ``rax``.
+Remember the spinlock is free if it equals 0 and busy if it
+equals to 1. Either way the spinlock know have the value 1, since
+it just exchanged its value with a register that was 1.
+If the new value of the register ``rax`` equals 0, it means that
+the spinlock was free before and the spinlock is now acquired.
+If on the other it equals 1, then it means that it was busy, and
+we have to jump back and try again.
 
-The ``ll`` (load-linked) instruction loads a word from the specified memory
-address, and marks the beginning of a RMW sequence for that processor, on that
-particular address. The RMW sequence is "broken" if a memory write to the
-``ll`` address is performed by *any* processor. A processor may be in the
-middle of at most one RMW sequence.
-
-If the RMW sequence was not broken, the ``sc`` (store-conditional) instruction
-will store a register value to a given address given (preferably, the ``ll``
-address, otherwise, behaviour is undefined) and set the register to 1. If the
-RMW sequence was broken, ``sc`` will not write to memory and instead set the
-register to 0. ``sc`` overwrites the given register in either case.
-
-The RMW sequence is pessimistic, and may fail even if no other processor has
-written to the RMW address in the mean-while. For instance, it will fail if the
-processor was interrupted, or if another processor has written to the same
-cache line.
-
-For an implementation of an RMW sequence in MIPS32, see
-``kudos/mips32/_spinlock.S``.
+For an implementation of a spinlock for the x86_64 architecture, see
+``kudos/kernel/x86_64/spinlock.S``
 
 Spinlock API
 ^^^^^^^^^^^^
@@ -123,12 +112,12 @@ happen.
   Acquire specified spinlock; while waiting for lock to be free, spin.
 
   +-------------------------------------------------------+
-  | MIPS32                                                |
+  | x86_64                                                |
   +=======================================================+
-  |  1. ``ll`` the ``slock`` address.                     |
-  |  2. If value is not 0 (free), go to step 1.           |
-  |  3. Set value to 1 (taken), and ``sc`` to ``slock``.  |
-  |  4. If ``sc`` failed, go to step 1.                   |
+  |  1. Set ``rax`` to 1.                                 |
+  |  2. ``xchg`` the register ``rax`` and ``slock``.      |
+  |  3. Test if the value of ``rax`` is 0.                |
+  |  4. If step 3 is False, go to step 2.                 |
   +-------------------------------------------------------+
 
 ``void spinlock_release(spinlock_t *slock)``
@@ -138,7 +127,7 @@ happen.
   "released" if acquired.
 
   +---------------------------+
-  | MIPS32                    |
+  | x86_64                    |
   +===========================+
   |  1. Write 0 to ``slock``. |
   +---------------------------+
