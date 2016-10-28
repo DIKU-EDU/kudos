@@ -16,8 +16,6 @@ concepts. It is intended for:
    bootstrapping-kudos.rst
    kernel-overview.rst
    threads.rst
-   low-level-synchronization.rst
-   advanced-synchronization.rst
    userland-processes.rst
    system-calls.rst
    virtual-memory.rst
@@ -27,3 +25,6 @@ concepts. It is intended for:
    virtual-filesystem.rst
    trivial-filesystem.rst
    appendix.rst
+
+..   low-level-synchronization.rst
+..   advanced-synchronization.rst
