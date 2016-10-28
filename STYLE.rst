@@ -5,8 +5,9 @@ Coding style is a social construct. The following documents the conventions
 we've sought to employ throughout the years. We kindly ask you to adhere to
 this style.
 
-We also try to give the reasons for our choices. If you disagree, you can take
-it up with your TA.
+We also try to give the reasons for our choices. If you disagree, you *can*
+take it up with your TA, but your time is better spent working on the
+assignment.
 
 Indentation
 -----------
