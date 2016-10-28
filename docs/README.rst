@@ -1,4 +1,9 @@
-This is the source code for <http://kudos.readthedocs.io>.
+This is the source code for |docs|.
+
+.. |docs| image:: https://readthedocs.org/projects/kudos/badge/?version=latest
+    :alt: Documentation Status
+    :scale: 100%
+    :target: https://kudos.readthedocs.org/en/latest/?badge=latest
 
 Building Locally
 ================
