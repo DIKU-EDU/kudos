@@ -10,9 +10,9 @@ For more on C style, see Chapter 9 in `Modern C
 coding styles in other projects, we can recommend (do not spend time on these,
 these are merely here for your musing):
 
-  * `Linux kernel coding style <https://www.kernel.org/doc/Documentation/CodingStyle>`_
-  * `NASA C Style Guide <http://homepages.inf.ed.ac.uk/dts/pm/Papers/nasa-c-style.pdf>`_
-  * `GNU Coding Standards <https://www.gnu.org/prep/standards/standards.html>`_
+* `Linux kernel coding style <https://www.kernel.org/doc/Documentation/CodingStyle>`_
+* `NASA C Style Guide <http://homepages.inf.ed.ac.uk/dts/pm/Papers/nasa-c-style.pdf>`_
+* `GNU Coding Standards <https://www.gnu.org/prep/standards/standards.html>`_
 
 We also try to give the reasons for our choices. If you disagree, you *can*
 take it up with your TA, but your time is better spent working on the
