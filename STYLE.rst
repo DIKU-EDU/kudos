@@ -74,7 +74,18 @@ Avoid trailing whitespace.
 
 Comments
 --------
-Use ``//`` to allow easy commenting out of code sections using ``/* */``.
+Always use ``//``. If you want to comment out a block of code, rely on your text-editor.
+
+**vim**
+
+One option is to search and replace the beginnings of given lines with ``// ``.
+For instance, to comment out lines 10-20:
+
+.. code:: vim
+  :10,20s/^/\/\/ /
+
+Another option is to use `visual block editing
+<https://mkrmr.wordpress.com/2010/05/14/vim-tip-visual-block-editing/>`_.
 
 Line length
 -----------
@@ -90,3 +101,39 @@ Use line breaks and indentation to show structure.
 Functions
 ---------
 A function should do one thing well. Preferably in no more than 10 lines.
+
+Include Guards
+--------------
+All header files are to be protected by include guards. Include guards ensure
+that a header file is not included twice (the `#include` preprocessor directive
+doesn't do this for you). Hence, it is important to use unique names for our
+include guards.
+
+A header file should follow this format:
+
+.. code:: C
+  #ifndef <name>
+  #define <name>
+
+  // Code here
+
+  #endif // <name>
+
+Where ``<name>`` , begins with ``KUDOS`` for files in the ``kudos`` directory,
+and ``KUDOS_USERLAND`` for files in the ``userland`` directory. ``KUDOS``
+should be followed by the name of the subsystem and otherwise, the path to the
+header file within the subsystem. All non-alphanumeric symbols should be
+replaced by underscores. The ``#endif`` should be followed by a comment with
+the include guard name for the sake of humans.
+
+The include guard
+should reiterate the full path to the header file in ALL CAPS, with all non-alphanumeric symbols replaced by underscores.
+
+.. code:: C
+  #ifndef KUDOS_KERNEL_THREAD_H
+  #define KUDOS_KERNEL_THREAD_H
+
+  // Code here
+
+  #endif // KUDOS_KERNEL_THREAD_H
+
