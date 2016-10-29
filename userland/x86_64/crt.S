@@ -42,6 +42,7 @@
 /* Code Entry */
 .global _start
 .global __main
+.global __stack_chk_fail
 .extern main
 
 _start:
@@ -61,4 +62,7 @@ _start:
    initialization. Some GCC versions require this function to exist
    also for C programs. */
 __main:
+    ret
+
+__stack_chk_fail:
     ret
