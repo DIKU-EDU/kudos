@@ -1,5 +1,4 @@
-KUDOS Style
-===========
+# KUDOS Style
 
 Coding style is a social construct. The following documents the conventions
 we've sought to employ with KUDOS throughout the years. We kindly ask you to
@@ -9,8 +8,8 @@ We also try to give the reasons for our choices. If you disagree, you *can*
 take it up with your TA, but your time is better spent working on the
 assignment.
 
-For more on (C) style guides, see Chapter 9 in `Modern C
-<http://icube-icps.unistra.fr/index.php/File:ModernC.pdf>`_.
+For more on (C) style guides, see Chapter 9 in [Modern
+C](http://icube-icps.unistra.fr/index.php/File:ModernC.pdf).
 
 Here are some examples of *other* style guides for C programmers (for your
 musing only):
@@ -19,43 +18,49 @@ musing only):
 * `NASA C Style Guide <http://homepages.inf.ed.ac.uk/dts/pm/Papers/nasa-c-style.pdf>`_
 * `GNU Coding Standards <https://www.gnu.org/prep/standards/standards.html>`_
 
-Indentation
------------
+
+## Indentation
+
 2 spaces
 
 Using spaces ensures to retain the hierarchical presentation of the code, as
 intended by the author, regardless of the reader's system settings.
 
-Configuration
-~~~~~~~~~~~~~
+
+### Configuration
 
 **vim**
 
-Add the following line to your ``~/.vimrc``:
+Add the following line to your `~/.vimrc`:
 
-.. code:: vim
-    au BufNewFile,BufRead /path/to/kudos/* set expandtab tabstop=2
+```vim
+au BufNewFile,BufRead /path/to/kudos/* set expandtab tabstop=2
+```
 
 If you like this as a global setting, you can simply write this instead:
 
-.. code:: vim
-    set expandtab tabstop=2
+```vim
+set expandtab tabstop=2
+```
 
-Naming
-------
+
+## Naming
+
 Variables and functions are all lower-cased with words separated by underscores.
 
-Macros
-------
+
+## Macros
+
 The body of a macro must always be wrapped in parentheses. Macros are replaced
 *verbatim*, so forgetting parentheses might have a very unintended effect.
 
 Do not use macros to define custom control structures.
 
-``#define`` your magic constants.
+`#define` your magic constants.
 
-Braces
-------
+
+## Braces
+
 The opening brace is not placed on a line by itself.
 
 The closing brace is always on a line by itself or the same line as the opening brace.
@@ -64,36 +69,39 @@ This is also known as K&R braces.
 
 Braces are always required. Even around one-line blocks.
 
-Spaces
-------
-Around keywords, apart from ``sizeof``, ``typeof``, ``alignof``, and ``__attribute__``
+## Spaces
+
+Around keywords, apart from `sizeof`, `typeof`, `alignof`, and `__attribute__`
 
 Around binary/ternary operators (not unary)
 
 Avoid trailing whitespace.
 
-Comments
---------
-Always use ``//``. If you want to comment out a block of code, rely on your text-editor.
+## Comments
+
+Always use `//`. If you want to comment out a block of code, rely on your text-editor.
 
 **vim**
 
-One option is to search and replace the beginnings of given lines with ``// ``.
+One option is to search and replace the beginnings of given lines with `// `.
 For instance, to comment out lines 10-20:
 
-.. code:: vim
-  :10,20s/^/\/\/ /
+```vim
+:10,20s/^/\/\/ /
+```
 
 To comment the code back in:
 
-.. code:: vim
-  :10,20s/\/\/ //
+```vim
+:10,20s/\/\/ //
+```
 
-Another option is to use `visual block editing
-<https://mkrmr.wordpress.com/2010/05/14/vim-tip-visual-block-editing/>`_.
+Another option is to use [visual block
+editing](https://mkrmr.wordpress.com/2010/05/14/vim-tip-visual-block-editing/).
 
-Line length
------------
+
+## Line length
+
 Stick to under 80 characters.
 
 You can't assume that the maintainers of your code will dedicate all of their
@@ -103,12 +111,13 @@ Humans often have a hard time comprehending long horizontal lines of text.
 
 Use line breaks and indentation to show structure.
 
-Functions
----------
+## Functions
+
 A function should do one thing well. Preferably in no more than 10 lines.
 
-Include Guards
---------------
+
+## Include Guards
+
 All header files are to be protected by include guards. Include guards ensure
 that a header file is not included twice (the `#include` preprocessor directive
 doesn't do this for you). Hence, it is important to use unique names for our
@@ -116,40 +125,42 @@ include guards.
 
 A header file should follow this format:
 
-.. code:: C
-  #ifndef <name>
-  #define <name>
+```C
+#ifndef <name>
+#define <name>
 
-  // Code here
+// Code here
 
-  #endif // <name>
+#endif // <name>
+```
 
-Where ``<name>`` , begins with ``KUDOS_`` for files in the ``kudos`` directory,
-and ``KUDOS_USERLAND_`` for files in the ``userland`` directory. This is
-followed by the path to the header file within the given directory, in ALL
-CAPS, with all non-alphanumeric characters replaced by underscores. The
-``#endif`` should be followed by a comment with the include guard name for the
-sake of humans.
+Where `<name>` , begins with `KUDOS_` for files in the `kudos` directory, and
+`KUDOS_USERLAND_` for files in the `userland` directory. This is followed by
+the path to the header file within the given directory, in ALL CAPS, with all
+non-alphanumeric characters replaced by underscores. The `#endif` should be
+followed by a comment with the include guard name for the sake of humans.
 
-For instance, here is an include guard for ``kudos/kernel/thread.h``:
+For instance, here is an include guard for `kudos/kernel/thread.h`:
 
-.. code:: C
-  #ifndef KUDOS_KERNEL_THREAD_H
-  #define KUDOS_KERNEL_THREAD_H
+```C
+#ifndef KUDOS_KERNEL_THREAD_H
+#define KUDOS_KERNEL_THREAD_H
 
-  // Code here
+// Code here
 
-  #endif // KUDOS_KERNEL_THREAD_H
+#endif // KUDOS_KERNEL_THREAD_H
+```
 
-As another example, here is an include guard for ``userland/lib.h``:
+As another example, here is an include guard for `userland/lib.h`:
 
-.. code:: C
-  #ifndef KUDOS_USERLAND_LIB_H
-  #define KUDOS_USERLAND_LIB_H
+```C
+#ifndef KUDOS_USERLAND_LIB_H
+#define KUDOS_USERLAND_LIB_H
   
-  // Code here
+// Code here
 
-  #endif // KUDOS_USERLAND_LIB_H
+#endif // KUDOS_USERLAND_LIB_H
+```
 
-You can use `<tools/check_include_guards.py>`_ to check conformance with this
-style guide.
+You can use [check_include_guards](tools/check_include_guards.py) tool to check
+conformance of your include guards with this style guide.
