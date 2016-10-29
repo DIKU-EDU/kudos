@@ -140,7 +140,8 @@ the path to the header file within the given directory, in ALL CAPS, with all
 non-alphanumeric characters replaced by underscores. The `#endif` should be
 followed by a comment with the include guard name for the sake of humans.
 
-For instance, here is an include guard for `kudos/kernel/thread.h`:
+For instance, here is an include guard for
+[kudos/kernel/thread.h](kudos/kernel/thread.h):
 
 ```C
 #ifndef KUDOS_KERNEL_THREAD_H
@@ -151,7 +152,8 @@ For instance, here is an include guard for `kudos/kernel/thread.h`:
 #endif // KUDOS_KERNEL_THREAD_H
 ```
 
-As another example, here is an include guard for `userland/lib.h`:
+As another example, here is an include guard for
+[userland/lib.h](userland/lib.h):
 
 ```C
 #ifndef KUDOS_USERLAND_LIB_H
