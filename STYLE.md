@@ -93,7 +93,7 @@ For instance, to comment out lines 10-20:
 To comment the code back in:
 
 ```vim
-:10,20s/\/\/ //
+:10,20s/^\/\/ //
 ```
 
 Another option is to use [visual block
