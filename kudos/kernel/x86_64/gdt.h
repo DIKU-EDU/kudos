@@ -2,8 +2,8 @@
  * The global descriptor table.
  */
 
-#ifndef __GDT_H__
-#define __GDT_H__
+#ifndef KUDOS_KERNEL_X86_64_GDT_H
+#define KUDOS_KERNEL_X86_64_GDT_H
 
 /* Includes */
 #include "lib/types.h"
@@ -93,8 +93,4 @@ void gdt_install_descriptor(uint64_t base, uint64_t limit,
                             uint8_t access, uint8_t grandularity);
 
 
-#endif
-
-
-
-
+#endif // KUDOS_KERNEL_X86_64_GDT_H

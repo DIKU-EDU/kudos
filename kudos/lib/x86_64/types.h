@@ -2,8 +2,8 @@
  * Bit field types.
  */
 
-#ifndef LIB_MIPS_TYPES_H
-#define LIB_MIPS_TYPES_H
+#ifndef KUDOS_LIB_X86_64_TYPES_H
+#define KUDOS_LIB_X86_64_TYPES_H
 
 /* Some handy type definitions to be used in various bitfields */
 
@@ -25,4 +25,4 @@ typedef uint64_t uintptr_t;
 typedef int64_t intptr_t;
 
 #define UNUSED __attribute__ ((unused))
-#endif
+#endif // KUDOS_LIB_X86_64_TYPES_H

@@ -2,8 +2,8 @@
  * Process startup.
  */
 
-#ifndef KUDOS_PROC_PROCESS
-#define KUDOS_PROC_PROCESS
+#ifndef KUDOS_PROC_PROCESS_H
+#define KUDOS_PROC_PROCESS_H
 
 #include "lib/types.h"
 #include "vm/memory.h"
@@ -19,4 +19,4 @@ typedef int process_id_t;
 
 void process_start(const char *executable, const char **argv);
 
-#endif
+#endif // KUDOS_PROC_PROCESS_H

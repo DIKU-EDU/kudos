@@ -2,8 +2,8 @@
  * YAMS specific constants
  */
 
-#ifndef DRIVERS_YAMS_H
-#define DRIVERS_YAMS_H
+#ifndef KUDOS_DRIVERS_MIPS32_ARCH_H
+#define KUDOS_DRIVERS_MIPS32_ARCH_H
 
 #include "lib/types.h"
 
@@ -59,4 +59,4 @@ typedef struct {
 #define YAMS_TYPECODE_CPUSTATUS 0xc00
 #define YAMS_TYPECODE_CPUMASK 0xffffff00
 
-#endif
+#endif // KUDOS_DRIVERS_MIPS32_ARCH_H

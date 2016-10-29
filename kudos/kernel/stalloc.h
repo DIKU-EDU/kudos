@@ -2,8 +2,8 @@
  * Kernel static memory allocation.
  */
 
-#ifndef STALLOC_H
-#define STALLOC_H
+#ifndef KUDOS_KERNEL_STALLOC_H
+#define KUDOS_KERNEL_STALLOC_H
 
 #include "vm/memory.h"
 
@@ -15,4 +15,4 @@ void stalloc_init(void);
 /* Permanent kernel memory allocation */
 physaddr_t *stalloc(int bytes);
 
-#endif
+#endif // KUDOS_KERNEL_STALLOC_H

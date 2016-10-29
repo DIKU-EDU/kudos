@@ -2,8 +2,8 @@
  * Generic character device
  */
 
-#ifndef DRIVERS_GCD_H
-#define DRIVERS_GCD_H
+#ifndef KUDOS_DRIVERS_GCD_H
+#define KUDOS_DRIVERS_GCD_H
 
 #include "drivers/device.h"
 
@@ -23,4 +23,4 @@ typedef struct gcd_struct {
     int  (*read)(struct gcd_struct *gcd, void *buf, int len);
 } gcd_t;
 
-#endif /* DRIVERS_GCD_H */
+#endif // KUDOS_DRIVERS_GCD_H

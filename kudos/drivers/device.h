@@ -2,8 +2,8 @@
  * Devices.
  */
 
-#ifndef DEVICE_H
-#define DEVICE_H
+#ifndef KUDOS_DRIVERS_DEVICE_H
+#define KUDOS_DRIVERS_DEVICE_H
 
 #include <arch.h>
 #include "lib/types.h"
@@ -36,4 +36,4 @@ void device_init(void);
 device_t *device_get(uint32_t typecode, uint32_t n);
 int device_register(device_t *device);
 
-#endif /* DEVICE_H */
+#endif // KUDOS_DRIVERS_DEVICE_H

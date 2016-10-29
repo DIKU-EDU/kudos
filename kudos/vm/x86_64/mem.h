@@ -2,8 +2,8 @@
  * Internal Memory Configuration
  */
 
-#ifndef __MEM_H__
-#define __MEM_H__
+#ifndef KUDOS_VM_X86_64_MEM_H
+#define KUDOS_VM_X86_64_MEM_H
 
 #include "lib/types.h"
 #include <pagetable.h>
@@ -37,4 +37,4 @@ typedef struct memory_region
 void vmm_setcr3(uint64_t pdbr);
 pagetable_t* vmm_get_kernel_pml4();
 
-#endif
+#endif // KUDOS_VM_X86_64_MEM_H

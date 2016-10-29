@@ -2,8 +2,8 @@
  * Internal Threading
  */
 
-#ifndef __INTERNAL_THREAD_H__
-#define __INTERNAL_THREAD_H__
+#ifndef KUDOS_KERNEL_X86_64__THREAD_H
+#define KUDOS_KERNEL_X86_64__THREAD_H
 
 /* Includes */
 #include "lib/types.h"
@@ -17,4 +17,4 @@ typedef struct _kthread
 
 } _kthread_t;
 
-#endif
+#endif // KUDOS_KERNEL_X86_64__THREAD_H

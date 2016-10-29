@@ -2,8 +2,8 @@
  * Multiboot Structure.
  */
 
-#ifndef __KUDOS_MULTIBOOT_H__
-#define __KUDOS_MULTIBOOT_H__
+#ifndef KUDOS_LIB_X86_64_MULTIBOOT_H
+#define KUDOS_LIB_X86_64_MULTIBOOT_H
 
 /* Includes */
 #include "lib/types.h"
@@ -86,4 +86,4 @@ typedef struct multiboot_info
 /* RAX must contain this */
 #define MULTIBOOT_MAGIC                 0x2BADBOO2
 
-#endif
+#endif // KUDOS_LIB_X86_64_MULTIBOOT_H

@@ -2,8 +2,8 @@
  * Tools Assembly
  */
 
-#ifndef __ASM_INC__
-#define __ASM_INC__
+#ifndef KUDOS_LIB_X86_64_ASM_H
+#define KUDOS_LIB_X86_64_ASM_H
 
 #include "lib/types.h"
 
@@ -22,8 +22,4 @@ uint32_t _inl(uint16_t Port);
 void _insw(uint16_t Port, uint64_t Count, uint8_t *Buffer);
 void _outsw(uint16_t Port, uint64_t Count, uint8_t *Buffer);
 
-#endif
-
-
-
-
+#endif // KUDOS_LIB_X86_64_ASM_H

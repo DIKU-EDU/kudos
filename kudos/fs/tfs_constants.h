@@ -9,8 +9,8 @@
  * system drivers.
  */
 
-#ifndef FS_TFS_CONSTANTS_H
-#define FS_TFS_CONSTANTS_H
+#ifndef KUDOS_FS_TFS_CONSTANTS_H
+#define KUDOS_FS_TFS_CONSTANTS_H
 
 /* In TFS block size is 512. This will affect to various other
    features of TFS e.g. maximum file size. */
@@ -70,4 +70,4 @@ typedef struct {
 
 #define TFS_MAX_FILES (TFS_BLOCK_SIZE/sizeof(tfs_direntry_t))
 
-#endif    /* FS_TFS_CONSTANTS_H */
+#endif // KUDOS_FS_TFS_CONSTANTS_H

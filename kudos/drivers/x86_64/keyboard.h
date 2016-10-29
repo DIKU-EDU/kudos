@@ -2,8 +2,8 @@
  * x86 Keyboard Driver
  */
 
-#ifndef KEYBOARD_H
-#define KEYBOARD_H
+#ifndef KUDOS_DRIVERS_X86_64_KEYBOARD_H
+#define KUDOS_DRIVERS_X86_64_KEYBOARD_H
 
 #include <arch.h>
 
@@ -42,4 +42,4 @@ void keyboard_init();
 
 char keyboard_getkey();
 
-#endif /* TTY_H */
+#endif // KUDOS_DRIVERS_X86_64_KEYBOARD_H

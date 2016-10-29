@@ -10,4 +10,4 @@
 #include "kernel/sleepq.h"
 #include "kernel/semaphore.h"
 
-#endif /* KUDOS_KERNEL_SYNCH_H */
+#endif // KUDOS_KERNEL_SYNCH_H

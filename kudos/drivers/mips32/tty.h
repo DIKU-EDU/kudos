@@ -2,8 +2,8 @@
  * TTY driver
  */
 
-#ifndef TTY_H
-#define TTY_H
+#ifndef KUDOS_DRIVERS_MIPS32_TTY_H
+#define KUDOS_DRIVERS_MIPS32_TTY_H
 
 #include <arch.h>
 #include "kernel/spinlock.h"
@@ -72,4 +72,4 @@ typedef struct {
 device_t *tty_init(io_descriptor_t *desc);
 void tty_interrupt_handle(device_t *device);
 
-#endif /* TTY_H */
+#endif // KUDOS_DRIVERS_MIPS32_TTY_H

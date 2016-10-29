@@ -2,8 +2,8 @@
  * x86_64 specific constants
  */
 
-#ifndef DRIVERS_X86_H
-#define DRIVERS_X86_H
+#ifndef KUDOS_DRIVERS_X86_64_ARCH_H
+#define KUDOS_DRIVERS_X86_64_ARCH_H
 
 #include "lib/types.h"
 
@@ -23,4 +23,4 @@ typedef struct {
 
 } io_descriptor_t;
 
-#endif
+#endif // KUDOS_DRIVERS_X86_64_ARCH_H

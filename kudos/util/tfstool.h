@@ -2,8 +2,8 @@
  * TFS tool handling.
  */
 
-#ifndef UTIL_TFSTOOL_H
-#define UTIL_TFSTOOL_H
+#ifndef KUDOS_UTIL_TFSTOOL_H
+#define KUDOS_UTIL_TFSTOOL_H
 
 #include "fs/tfs_constants.h"
 
@@ -12,4 +12,4 @@
 typedef uint8_t block_t[TFS_BLOCK_SIZE];
 
 
-#endif /* UTIL_TFSTOOL_H */
+#endif // KUDOS_UTIL_TFSTOOL_H

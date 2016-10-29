@@ -2,10 +2,10 @@
  * Exception Handling
  */
 
-#ifndef __EXCEPTIONS_H__
-#define __EXCEPTIONS_H__
+#ifndef KUDOS_KERNEL_X86_64_EXCEPTION_H
+#define KUDOS_KERNEL_X86_64_EXCEPTION_H
 
 //Setup Exceptions
 void exception_init();
 
-#endif
+#endif // KUDOS_KERNEL_X86_64_EXCEPTION_H

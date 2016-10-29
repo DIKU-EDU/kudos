@@ -2,8 +2,8 @@
  * The programmable interrupt timer
  */
 
-#ifndef __PIT_H__
-#define __PIT_H__
+#ifndef KUDOS_DRIVERS_X86_64_PIT_H
+#define KUDOS_DRIVERS_X86_64_PIT_H
 
 /* Includes */
 #include "lib/types.h"
@@ -55,5 +55,4 @@ uint32_t get_clock(void);
 void pit_sleepms(uint64_t ms);
 
 
-#endif
-
+#endif // KUDOS_DRIVERS_X86_64_PIT_H

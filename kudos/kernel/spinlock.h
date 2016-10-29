@@ -11,4 +11,4 @@ void spinlock_reset(spinlock_t *slock);
 void spinlock_acquire(spinlock_t *slock);
 void spinlock_release(spinlock_t *slock);
 
-#endif /* KUDOS_KERNEL_SPINLOCK_H */
+#endif // KUDOS_KERNEL_SPINLOCK_H

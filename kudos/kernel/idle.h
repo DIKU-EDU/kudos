@@ -7,4 +7,4 @@
 
 void _idle_thread_wait_loop(void);
 
-#endif /* KUDOS_KERNEL_IDLE_H */
+#endif // KUDOS_KERNEL_IDLE_H

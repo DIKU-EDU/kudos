@@ -2,8 +2,8 @@
  * List of available filesystem drivers.
  */
 
-#ifndef KUDOS_FS_FILESYSTEMS
-#define KUDOS_FS_FILESYSTEMS
+#ifndef KUDOS_FS_FILESYSTEMS_H
+#define KUDOS_FS_FILESYSTEMS_H
 
 #include "fs/vfs.h"
 #include "drivers/gbd.h"
@@ -23,4 +23,4 @@ typedef struct filesystems_struct_t {
 
 fs_t *filesystems_try_all(gbd_t *disk);
 
-#endif // KUDOS_FS_FILESYSTEMS
+#endif // KUDOS_FS_FILESYSTEMS_H

@@ -2,8 +2,8 @@
  * The programmable interrupt controller.
  */
 
-#ifndef __PIC_H__
-#define __PIC_H__
+#ifndef KUDOS_KERNEL_X86_64_PIC_H
+#define KUDOS_KERNEL_X86_64_PIC_H
 
 /* Includes */
 #include "lib/types.h"
@@ -95,4 +95,4 @@ void pic_unmaskinterrupt(uint8_t irq);
 void pic_eoi(uint8_t irq);
 
 
-#endif
+#endif // KUDOS_KERNEL_X86_64_PIC_H

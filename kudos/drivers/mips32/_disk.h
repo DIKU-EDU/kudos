@@ -2,8 +2,8 @@
  * Disk driver
  */
 
-#ifndef DRIVERS_INTTERNAL_DISK_H
-#define DRIVERS_INTTERNAL_DISK_H
+#ifndef KUDOS_DRIVERS_MIPS32__DISK_H
+#define KUDOS_DRIVERS_MIPS32__DISK_H
 
 #define DISK_COMMAND_READ            0x1
 #define DISK_COMMAND_WRITE           0x2 
@@ -40,4 +40,4 @@ typedef struct {
 } disk_io_area_t;
 
 
-#endif /* DRIVERS_DISK_H */
+#endif // KUDOS_DRIVERS_MIPS32__DISK_H

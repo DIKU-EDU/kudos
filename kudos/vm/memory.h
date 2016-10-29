@@ -2,8 +2,8 @@
  * Memory Management.
  */
 
-#ifndef __KUDOS_MEMORY_H__
-#define __KUDOS_MEMORY_H__
+#ifndef KUDOS_VM_MEMORY_H
+#define KUDOS_VM_MEMORY_H
 
 /* Includes */
 #include "lib/types.h"
@@ -47,4 +47,4 @@ void* kmalloc(uint64_t size);
 void* kmalloc(uint64_t size);
 void kfree(void* ptr);
 
-#endif
+#endif // KUDOS_VM_MEMORY_H

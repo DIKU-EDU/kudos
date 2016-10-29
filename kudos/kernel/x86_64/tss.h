@@ -2,8 +2,8 @@
  * The task switch segment descriptor.
  */
 
-#ifndef __TSS_H__
-#define __TSS_H__
+#ifndef KUDOS_KERNEL_X86_64_TSS_H
+#define KUDOS_KERNEL_X86_64_TSS_H
 
 /* Includes */
 #include "lib/types.h"
@@ -43,4 +43,4 @@ void tss_setstack(uint32_t cpu, uint64_t stack);
 void tss_setuserstack(uint32_t cpu, uint64_t stack);
 
 
-#endif
+#endif // KUDOS_KERNEL_X86_64_TSS_H

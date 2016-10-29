@@ -71,4 +71,4 @@ void thread_goto_userland(context_t *usercontext);
 
 void thread_finish(void);
 
-#endif /* KUDOS_KERNEL_THREAD_H */
+#endif // KUDOS_KERNEL_THREAD_H

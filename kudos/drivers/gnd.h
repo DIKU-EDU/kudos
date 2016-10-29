@@ -2,8 +2,8 @@
  * Generic network device
  */
 
-#ifndef DRIVERS_GND_H
-#define DRIVERS_GND_H
+#ifndef KUDOS_DRIVERS_GND_H
+#define KUDOS_DRIVERS_GND_H
 
 #include "drivers/device.h"
 
@@ -52,4 +52,4 @@ typedef struct gnd_struct {
 
 } gnd_t;
 
-#endif /* DRIVERS_GND_H */
+#endif // KUDOS_DRIVERS_GND_H

@@ -124,15 +124,14 @@ A header file should follow this format:
 
   #endif // <name>
 
-Where ``<name>`` , begins with ``KUDOS`` for files in the ``kudos`` directory,
-and ``KUDOS_USERLAND`` for files in the ``userland`` directory. ``KUDOS``
-should be followed by the name of the subsystem and otherwise, the path to the
-header file within the subsystem. All non-alphanumeric symbols should be
-replaced by underscores. The ``#endif`` should be followed by a comment with
-the include guard name for the sake of humans.
+Where ``<name>`` , begins with ``KUDOS_`` for files in the ``kudos`` directory,
+and ``KUDOS_USERLAND_`` for files in the ``userland`` directory. This is
+followed by the path to the header file within the given directory, in ALL
+CAPS, with all non-alphanumeric characters replaced by underscores. The
+``#endif`` should be followed by a comment with the include guard name for the
+sake of humans.
 
-The include guard
-should reiterate the full path to the header file in ALL CAPS, with all non-alphanumeric symbols replaced by underscores.
+For instance, here is an include guard for ``kudos/kernel/thread.h``:
 
 .. code:: C
   #ifndef KUDOS_KERNEL_THREAD_H
@@ -142,3 +141,15 @@ should reiterate the full path to the header file in ALL CAPS, with all non-alph
 
   #endif // KUDOS_KERNEL_THREAD_H
 
+As another example, here is an include guard for ``userland/lib.h``:
+
+.. code:: C
+  #ifndef KUDOS_USERLAND_LIB_H
+  #define KUDOS_USERLAND_LIB_H
+  
+  // Code here
+
+  #endif // KUDOS_USERLAND_LIB_H
+
+You can use `<tools/check_include_guards.py>`_ to check conformance with this
+style guide.

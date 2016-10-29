@@ -2,8 +2,8 @@
  * Internal interrupt rutines (arch-specific)
  */
 
-#ifndef KUDOS_KERNEL_INTERRUPT_H
-#define KUDOS_KERNEL_INTERRUPT_H
+#ifndef KUDOS_KERNEL_MIPS32_IRQ_H
+#define KUDOS_KERNEL_MIPS32_IRQ_H
 
 #include "lib/types.h"
 #include "drivers/device.h"
@@ -48,4 +48,4 @@ void _interrupt_clear_sw1(void);
 void _interrupt_set_EXL(void);
 void _interrupt_clear_EXL(void);
 
-#endif /* KUDOS_KERNEL_INTERRUPT_H */
+#endif // KUDOS_KERNEL_MIPS32_IRQ_H

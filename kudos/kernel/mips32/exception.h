@@ -2,8 +2,8 @@
  * Exception handling.
  */
 
-#ifndef KUDOS_KERNEL_EXCEPTION_H
-#define KUDOS_KERNEL_EXCEPTION_H
+#ifndef KUDOS_KERNEL_MIPS32_EXCEPTION_H
+#define KUDOS_KERNEL_MIPS32_EXCEPTION_H
 
 #define EXCEPTION_INTR 0
 #define EXCEPTION_TLBM 1
@@ -23,4 +23,4 @@
 void kernel_exception_handle(int exception);
 void user_exception_handle(int exception);
 
-#endif /* KUDOS_KERNEL_EXCEPTION_H */
+#endif // KUDOS_KERNEL_MIPS32_EXCEPTION_H

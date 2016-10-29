@@ -2,8 +2,8 @@
  * System calls.
  */
 
-#ifndef KUDOS_PROC_SYSCALL
-#define KUDOS_PROC_SYSCALL
+#ifndef KUDOS_PROC_SYSCALL_H
+#define KUDOS_PROC_SYSCALL_H
 
 /* Syscall function numbers. You may add to this list but do not
  * modify the existing ones.
@@ -33,4 +33,4 @@
 #define FILEHANDLE_STDOUT 1
 #define FILEHANDLE_STDERR 2
 
-#endif
+#endif // KUDOS_PROC_SYSCALL_H

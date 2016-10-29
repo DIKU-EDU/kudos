@@ -2,8 +2,8 @@
  * Pagetable.
  */
 
-#ifndef KUDOS_VM_PAGETABLE_H
-#define KUDOS_VM_PAGETABLE_H
+#ifndef KUDOS_VM_X86_64_PAGETABLE_H
+#define KUDOS_VM_X86_64_PAGETABLE_H
 
 #include "lib/types.h"
 
@@ -85,4 +85,4 @@ typedef struct pml4
 
 } pml4_t;
 
-#endif /* KUDOS_VM_PAGETABLE_H */
+#endif // KUDOS_VM_X86_64_PAGETABLE_H

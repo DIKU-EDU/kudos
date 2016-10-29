@@ -2,8 +2,8 @@
  * Internal interrupt rutines (arch-specific)
  */
 
-#ifndef KUDOS_KERNEL_INTERRUPT_H
-#define KUDOS_KERNEL_INTERRUPT_H
+#ifndef KUDOS_KERNEL_X86_64_IRQ_H
+#define KUDOS_KERNEL_X86_64_IRQ_H
 
 #include "lib/types.h"
 
@@ -55,4 +55,4 @@ void isr_handler17(void);
 void isr_handler18(void);
 void isr_handler19(void);
 
-#endif /* KUDOS_KERNEL_INTERRUPT_H */
+#endif // KUDOS_KERNEL_X86_64_IRQ_H

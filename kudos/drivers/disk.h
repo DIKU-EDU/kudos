@@ -2,8 +2,8 @@
  * Disk driver
  */
 
-#ifndef DRIVERS_DISK_H
-#define DRIVERS_DISK_H
+#ifndef KUDOS_DRIVERS_DISK_H
+#define KUDOS_DRIVERS_DISK_H
 
 #include <arch.h>
 #include <_disk.h>
@@ -31,4 +31,4 @@ typedef struct {
 int disk_init(io_descriptor_t *desc);
 
 
-#endif /* DRIVERS_DISK_H */
+#endif // KUDOS_DRIVERS_DISK_H

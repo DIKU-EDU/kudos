@@ -2,8 +2,8 @@
  * The interrupt descriptor table.
  */
 
-#ifndef __IDT_H__
-#define __IDT_H__
+#ifndef KUDOS_KERNEL_X86_64_IDT_H
+#define KUDOS_KERNEL_X86_64_IDT_H
 
 /* Includes */
 #include "lib/types.h"
@@ -64,4 +64,4 @@ void idt_init();
 
 void idt_install_gate(uint32_t index, uint16_t flags, uint16_t selector, irq_handler Irq);
 
-#endif
+#endif // KUDOS_KERNEL_X86_64_IDT_H

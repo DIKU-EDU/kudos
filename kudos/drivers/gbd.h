@@ -2,8 +2,8 @@
  * Generic block device
  */
 
-#ifndef DRIVERS_GBD_H
-#define DRIVERS_GBD_H
+#ifndef KUDOS_DRIVERS_GBD_H
+#define KUDOS_DRIVERS_GBD_H
 
 #include "lib/libc.h"
 #include "drivers/device.h"
@@ -96,4 +96,4 @@ typedef struct gbd_struct {
 } gbd_t;
 
 
-#endif /* DRIVERS_GBD_H */
+#endif // KUDOS_DRIVERS_GBD_H

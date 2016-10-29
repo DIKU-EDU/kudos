@@ -2,8 +2,8 @@
  * Context switch.
  */
 
-#ifndef KUDOS_INTERRUPT_H
-#define KUDOS_INTERRUPT_H
+#ifndef KUDOS_KERNEL_INTERRUPT_H
+#define KUDOS_KERNEL_INTERRUPT_H
 
 #include "lib/types.h"
 #include "drivers/device.h"
@@ -34,4 +34,4 @@ interrupt_status_t _interrupt_is_disabled(void);
 void _interrupt_yield(void);
 int _interrupt_getcpu(void);
 
-#endif /* KUDOS_KERNEL_INTERRUPT_H */
+#endif // KUDOS_KERNEL_INTERRUPT_H

@@ -2,8 +2,8 @@
  * Context switch.
  */
 
-#ifndef MIPS_CSWITCH_H
-#define MIPS_CSWITCH_H
+#ifndef KUDOS_KERNEL_MIPS32_CSWITCH_H
+#define KUDOS_KERNEL_MIPS32_CSWITCH_H
 
 #include "lib/types.h"
 #include "vm/memory.h"
@@ -67,4 +67,4 @@ void _context_set_ip(context_t *cxt, virtaddr_t ip); /* Set new instruction poin
 void _context_set_sp(context_t *cxt, virtaddr_t sp); /* Sets a new stack pointer */
 void _context_enable_ints(context_t *cxt); /* Enables interrupts */
 
-#endif
+#endif // KUDOS_KERNEL_MIPS32_CSWITCH_H

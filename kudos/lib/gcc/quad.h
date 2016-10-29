@@ -49,6 +49,9 @@
  * with 48-bit ints.
  */
 
+#ifndef KUDOS_LIB_GCC_QUAD_H
+#define KUDOS_LIB_GCC_QUAD_H
+
 #ifndef _QUAD_HIGHWORD
 #define _QUAD_HIGHWORD 1
 #endif
@@ -129,3 +132,5 @@ int __ucmpdi2(u_quad_t, u_quad_t);
 u_quad_t __udivdi3(u_quad_t, u_quad_t );
 u_quad_t __umoddi3(u_quad_t, u_quad_t );
 quad_t __xordi3(quad_t, quad_t);
+
+#endif // KUDOS_LIB_GCC_QUAD_H

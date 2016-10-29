@@ -1,8 +1,8 @@
 /*
  * Context switch.
  */
-#ifndef MIPS_ASM_H
-#define MIPS_ASM_H
+#ifndef KUDOS_KERNEL_MIPS32_ASM_H
+#define KUDOS_KERNEL_MIPS32_ASM_H
 
 #include "lib/registers.h"
 
@@ -11,4 +11,4 @@
   mfc0  reg, PRId, 0;                           \
   srl   reg, reg, 24;
 
-#endif /* KERNEL_ASM_H */
+#endif // KUDOS_KERNEL_MIPS32_ASM_H

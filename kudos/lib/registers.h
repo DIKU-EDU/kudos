@@ -2,9 +2,9 @@
  * Register name definitions for assembler code.
  */
 
-#ifndef LIB_REGISTERS_H
-#define LIB_REGISTERS_H
+#ifndef KUDOS_LIB_REGISTERS_H
+#define KUDOS_LIB_REGISTERS_H
 
 #include "mips32/registers.h"
 
-#endif
+#endif // KUDOS_LIB_REGISTERS_H

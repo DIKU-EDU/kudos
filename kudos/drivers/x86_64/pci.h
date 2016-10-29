@@ -2,8 +2,8 @@
  * The pci interface
  */
 
-#ifndef __PCI_H__
-#define __PCI_H__
+#ifndef KUDOS_DRIVERS_X86_64_PCI_H
+#define KUDOS_DRIVERS_X86_64_PCI_H
 
 /* Includes */
 #include <arch.h>
@@ -87,4 +87,4 @@ typedef struct {
     uint8_t subclass;
     pci_device_handler device_handler;
 } pci_device_module_t;
-#endif
+#endif // KUDOS_DRIVERS_X86_64_PCI_H

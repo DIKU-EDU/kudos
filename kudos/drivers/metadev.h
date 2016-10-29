@@ -2,8 +2,8 @@
  * Metadevices (RTC, meminfo, CPUinfo, shutdown)
  */
 
-#ifndef DRIVERS_METADEV_H
-#define DRIVERS_METADEV_H
+#ifndef KUDOS_DRIVERS_METADEV_H
+#define KUDOS_DRIVERS_METADEV_H
 
 #include <arch.h>
 #include "lib/types.h"
@@ -52,4 +52,4 @@ void cpustatus_interrupt_handle(device_t *dev);
 device_t *shutdown_init(io_descriptor_t *desc);
 void shutdown(uint32_t magic);
 
-#endif /* DRIVERS_METADEV_H */
+#endif // KUDOS_DRIVERS_METADEV_H

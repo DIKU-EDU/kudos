@@ -3,4 +3,4 @@
 
 typedef int TID_t;
 
-#endif /* KUDOS_KERNEL_TYPES_H */
+#endif // KUDOS_KERNEL_TYPES_H

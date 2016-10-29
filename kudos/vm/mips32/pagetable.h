@@ -1,5 +1,5 @@
-#ifndef KUDOS_VM_PAGETABLE
-#define KUDOS_VM_PAGETABLE
+#ifndef KUDOS_VM_MIPS32_PAGETABLE_H
+#define KUDOS_VM_MIPS32_PAGETABLE_H
 
 #include "lib/libc.h"
 #include <tlb.h>
@@ -23,4 +23,4 @@ typedef struct pagetable_struct_t{
     tlb_entry_t entries[PAGETABLE_ENTRIES];
 } pagetable_t;
 
-#endif /* KUDOS_VM_PAGETABLE */
+#endif // KUDOS_VM_MIPS32_PAGETABLE_H

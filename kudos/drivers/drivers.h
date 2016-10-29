@@ -2,8 +2,8 @@
  * Drivers
  */
 
-#ifndef DRIVERS_DRIVERS_H
-#define DRIVERS_DRIVERS_H
+#ifndef KUDOS_DRIVERS_DRIVERS_H
+#define KUDOS_DRIVERS_DRIVERS_H
 
 #include "lib/types.h"
 #include "drivers/device.h"
@@ -22,4 +22,4 @@ typedef struct {
 
 extern drivers_available_t drivers_available[];
 
-#endif /* DRIVERS_DRIVERS_H */
+#endif // KUDOS_DRIVERS_DRIVERS_H

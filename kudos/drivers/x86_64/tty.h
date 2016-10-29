@@ -2,8 +2,8 @@
  * TTY driver for x86
  */
 
-#ifndef TTY_H
-#define TTY_H
+#ifndef KUDOS_DRIVERS_X86_64_TTY_H
+#define KUDOS_DRIVERS_X86_64_TTY_H
 
 #include <arch.h>
 #include "kernel/spinlock.h"
@@ -39,4 +39,4 @@ typedef struct {
     spinlock_t *slock;    /* Synchronization */
 } tty_t;
 
-#endif /* TTY_H */
+#endif // KUDOS_DRIVERS_X86_64_TTY_H

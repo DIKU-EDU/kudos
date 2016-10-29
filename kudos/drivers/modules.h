@@ -1,5 +1,5 @@
-#ifndef MODULES_H
-#define MODULES_H
+#ifndef KUDOS_DRIVERS_MODULES_H
+#define KUDOS_DRIVERS_MODULES_H
 
 #define module_define(type, name, module) \
     static module_t __module__##name \
@@ -32,4 +32,4 @@ extern module_t __modules_end;
 
 void modules_init();
 
-#endif
+#endif // KUDOS_DRIVERS_MODULES_H

@@ -53,4 +53,4 @@ uint32_t to_big_endian32(uint32_t in);
 
 uint32_t wordpad(uint32_t in);
 
-#endif /* KUDOS_LIB_LIBC_H */
+#endif // KUDOS_LIB_LIBC_H

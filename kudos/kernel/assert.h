@@ -2,8 +2,8 @@
  * Kernel panic.
  */
 
-#ifndef KERNEL_ASSERT_H
-#define KERNEL_ASSERT_H
+#ifndef KUDOS_KERNEL_ASSERT_H
+#define KUDOS_KERNEL_ASSERT_H
 
 #include "kernel/panic.h"
 
@@ -12,4 +12,4 @@
 if(!(condition))\
 _kernel_panic(__FILE__, __LINE__, "Assertion failed")
 
-#endif
+#endif // KUDOS_KERNEL_ASSERT_H

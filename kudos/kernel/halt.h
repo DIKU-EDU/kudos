@@ -7,4 +7,4 @@
 
 void halt_kernel(void);
 
-#endif /* KUDOS_KERNEL_HALT_H */
+#endif // KUDOS_KERNEL_HALT_H

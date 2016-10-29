@@ -2,8 +2,8 @@
  * Register name definitions for assembler code.
  */
 
-#ifndef MIPS_REGISTERS_H
-#define MIPS_REGISTERS_H
+#ifndef KUDOS_LIB_MIPS32_REGISTERS_H
+#define KUDOS_LIB_MIPS32_REGISTERS_H
 
 #define zero $0
 #define AT   $1   /* at is used in assembler directive .set at */
@@ -58,4 +58,4 @@
 #define LLAddr $17
 #define ErrEPC $30
 
-#endif
+#endif // KUDOS_LIB_MIPS32_REGISTERS_H

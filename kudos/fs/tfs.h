@@ -2,8 +2,8 @@
  * Trivial Filesystem (TFS).
  */
 
-#ifndef FS_TFS_H
-#define FS_TFS_H
+#ifndef KUDOS_FS_TFS_H
+#define KUDOS_FS_TFS_H
 
 #include "fs/tfs_constants.h"
 
@@ -26,4 +26,4 @@ int tfs_getfree(fs_t *fs);
 int tfs_filecount(fs_t *fs, char *dirname);
 int tfs_file(fs_t *fs, char *dirname, int idx, char *buffer);
 
-#endif    /* FS_TFS_H */
+#endif // KUDOS_FS_TFS_H

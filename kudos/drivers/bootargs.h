@@ -2,10 +2,10 @@
  * Kernel boot arguments.
  */
 
-#ifndef DRIVERS_BOOTARGS_H
-#define DRIVERS_BOOTARGS_H
+#ifndef KUDOS_DRIVERS_BOOTARGS_H
+#define KUDOS_DRIVERS_BOOTARGS_H
 
 void bootargs_init(void *bootargs);
 char *bootargs_get(char *key);
 
-#endif /* DRIVERS_BOOTARGS_H */
+#endif // KUDOS_DRIVERS_BOOTARGS_H

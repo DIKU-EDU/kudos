@@ -1,3 +1,5 @@
+#ifndef KUDOS_PROC_MIPS32_ELF_INFO_H
+#define KUDOS_PROC_MIPS32_ELF_INFO_H
 
 typedef struct {
     uint32_t entry_point; /* Entry point for the code */
@@ -12,3 +14,5 @@ typedef struct {
     uint32_t rw_pages;    /* Pages needed by the RW segment */
     uint32_t rw_vaddr;    /* Virtual address of the RW segment */
 } elf_info_t;
+
+#endif // KUDOS_PROC_MIPS32_ELF_INFO_H

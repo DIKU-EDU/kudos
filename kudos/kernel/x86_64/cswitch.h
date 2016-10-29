@@ -1,8 +1,8 @@
 /*
  * Context switch.
  */
-#ifndef X86_CSWITCH_H
-#define X86_CSWITCH_H
+#ifndef KUDOS_KERNEL_X86_64_CSWITCH_H
+#define KUDOS_KERNEL_X86_64_CSWITCH_H
 
 #include "lib/types.h"
 #include "vm/memory.h"
@@ -32,4 +32,4 @@ void _context_set_ip(context_t *cxt, virtaddr_t ip); /* Set new instruction poin
 void _context_set_sp(context_t *cxt, virtaddr_t sp); /* Sets a new stack pointer */
 void _context_enable_ints(context_t *cxt); /* Masks interrupts */
 
-#endif
+#endif // KUDOS_KERNEL_X86_64_CSWITCH_H

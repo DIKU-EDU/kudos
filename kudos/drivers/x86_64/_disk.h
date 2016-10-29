@@ -2,8 +2,8 @@
  * Disk driver
  */
 
-#ifndef DRIVERS_INTTERNAL_DISK_H
-#define DRIVERS_INTTERNAL_DISK_H
+#ifndef KUDOS_DRIVERS_X86_64__DISK_H
+#define KUDOS_DRIVERS_X86_64__DISK_H
 
 /* Includes */
 
@@ -105,4 +105,4 @@ typedef struct ide_device_t
 
 } ide_device_t;
 
-#endif /* DRIVERS_DISK_H */
+#endif // KUDOS_DRIVERS_X86_64__DISK_H

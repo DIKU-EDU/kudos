@@ -2,8 +2,8 @@
  * ELF binary format.
  */
 
-#ifndef KUDOS_PROC_ELF
-#define KUDOS_PROC_ELF
+#ifndef KUDOS_PROC_ELF_H
+#define KUDOS_PROC_ELF_H
 
 #include "lib/types.h"
 #include "fs/vfs.h"
@@ -173,4 +173,4 @@ typedef struct {
     uint64_t p_align  __attribute__ ((packed));
 } Elf64_Phdr;
 
-#endif
+#endif // KUDOS_PROC_ELF_H

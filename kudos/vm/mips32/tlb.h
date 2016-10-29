@@ -2,8 +2,8 @@
  * TLB handling
  */
 
-#ifndef KUDOS_VM_TLB_H
-#define KUDOS_VM_TLB_H
+#ifndef KUDOS_VM_MIPS32_TLB_H
+#define KUDOS_VM_MIPS32_TLB_H
 
 #include <stdbool.h>
 
@@ -80,4 +80,4 @@ int _tlb_write(tlb_entry_t *entries, uint32_t index, uint32_t num);
 void _tlb_write_random(tlb_entry_t *entry);
 
 
-#endif /* KUDOS_VM_TLB_H */
+#endif // KUDOS_VM_MIPS32_TLB_H
