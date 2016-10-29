@@ -7,7 +7,6 @@ MODULES    := init kernel lib drivers proc vm fs util lib/gcc
 ARCHMIPS32 := init/mips32 kernel/mips32 vm/mips32 lib/mips32 drivers/mips32 proc/mips32
 ARCHX86_64 := init/x86_64 kernel/x86_64 vm/x86_64 lib/x86_64 drivers/x86_64 proc/x86_64
 #CHANGEDFLAGS := -DCHANGED_1 -DCHANGED_2 -DCHANGED_3 -DCHANGED_4 -DCHANGED_5
-PHASE        := 1
 
 #IncludePaths
 MIPS32_INC = -I./drivers/mips32/ -I./lib/mips32/ -I./kernel/mips32/ -I./vm/mips32/ -I./proc/mips32/
