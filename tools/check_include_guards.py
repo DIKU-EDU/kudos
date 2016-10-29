@@ -80,9 +80,9 @@ def checkdir(dirname, prefix):
       if filename.endswith(".h"):
         try_check_header(prefix, os.path.join(dirpath, filename))
 
-def main():
+def check_include_guards():
   checkdir("kudos", "KUDOS_")
   checkdir("userland", "KUDOS_USERLAND_")
 
 if __name__ == "__main__":
-  main()
+  check_include_guards()
