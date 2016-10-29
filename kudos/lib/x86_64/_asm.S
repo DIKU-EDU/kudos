@@ -5,6 +5,7 @@
 
 .global _inb
 .global _outb
+.global __stack_chk_fail
 
 _inb:
 	/* RDI has port */
@@ -38,3 +39,6 @@ _outb:
 	popq %rdx
 	popq %rax
 	ret
+
+__stack_chk_fail:
+  ret

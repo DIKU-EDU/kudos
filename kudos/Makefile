@@ -32,7 +32,7 @@ CCX86_64	:= gcc
 ASX86_64	:= as
 LDX86_64	:= ld
 
-CFLAGSX86_64  += $(SHARED_CFLAGS) -fverbose-asm -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding -D SMALL_ENDIAN $(CHANGEDFLAGS)
+CFLAGSX86_64  += $(SHARED_CFLAGS) -fverbose-asm -Wno-attributes -m64 -mcmodel=large -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding -D SMALL_ENDIAN $(CHANGEDFLAGS)
 LDFLAGSX86_64 := --script=ldx86_64.script -z max-page-size=0x1000 -Map kudos-x86_64.map
 ASFLAGSX86_64 := -I.
 
