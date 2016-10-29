@@ -162,5 +162,5 @@ As another example, here is an include guard for `userland/lib.h`:
 #endif // KUDOS_USERLAND_LIB_H
 ```
 
-You can use [check_include_guards](tools/check_include_guards.py) tool to check
-conformance of your include guards with this style guide.
+You can use the [check_include_guards](tools/check_include_guards.py) tool to
+check conformance of your include guards with this style guide.
