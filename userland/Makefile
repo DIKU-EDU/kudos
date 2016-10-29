@@ -27,6 +27,8 @@ CFLAGS  += $(SHARED_CFLAGS) -G0 -fno-builtin
 LDFLAGS := --script=mips32/ld.userland.script --cref -s -G0
 ASFLAGS := -I../kudos -Wa,-mips32
 
+# -G0 is needed to avoid GP optimization (LD won't link if it is used)
+
 CCX86_64	:= gcc
 ASX86_64	:= as
 LDX86_64	:= ld
@@ -34,8 +36,6 @@ LDX86_64	:= ld
 CFLAGSX86_64  += $(SHARED_CFLAGS) -O2 -Wno-attributes -m64 -mcmodel=small -mno-red-zone -finline-functions -fno-stack-protector -ffreestanding -mcmodel=large
 LDFLAGSX86_64 := --script=x86_64/ld.userland.script -z max-page-size=0x1000
 ASFLAGSX86_64 := -I../kudos
-
-# -G0 is needed to avoid GP optimization (LD won't link if it is used)
 
 # Compiling targets (Add explicit targets here if you need to do more
 # complex linking (e.g., your source code is divided to multiple
