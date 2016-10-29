@@ -84,6 +84,11 @@ For instance, to comment out lines 10-20:
 .. code:: vim
   :10,20s/^/\/\/ /
 
+To comment the code back in:
+
+.. code:: vim
+  :10,20s/\/\/ //
+
 Another option is to use `visual block editing
 <https://mkrmr.wordpress.com/2010/05/14/vim-tip-visual-block-editing/>`_.
 
