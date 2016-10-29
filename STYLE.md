@@ -14,9 +14,9 @@ C](http://icube-icps.unistra.fr/index.php/File:ModernC.pdf).
 Here are some examples of *other* style guides for C programmers (for your
 musing only):
 
-* `Linux kernel coding style <https://www.kernel.org/doc/Documentation/CodingStyle>`_
-* `NASA C Style Guide <http://homepages.inf.ed.ac.uk/dts/pm/Papers/nasa-c-style.pdf>`_
-* `GNU Coding Standards <https://www.gnu.org/prep/standards/standards.html>`_
+* [Linux kernel coding style](https://www.kernel.org/doc/Documentation/CodingStyle)
+* [NASA C Style Guide](http://homepages.inf.ed.ac.uk/dts/pm/Papers/nasa-c-style.pdf)
+* [GNU Coding Standards](https://www.gnu.org/prep/standards/standards.html)
 
 
 ## Indentation
