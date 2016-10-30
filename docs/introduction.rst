@@ -17,15 +17,10 @@ userland program support, partial support for a virtual memory subsystem, a
 trivial filesystem, and generic drivers for textual input and output.
 
 Currently, KUDOS can run on top of YAMS, Yet Another MIPS Simulator,
-originally developed alongside BUENOS, or on an x86-64 simulator like QEMU,
-although we won't explore this latter aspect of KUDOS here. All that you
+originally developed alongside BUENOS, or on an x86-64 simulator like QEMU;
+the latter will be the focus of this manual. All that you
 need to know, is that KUDOS is, at least in principle, a cross-platform
 operating system.
-
-With YAMS, many simplifications have been made to the hardware where the
-need for clarity has been greater than the need for realism. The YAMS
-virtual machine does not simulate caches, for example, but provides an
-otherwise fully realistic memory model.
 
 The main idea of KUDOS is to give you a real, working multiprocessor
 operating system kernel which is as small and simple as possible. KUDOS
@@ -51,12 +46,12 @@ more accessible, [ModernC]_.
 We also expect that you are taking a course on operating systems or otherwise
 know the basics about operating systems. You can still find OS textbooks very
 handy when doing the exercises. We recommend that you get a hold of the book
-"Operating Systems: Three Easy Pieces"[OSTEP]_, or, if you are in a more
-classical mood, [Stallings]_ or [Tanenbaum]_.
+"Operating Systems: Three Easy Pieces"[OSTEP]_, if you are in a more
+classical mood, [Stallings]_ or [Tanenbaum]_, or the more system approach found in [BOH]_.
 
 Since you are going to interact directly with the hardware quite a
-lot, you should know something about hardware. A good introduction on
-this can be found in the book [COD5e]_.
+lot, you should know something about hardware. A classical introduction on
+this can be found in the book [COD5e]_, while [BOH]_ again gives a complete perspective of computing systems.
 
 Since kernel programming generally involves a lot of synchronization issues, a
 course on concurrent programming is recommended to be taken later on. One good
@@ -87,13 +82,13 @@ as a reference guide. To get most out of this document you should probably:
    As stated above, the KUDOS system is meant as an assignment backbone for
    operating systems project courses. This document, while primarily acting as
    reference guide to the system, is also designed to support project courses.
-   The document is ordered so that various kernel programming issues are
+   The document is ordered such that various kernel programming issues are
    introduced in sensible order and exercises (see also exercises_) are
    provided for each subject area.
 
    While the system as such can be used as a base for a large variety of
    assignments, this document works best if assignments are
-   divided into five different parts as follows:
+   divided into four different parts as follows:
 
    1. **Synchronization and Multiprogramming**. Various multiprogramming issues
       relevant on both multiprocessor and uniprocessor machines are covered in
@@ -118,8 +113,8 @@ as a reference guide. To get most out of this document you should probably:
    following steps are necessary:
 
    * Provide students with a development environment with precompiled
-   YAMS and a MIPS32 ELF cross compiler. See YAMS usage guide for
-   instructions on setup of YAMS and the cross compiler environment.
+   YAMS/QEMU and a (MIPS32) ELF cross compiler. See specific usage guide for
+   instructions on setup of simulator and the cross compiler environment.
 
    * Decide which exercises are used on the course, how many points
    they are worth and what are the deadlines.
@@ -127,7 +122,7 @@ as a reference guide. To get most out of this document you should probably:
    * Decide any other practical issues (are design reviews compulsory
    for students, how many students there are per group, etc.)
 
-   * Familiarize the staff with KUDOS and YAMS.
+   * Familiarize the staff with KUDOS and the simulator.
 
    * Introduce KUDOS to the students.
 
@@ -166,3 +161,5 @@ References
 .. [COD5e] David A. Patterson and John L. Hennessy. *Computer Organization and Design*, 5th edition. Elsevier, 2014.
 
 .. [Andrews] Gregory R. Andrews., *Foundations of multithreaded, parallel and distributed programming*. Addison-Wesley Longman, 2000.
+
+.. [BOH] Randal E. Bryant and David R. O’Hallaron, *Computer Systems: A Programmer’s Perspective*, Pearson, 2016.
