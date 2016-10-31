@@ -1,6 +1,4 @@
-/*
- * Userland helloworld
- */
+// Userland helloworld
 
 #include "lib.h"
 
@@ -11,7 +9,7 @@ int main(void)
   char *name;
   int count;
 
-  heap_init(); /* Or malloc() won't work. */
+  heap_init(); // Or malloc() won't work.
 
   puts("Hello, World!\n\n");
 
@@ -24,7 +22,7 @@ int main(void)
       break;
     }
 
-    name[count] = 0; /* Chomp off newline */
+    name[count] = 0; // Chomp off newline
     printf("And hello to you, %s!\n", name);
     free(name);
   }

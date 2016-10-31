@@ -1,13 +1,11 @@
-/*
- * Shell!  For running programs!
- *
- * Written by Troels Henriksen (athas@sigkill.dk) in March, 2012, for
- * the operating systems course (OSM) at DIKU.  Use this to test
- * various bits of the kernel.  Feel free to extend it if you want to.
- * Basic filename completion is supported!  Note that some commands
- * will cause a kernel panic or otherwise fail until the necessary
- * system calls have been implemented.
- */
+// Shell!  For running programs!
+//
+// Written by Troels Henriksen (athas@sigkill.dk) in March, 2012, for
+// the operating systems course (OSM) at DIKU.  Use this to test
+// various bits of the kernel.  Feel free to extend it if you want to.
+// Basic filename completion is supported!  Note that some commands
+// will cause a kernel panic or otherwise fail until the necessary
+// system calls have been implemented.
 
 #include "lib.h"
 
@@ -164,8 +162,8 @@ int cmd_wait(int argc, char** argv) {
 }
 
 int cmd_cmp(int argc, char** argv) {
-  /* Note that this command is absurdly slow.  Never do single-byte
-     reads in the real world. */
+  // Note that this command is absurdly slow.  Never do single-byte
+  // reads in the real world.
   if (argc != 3 && argc != 4) {
     printf("Usage: cmp <file1> <file2>\n");
     return 1;
@@ -276,8 +274,8 @@ void print_prompt(int last_retval)
   printf("%d> ", last_retval);
 }
 
-/* Note that tokenize(cmdline,argv) modifies cmdline by inserting NUL
-   characters. */
+// Note that tokenize(cmdline,argv) modifies cmdline by inserting NUL
+// characters.
 int tokenize(char* cmdline, char** argv) {
   int argc = 0;
   int inword=0;
@@ -362,7 +360,7 @@ int main(void) {
   return 0;
 }
 
-/* Alternatively, we can use the following to do a static test: */
+// Alternatively, we can use the following to do a static test:
 
 #ifdef FALSE
 

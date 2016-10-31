@@ -1,14 +1,12 @@
-/*
- * Userland library
- */
+// Userland library
 
 #ifndef KUDOS_USERLAND_LIB_H
 #define KUDOS_USERLAND_LIB_H
 
-/* Some library functions are quite big, and will make programs
-   similarly large.  This can cause trouble, as they have to fit in
-   the TLB (unless you have finished the TLB handling).  Unneeded
-   portions of the library can be disabled here. */
+// Some library functions are quite big, and will make programs
+// similarly large.  This can cause trouble, as they have to fit in
+// the TLB (unless you have finished the TLB handling).  Unneeded
+// portions of the library can be disabled here.
 
 #define PROVIDE_STRING_FUNCTIONS
 #define PROVIDE_BASIC_IO
@@ -24,19 +22,19 @@
 
 typedef uint8_t byte;
 
-/* POSIX-like integer types */
+// POSIX-like integer types
 
 typedef intptr_t ssize_t;
 typedef uintptr_t size_t;
 typedef int pid_t;
 
-/* Default initial userland buffer size */
+// Default initial userland buffer size
 #define BUFSIZE 64
 
-/* Makes the syscall 'syscall_num' with the arguments 'a1', 'a2' and 'a3'. */
+// Makes the syscall 'syscall_num' with the arguments 'a1', 'a2' and 'a3'.
 uint32_t _syscall(uint64_t syscall_num, uint64_t a1, uint64_t a2, uint64_t a3);
 
-/* The library functions which are just wrappers to the _syscall function. */
+// The library functions which are just wrappers to the _syscall function.
 
 void syscall_halt(void);
 
@@ -86,7 +84,7 @@ int snprintf(char *, int, const char *, ...);
 #endif
 
 #ifdef PROVIDE_HEAP_ALLOCATOR
-#define HEAP_SIZE 256 /* 256 byte heap - puny! */
+#define HEAP_SIZE 256 // 256 byte heap - puny!
 void heap_init();
 void *calloc(size_t nmemb, size_t size);
 void *malloc(size_t size);
