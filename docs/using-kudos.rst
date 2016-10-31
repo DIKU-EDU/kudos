@@ -8,7 +8,7 @@ The KUDOS system requires the following software to run:
 * GNU GCC 
 * GNU Make
 
-Note that KUDOS also has an ``x86-64`` target.
+Note that the makefile for KUDOS sets ``x86-64`` standard target, but KUDOS also has a ``mips32`` target.
 
 Compiling the kernel
 --------------------
@@ -45,7 +45,7 @@ accepts, you can run it without any arguments.
 
 ``tfstool`` itself is documented in the :doc:`appendix`.
 
-By default, the file containing the TFS volume is named ``store.file``.
+By default, the file containing the TFS volume is named ``store.file``. 
 
 
 Booting the system
@@ -77,11 +77,24 @@ the userland programs::
     ~/kudos$ make -C kudos
     ~/kudos$ make -C userland
 
+Create a disk image called store.file with 16384 blocks (8 MB)::
+
+	~/kudos$ ./kudos/util/tfstool create store.file 16384 disk
+
 Then transfer the userland program ``halt`` onto the ``store.file`` virtual disk::
 
     ~/kudos$ ./kudos/util/tfstool write store.file userland/halt.x86_64 halt
 
-To start qemu and boot qemu::
+To start qemu and boot qemu, first make ``run_qemu.sh`` executeable::
+
+	 ~/kudos$ chmod 755 run_qemu.sh
+
+make sure to have the latest version of xorriso::
+
+    ~/kudos$ sudo apt-get update
+    ~/kudos$ sudo apt-get install xorriso
+    
+and finally you can run::
 
     ~/kudos$ ./run_qemu.sh
 
