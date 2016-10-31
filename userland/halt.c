@@ -1,4 +1,6 @@
-// Halt the system from userland.
+/*
+ * Halt the system from userland.
+ */
 
 #include "lib.h"
 

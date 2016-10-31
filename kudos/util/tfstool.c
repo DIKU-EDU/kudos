@@ -1,4 +1,6 @@
-// TFS tool handling.
+/*
+ * TFS tool handling.
+ */
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -126,18 +128,18 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-// Creates a disk volume named 'diskname', the size of the disk is
-// 'size' blocks (a block is 512 bytes).
+/* Creates a disk volume named 'diskname', the size of the disk is
+   'size' blocks (a block is 512 bytes). */
 void tfstool_createvol(char *diskfilename, int size, char *volname)
 {
   int i;
 
   uint32_t tfsmagic = htonl(TFS_MAGIC);
   block_t header, bat;
-
-  // The size of the allocation bitmap is one block in the filesystem.
-  // We reserve an array of bitmap_t's totaling TFS_BLOCK_SIZE
-  // from the stack here.
+  /* The size of the allocation bitmap is one block in the filesystem.
+     We reserve an array of bitmap_t's totaling TFS_BLOCK_SIZE
+     from the stack here.
+  */
   bitmap_t allocation[TFS_BLOCK_SIZE/sizeof(bitmap_t)];
 
   bitmap_init(allocation, 8*TFS_BLOCK_SIZE);
@@ -147,7 +149,7 @@ void tfstool_createvol(char *diskfilename, int size, char *volname)
     exit(EXIT_FAILURE);
   }
 
-  // check that there is room for all headers in the disk
+  /* check that there is room for all headers in the disk */
   if(size < 3) {
     printf("tfstool: Disk size too small. Disk size must be");
     printf(" at least 3 blocks.\n");
@@ -156,27 +158,27 @@ void tfstool_createvol(char *diskfilename, int size, char *volname)
 
   disk = openfile(diskfilename, "wb");
 
-  // zero the header and block allocation table (bat) blocks
+  /* zero the header and block allocation table (bat) blocks */
   memset(header, 0, TFS_BLOCK_SIZE);
   memset(bat, 0, TFS_BLOCK_SIZE);
 
-  // set up the header block and write it
+  /* set up the header block and write it */
   memcpy(header, &tfsmagic, 4);
   memcpy(&header[4], volname, TFS_VOLNAME_MAX);
   write_block(header, TFS_HEADER_BLOCK);
 
-  // set up the block allocation table block and write it
+  /* set up the block allocation table block and write it */
   bitmap_set(allocation, TFS_HEADER_BLOCK, 1);
   bitmap_set(allocation, TFS_ALLOCATION_BLOCK, 1);
   bitmap_set(allocation, TFS_DIRECTORY_BLOCK, 1);
   memcpy(bat, allocation, TFS_BLOCK_SIZE);
   write_block(bat, TFS_ALLOCATION_BLOCK);
 
-  // write zero directory block (the disk is initially empty)
+  /* write zero directory block (the disk is initially empty) */
   write_block(NULL, TFS_DIRECTORY_BLOCK);
 
-  // Write data blocks. initially empty. Start writing from
-  // first data block (blocik num 3).
+  /* Write data blocks. initially empty. Start writing from
+     first data block (blocik num 3). */
   for (i = 3; i < size; i++)
     write_block(NULL, i);
 
@@ -186,8 +188,8 @@ void tfstool_createvol(char *diskfilename, int size, char *volname)
          diskfilename, volname, size);
 }
 
-// Copy a file 'source' from host file system to kudos tfs filesystem
-// as 'target'.
+/* Copy a file 'source' from host file system to kudos tfs filesystem
+   as 'target'. */
 void tfstool_write(char *diskfilename, char *source, char *target) {
   block_t allocation_block, master_dir, inode_block, data;
   bitmap_t *bat;
@@ -198,7 +200,7 @@ void tfstool_write(char *diskfilename, char *source, char *target) {
   int writeok = 1;
   uint32_t filesize;
 
-  // Pointer to source file in host file system.
+  /* Pointer to source file in host file system. */
   FILE *source_fp;
   unsigned long source_filesize;
 
@@ -209,9 +211,9 @@ void tfstool_write(char *diskfilename, char *source, char *target) {
 
   memset(inode_block, 0, TFS_BLOCK_SIZE);
 
-  // Read master directory from tfs disk file and find free entry.
-  // If there is no free entries or filename already exists exit
-  // with error.
+  /* Read master directory from tfs disk file and find free entry.
+     If there is no free entries or filename already exists exit
+     with error. */
   read_block(master_dir, TFS_DIRECTORY_BLOCK);
   direntry = (tfs_direntry_t *)master_dir;
   index = -1;
@@ -229,13 +231,13 @@ void tfstool_write(char *diskfilename, char *source, char *target) {
     exit(EXIT_FAILURE);
   }
 
-  // Read allocation block. Find free block from allocation bitmap and
-  // set it reserved (findnset()).Write block from source file to
-  // correponding block in tfs file.
-  //
-  // If there is not enough free blocks for file set writeok to zero.
-  // Allocation block is then not updated (written back to file) so
-  // it soesn't matter that we have written file blocks to disk.
+  /* Read allocation block. Find free block from allocation bitmap and
+     set it reserved (findnset()).Write block from source file to
+     correponding block in tfs file.
+
+     If there is not enough free blocks for file set writeok to zero.
+     Allocation block is then not updated (written back to file) so
+     it soesn't matter that we have written file blocks to disk. */
 
   read_block(allocation_block, TFS_ALLOCATION_BLOCK);
   num_blocks = tfstool_numblocks(disk);
@@ -257,7 +259,7 @@ void tfstool_write(char *diskfilename, char *source, char *target) {
         if(feof(source_fp))
           break;
       } else {
-        // No free block was found
+        /* No free block was found */
         writeok = 0;
         break;
       }
@@ -272,8 +274,8 @@ void tfstool_write(char *diskfilename, char *source, char *target) {
     }
 
     if(writeok) {
-      // Write allocation block and inode block. Inode must be
-      // written here because we don't earlier know the file size.
+      /* Write allocation block and inode block. Inode must be
+         written here because we don't earlier know the file size. */
       inode->filesize = htonl(filesize);
       write_block(inode_block, inode_bnum);
 
@@ -302,8 +304,8 @@ void tfstool_write(char *diskfilename, char *source, char *target) {
          source, diskfilename, target);
 }
 
-// Copy a file 'source' from kudos tfs filesystem to host filesystem
-// as 'target'.
+/* Copy a file 'source' from kudos tfs filesystem to host filesystem
+   as 'target'. */
 void tfstool_read(char *diskfilename, char *source, char *target) {
   block_t master_dir;
   block_t inode_block;
@@ -314,7 +316,7 @@ void tfstool_read(char *diskfilename, char *source, char *target) {
   signed int index;
   int count = 0;
 
-  // target file on host file system
+  /* target file on host file system */
   FILE *t;
 
   disk = openfile(diskfilename, "r+");
@@ -322,7 +324,7 @@ void tfstool_read(char *diskfilename, char *source, char *target) {
 
 
 
-  // Read directory block of tfs and find the file to be copied.
+  /* Read directory block of tfs and find the file to be copied. */
   read_block(master_dir, TFS_DIRECTORY_BLOCK);
   direntry = (tfs_direntry_t *)master_dir;
   index = -1;
@@ -337,20 +339,20 @@ void tfstool_read(char *diskfilename, char *source, char *target) {
     exit(EXIT_FAILURE);
   }
 
-  // Read inode block of the file.
+  /* Read inode block of the file. */
   read_block(inode_block, ntohl(direntry[index].inode));
   inode = (tfs_inode_t *)inode_block;
 
-  // Get file blocks from inode. read corresponding blocks from tfs
-  // and write them to host file system.
+  /* Get file blocks from inode. read corresponding blocks from tfs
+     and write them to host file system. */
   filesize = ntohl(inode->filesize);
   for (i = 0; i < (int) (TFS_BLOCKS_MAX) &&
          (bnum = ntohl(inode->block[i])) != 0; i++) {
     read_block(data, bnum);
 
-    // If there is less than block size to write, write only that.
-    // Rest of the block doesn't belong and is not wanted to
-    // the file.
+    /* If there is less than block size to write, write only that.
+       Rest of the block doesn't belong and is not wanted to
+       the file. */
     size = filesize - count;
     if(size > TFS_BLOCK_SIZE)
       size = TFS_BLOCK_SIZE;
@@ -365,7 +367,7 @@ void tfstool_read(char *diskfilename, char *source, char *target) {
 
 }
 
-// Lists the files in the image file named 'diskfilename'.
+/* Lists the files in the image file named 'diskfilename'. */
 void tfstool_list(char *diskfilename) {
   block_t header, master_dir;
   tfs_direntry_t *direntry;
@@ -389,7 +391,7 @@ void tfstool_list(char *diskfilename) {
       tfs_inode_t *inode;
       int j;
 
-      // We need to fetch each file's inode to get filesize.
+      /* We need to fetch each file's inode to get filesize. */
       read_block(data, ntohl(direntry[i].inode));
       inode = (tfs_inode_t *)data;
 
@@ -404,7 +406,7 @@ void tfstool_list(char *diskfilename) {
   }
 }
 
-// Deletes file 'filename' from the disk 'diskfilename'.
+/* Deletes file 'filename' from the disk 'diskfilename'. */
 void tfstool_delete(char *diskfilename, char *filename)
 {
   block_t allocation_block;
@@ -422,8 +424,8 @@ void tfstool_delete(char *diskfilename, char *filename)
 
   disk = openfile(diskfilename, "r+");
 
-  // We read the master_dir and find the inode of the file
-  // named 'filename'.
+  /* We read the master_dir and find the inode of the file
+   * named 'filename'. */
   read_block(master_dir, TFS_DIRECTORY_BLOCK);
   direntry = (tfs_direntry_t *)master_dir;
   index = -1;
@@ -446,15 +448,15 @@ void tfstool_delete(char *diskfilename, char *filename)
     read_block(inode_block, inode_bn);
     inode = (tfs_inode_t *)inode_block;
 
-    // Release the blocks reserved for the file.
+    /* Release the blocks reserved for the file. */
     for (i = 0; i < (int) (TFS_BLOCKS_MAX) && ntohl(inode->block[i]) != 0; i++)
       bitmap_set(bat, ntohl(inode->block[i]), 0);
 
-    // Release the inode block
+    /* Release the inode block */
     bitmap_set(bat, inode_bn, 0);
 
-    // Empty entry in TFS is one with NULL as it's direntry's
-    // inode and name[0].
+    /* Empty entry in TFS is one with NULL as it's direntry's
+       inode and name[0]. */
     direntry[index].inode   = 0;
     direntry[index].name[0] = '\0';
 
@@ -485,7 +487,7 @@ unsigned long getfilesize(FILE *fp)
   return (unsigned long)size;
 }
 
-// Return total number of blocks of the disk.
+/* Return total number of blocks of the disk. */
 long tfstool_numblocks(FILE *disk)
 {
   return (getfilesize(disk) / TFS_BLOCK_SIZE);
@@ -506,7 +508,7 @@ FILE *openfile(char *filename, const char *mode)
   return fp;
 }
 
-// Read 'block' of tfs file to 'data'.
+/* Read 'block' of tfs file to 'data'. */
 void read_block(block_t data, int block)
 {
   size_t __attribute__ ((unused)) ret;
@@ -524,7 +526,7 @@ void read_block(block_t data, int block)
   }
 }
 
-// Write 'data' to tfs block 'block'
+/* Write 'data' to tfs block 'block' */
 void write_block(block_t data, int block)
 {
   block_t nullblock;
@@ -545,24 +547,30 @@ void write_block(block_t data, int block)
 }
 
 
-// bitmap routines taken from kudos/bitmap.c
+/* bitmap routines taken from kudos/bitmap.c */
 
-
-// Calculates the memory size in bytes needed to store a given number of bits
-// in a bitmap. The size of the bitmap will be a multiple of 4.
-//
-// @param num_bits The number of bits the bitmap needs to hold.
-// @return The size of the bitmap in bytes.
+/**
+ * Calculates the memory size in bytes needed to store a given number
+ * of bits in a bitmap. The size of the bitmap will be a multiple of
+ * 4.
+ *
+ * @param num_bits The number of bits the bitmap needs to hold.
+ *
+ * @return The size of the bitmap in bytes.
+ */
 int bitmap_sizeof(int num_bits)
 {
   return ((num_bits + 31) / 32) * 4;
 }
 
-
-// Initialize a given bitmap. All entries in the bitmap are intialized to 0.
-//
-// @param bitmap The bitmap to initialize
-// @param size The number of bits in the bitmap.
+/**
+ * Initialize a given bitmap. All entries in the bitmap are intialized
+ * to 0.
+ *
+ * @param bitmap The bitmap to initialize
+ *
+ * @param size The number of bits in the bitmap.
+ */
 void bitmap_init(bitmap_t *bitmap, int size)
 {
   int i;
@@ -570,11 +578,15 @@ void bitmap_init(bitmap_t *bitmap, int size)
     bitmap[i] = 0;
 }
 
-// Gets the value of a given bit in the bitmap.
-//
-// @param bitmap The bitmap
-// @param pos The position of the bit, whose value will be returned.
-// @return The value (0 or 1) of the given bit in the bitmap.
+/**
+ * Gets the value of a given bit in the bitmap.
+ *
+ * @param bitmap The bitmap
+ *
+ * @param pos The position of the bit, whose value will be returned.
+ *
+ * @return The value (0 or 1) of the given bit in the bitmap.
+ */
 int bitmap_get(bitmap_t *bitmap, int pos)
 {
   int i;
@@ -586,12 +598,16 @@ int bitmap_get(bitmap_t *bitmap, int pos)
   return ((ntohl(bitmap[i]) >> j) & 0x01);
 }
 
-
-// Sets the given bit in the bitmap.
-//
-// @param bitmap The bitmap
-// @param pos The index of the bit to set
-// @param value The new value of the given bit. Valid values are 0 and 1.
+/**
+ * Sets the given bit in the bitmap.
+ *
+ * @param bitmap The bitmap
+ *
+ * @param pos The index of the bit to set
+ *
+ * @param value The new value of the given bit. Valid values are 0 and
+ * 1.
+ */
 void bitmap_set(bitmap_t *bitmap, int pos, int value)
 {
   int i;
@@ -611,11 +627,15 @@ void bitmap_set(bitmap_t *bitmap, int pos, int value)
 }
 
 
-// Finds first zero and sets it to one.
-//
-// @param bitmap The bitmap
-// @param l Length of bitmap in bits
-// @return Number of bit set. Negative if failed.
+/**
+ * Finds first zero and sets it to one.
+ *
+ * @param bitmap The bitmap
+ *
+ * @param l Length of bitmap in bits
+ *
+ * @return Number of bit set. Negative if failed.
+ */
 int bitmap_findnset(bitmap_t *bitmap, int l)
 {
   int i;

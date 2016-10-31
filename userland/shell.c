@@ -33,20 +33,20 @@ static command_t commands[] = {
 
 char **tokenize(char* buf)
 {
-  int i; // string index
+  int i; /* string index */
   int j;
-  int n = 0; // number of tokens
+  int n = 0; /* number of tokens */
 
   char** tok = NULL;
 
   for(i = 0; buf[i] != '\0'; i++) {
 
-      // replace spaces with nuls
+      /* replace spaces with nuls */
       for(j = i; buf[j] == ' '; j++)
         buf[j] = '\0';
 
-      // alloc char* for next token unless
-      // handling trailing whitespace
+      /* alloc char* for next token unless
+         handling trailing whitespace */
       if ((j == 0 || j > i) && buf[j] != '\0') {
         n++;
         tok = realloc(tok, n*(sizeof(char*)));
