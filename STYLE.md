@@ -84,10 +84,10 @@ comments. We recommend single-line comments for everything. Some functions have
 [Doxygen](http://www.stack.nl/~dimitri/doxygen/index.html)-style docstrings,
 but this has not been used consistently.
 
-For commenting out code, always use `//`. For convenience when commenting out
-code blocks, rely on your text-editor.  Please also _consider removing
-commented out code completely_, or add a comment as to why the code is
-commented out.
+For commenting out code, always use `//`. This is a great chance for you to get
+acquainted with your text-editor.  Please also _consider removing commented out
+code completely_, or add a comment as to why the code is commented out, if you
+want someone else to sort it out.
 
 **vim**
 
