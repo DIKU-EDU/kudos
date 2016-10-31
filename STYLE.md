@@ -79,7 +79,15 @@ Avoid trailing whitespace.
 
 ## Comments
 
-Always use `//`. If you want to comment out a block of code, rely on your text-editor.
+In general, you can use either multi-line (`/* */`) or single-line (`//`)
+comments. We recommend single-line comments for everything. Some functions have
+[Doxygen](http://www.stack.nl/~dimitri/doxygen/index.html)-style docstrings,
+but this has not been used consistently.
+
+For commenting out code, always use `//`. This is a great chance for you to get
+acquainted with your text-editor.  Please also _consider removing commented out
+code completely_, or add a comment as to why the code is commented out, if you
+want someone else to sort it out.
 
 **vim**
 

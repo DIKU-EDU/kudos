@@ -33,7 +33,7 @@ typedef int pid_t;
 /* Default initial userland buffer size */
 #define BUFSIZE 64
 
-/* Makes the syscall 'syscall_num' with the arguments 'a1', 'a2' and 'a3'. */
+// Makes the syscall 'syscall_num' with the arguments 'a1', 'a2' and 'a3'.
 uint32_t _syscall(uint64_t syscall_num, uint64_t a1, uint64_t a2, uint64_t a3);
 
 /* The library functions which are just wrappers to the _syscall function. */
