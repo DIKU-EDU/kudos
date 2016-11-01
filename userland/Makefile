@@ -50,7 +50,7 @@ x86_64: $(X86_64TARGETS)
 
 # MIPS32 Targets
 %.mips32: $(MIPS32SYSLIBS) %.mips32.o
-	$(LD) -o $@ $(LDFLAGS) -Map $@.map $^
+	$(LD) -o $@ $(LDFLAGS) -Map $@.mips32map $^
 
 %.mips32.o: %.S
 	$(CC) $(MIPS32INC) -o $@ $(ASFLAGS) -c $<
@@ -60,7 +60,7 @@ x86_64: $(X86_64TARGETS)
 
 # X86_64 Targets
 %.x86_64: $(X86_64SYSLIBS) %.x86_64.o
-	$(LDX86_64) -o $@ $(LDFLAGSX86_64) -Map $@.x64map $^
+	$(LDX86_64) -o $@ $(LDFLAGSX86_64) -Map $@.map $^
 	mv $@ $(patsubst %.x86_64, %, $@)
 	mv $@.map $(patsubst %.x86_64, %, $@).map
 
@@ -71,7 +71,7 @@ x86_64: $(X86_64TARGETS)
 	$(CCX86_64) $(X86_64INC) -o $@  $(CFLAGSX86_64) -c $<
 
 clean:
-	rm -f $(MIPS32SYSLIBS) $(MIPS32OBJS) *.map $(MIPS32TARGETS)
+	rm -f $(MIPS32SYSLIBS) $(MIPS32OBJS) *.mips32map $(MIPS32TARGETS)
 	rm -f $(X86_64SYSLIBS) $(X86_64OBJS) *.map $(X86_64PROGRAMS)
 
 .PHONY: all mips32 x86_64 clean
