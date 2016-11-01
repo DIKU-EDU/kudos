@@ -2,6 +2,8 @@
 
 SOURCES :=  halt.c shell.c hw.c oldshell.c
 
+X86_64PROGRAMS := $(patsubst %.c, %, $(SOURCES))
+
 MIPS32INC = -I../kudos/lib/mips32/
 X86_64INC = -I../kudos/lib/x86_64/
 
@@ -59,6 +61,8 @@ x86_64: $(X86_64TARGETS)
 # X86_64 Targets
 %.x86_64: $(X86_64SYSLIBS) %.x86_64.o
 	$(LDX86_64) -o $@ $(LDFLAGSX86_64) -Map $@.x64map $^
+	mv $@ $(patsubst %.x86_64, %, $@)
+	mv $@.map $(patsubst %.x86_64, %, $@).map
 
 %.x86_64.o: %.S
 	$(CCX86_64) $(X86_64INC) -o $@ $(ASFLAGSX86_64) -c $<
@@ -68,6 +72,6 @@ x86_64: $(X86_64TARGETS)
 
 clean:
 	rm -f $(MIPS32SYSLIBS) $(MIPS32OBJS) *.map $(MIPS32TARGETS)
-	rm -f $(X86_64SYSLIBS) $(X86_64OBJS) *.map $(X86_64TARGETS)
+	rm -f $(X86_64SYSLIBS) $(X86_64OBJS) *.map $(X86_64PROGRAMS)
 
 .PHONY: all mips32 x86_64 clean
