@@ -31,34 +31,34 @@ performs the corresponding operation on the values contained in the specified
 CPU registers. Machine instructions can read and write data from specified
 memory addresses into CPU registers.
 
-Booting ``kudos-mips32`` in YAMS
---------------------------------
-
-When YAMS is powered up, the program counter register for every CPU (YAMS can
-simulate multiple CPU cores) is set to ``0x80010000``. This is where the
-``.text`` segment of ``kudos-mips32`` begins, i.e. where the first
-``kudos-mips32`` instruction is stored.
-
-All MIPS32-specific bootstrapping code is found in ``kudos/init/mips32/``.
-
-The assembly code in ``_boot.S`` is the very first code that ``kudos-mips32``
-will execute. The processor number is detected and all processors except number
-0 will enter a wait loop until kernel initialization is finished. Later, when
-the kernel initialization (in ``main.c``) is complete, processor 0 will signal
-the other processors to continue.
-
-The first thing that the ``boot.S`` code will do is processor separation. The
-processor number is detected and all processors except number 0 will enter a
-wait loop waiting for the kernel initialization to be finished. Later, when the
-kernel initialization (in ``main.c``) is finished, processor 0 will signal the
-other processors to continue.
-
-The stack pointer is set to ``0x8000fffc``, which is just below the kernel
-image. This provides a temporary stack for the init C code. Later, each kernel
-thread will have its own stack area.
-
-Once the init stack has been set up, we can jump to the ``init`` function in
-the (still) architecture-specific ``main.c``.
+.. Booting ``kudos-mips32`` in YAMS
+.. --------------------------------
+.. 
+.. When YAMS is powered up, the program counter register for every CPU (YAMS can
+.. simulate multiple CPU cores) is set to ``0x80010000``. This is where the
+.. ``.text`` segment of ``kudos-mips32`` begins, i.e. where the first
+.. ``kudos-mips32`` instruction is stored.
+.. 
+.. All MIPS32-specific bootstrapping code is found in ``kudos/init/mips32/``.
+.. 
+.. The assembly code in ``_boot.S`` is the very first code that ``kudos-mips32``
+.. will execute. The processor number is detected and all processors except number
+.. 0 will enter a wait loop until kernel initialization is finished. Later, when
+.. the kernel initialization (in ``main.c``) is complete, processor 0 will signal
+.. the other processors to continue.
+.. 
+.. The first thing that the ``boot.S`` code will do is processor separation. The
+.. processor number is detected and all processors except number 0 will enter a
+.. wait loop waiting for the kernel initialization to be finished. Later, when the
+.. kernel initialization (in ``main.c``) is finished, processor 0 will signal the
+.. other processors to continue.
+.. 
+.. The stack pointer is set to ``0x8000fffc``, which is just below the kernel
+.. image. This provides a temporary stack for the init C code. Later, each kernel
+.. thread will have its own stack area.
+.. 
+.. Once the init stack has been set up, we can jump to the ``init`` function in
+.. the (still) architecture-specific ``main.c``.
 
 Starting Subsystems
 -------------------
