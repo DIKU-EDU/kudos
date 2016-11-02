@@ -94,9 +94,9 @@ make sure to have the latest version of xorriso::
     ~/kudos$ sudo apt-get update
     ~/kudos$ sudo apt-get install xorriso
     
-and finally you can run::
+and finally you can run the halt program}::
 
-    ~/kudos$ ./run_qemu.sh
+    ~/kudos$ ./run_qemu.sh halt
 
 This should open a new qemu window and boot KUDOS.
 
