@@ -28,4 +28,3 @@ concepts. It is intended for:
 ..   advanced-synchronization.rst
 ..   threads.rst
 ..   userland-processes.rst
-
