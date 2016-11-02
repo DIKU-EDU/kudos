@@ -14,7 +14,6 @@ concepts. It is intended for:
    source-code-overview.rst
    using-kudos.rst
    bootstrapping-kudos.rst
-   kernel-overview.rst
    system-calls.rst
    virtual-memory.rst
    device-drivers.rst
@@ -28,3 +27,4 @@ concepts. It is intended for:
 ..   advanced-synchronization.rst
 ..   threads.rst
 ..   userland-processes.rst
+..   kernel-overview.rst
