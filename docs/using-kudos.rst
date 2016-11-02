@@ -83,7 +83,7 @@ Create a disk image called store.file with 16384 blocks (8 MB)::
 
 Then transfer the userland program ``halt`` onto the ``store.file`` virtual disk::
 
-    ~/kudos$ ./kudos/util/tfstool write store.file userland/halt.x86_64 halt
+    ~/kudos$ ./kudos/util/tfstool write store.file userland/halt halt
 
 To start qemu and boot qemu, first make ``run_qemu.sh`` executeable::
 
@@ -94,7 +94,7 @@ make sure to have the latest version of xorriso::
     ~/kudos$ sudo apt-get update
     ~/kudos$ sudo apt-get install xorriso
     
-and finally you can run the halt program}::
+and finally you can run the halt program::
 
     ~/kudos$ ./run_qemu.sh halt
 
