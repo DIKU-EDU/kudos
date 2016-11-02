@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ "$#" -ne 1 ]; then
+   echo "./run_qemu [program] \n"
+   echo "  program: the program that KUDOS should run"
+   exit 1;
+fi
+
 set -euo pipefail
 
 iso_path=./qemu/kudos.iso
