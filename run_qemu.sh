@@ -19,7 +19,7 @@ fi
 
 cp -f "$kudos_path" "./qemu/grub/iso/boot/kudos-x86_64"
 
-grub-mkrescue -o "$iso_path" "./qemu/grub/iso" -p "./grub"
+grub-mkrescue -o "$iso_path" "./qemu/grub/iso"
 
 rm qemu/grub/iso/boot/grub/grub.cfg
 
