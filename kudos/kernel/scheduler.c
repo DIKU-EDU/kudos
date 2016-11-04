@@ -3,7 +3,7 @@
  */
 
 #include "kernel/thread.h"
-#include "kernel/spinlock.h"
+#include "kernel/klock.h"
 #include "kernel/assert.h"
 #include "kernel/panic.h"
 #include "kernel/interrupt.h"
@@ -18,7 +18,7 @@
  */
 
 /* Import thread table and its lock from thread.c */
-extern spinlock_t thread_table_slock;
+extern klock_t thread_table_klock;
 extern thread_table_t thread_table[CONFIG_MAX_THREADS];
 
 /** Currently running thread on each CPU */
@@ -120,16 +120,12 @@ void scheduler_add_ready(TID_t t)
 {
   interrupt_status_t intr_status;
 
-  intr_status = _interrupt_disable();
-
-  spinlock_acquire(&thread_table_slock);
+  klock_status_t st = klock_lock(&thread_table_klock);
 
   scheduler_add_to_ready_list(t);
   thread_table[t].state = THREAD_READY;
 
-  spinlock_release(&thread_table_slock);
-
-  _interrupt_set_state(intr_status);
+  klock_open(st, &thread_table_klock);
 }
 
 
@@ -159,7 +155,7 @@ void scheduler_schedule(void)
 
   this_cpu = _interrupt_getcpu();
 
-  spinlock_acquire(&thread_table_slock);
+  spinlock_acquire(&thread_table_klock);
 
   current_thread = &(thread_table[scheduler_current_thread[this_cpu]]);
 
@@ -176,7 +172,7 @@ void scheduler_schedule(void)
   t = scheduler_remove_first_ready();
   thread_table[t].state = THREAD_RUNNING;
 
-  spinlock_release(&thread_table_slock);
+  spinlock_release(&thread_table_klock);
 
   scheduler_current_thread[this_cpu] = t;
 

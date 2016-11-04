@@ -4,6 +4,7 @@
 
 #include "kernel/sleepq.h"
 #include "kernel/thread.h"
+#include "kernel/klock.h"
 #include "kernel/spinlock.h"
 #include "kernel/config.h"
 #include "kernel/interrupt.h"
@@ -29,7 +30,7 @@
 #define SLEEPQ_HASHTABLE_SIZE 127
 
 extern thread_table_t thread_table[CONFIG_MAX_THREADS];
-extern spinlock_t thread_table_slock;
+extern klock_t thread_table_klock;
 
 /* spinlock for synchronizing sleep queue table access */
 static spinlock_t sleepq_slock;
@@ -146,7 +147,7 @@ void sleepq_wake(void *resource)
     /* Clear the sleeps_on field and add the thread to the ready
      * list (if necessary)
      */
-    spinlock_acquire(&thread_table_slock);
+    spinlock_acquire(&thread_table_klock);
 
     thread_table[first].sleeps_on = 0;
     thread_table[first].next = -1;
@@ -156,7 +157,7 @@ void sleepq_wake(void *resource)
       scheduler_add_to_ready_list(first);
     }
 
-    spinlock_release(&thread_table_slock);
+    spinlock_release(&thread_table_klock);
   }
 
   spinlock_release(&sleepq_slock);
@@ -211,7 +212,7 @@ void sleepq_wake_all(void *resource)
       /* Clear the sleeps_on field and add the thread to the ready
        * list (if necessary)
        */
-      spinlock_acquire(&thread_table_slock);
+      spinlock_acquire(&thread_table_klock);
 
       thread_table[wake].sleeps_on = 0;
       thread_table[wake].next      = -1;
@@ -221,7 +222,7 @@ void sleepq_wake_all(void *resource)
         scheduler_add_to_ready_list(wake);
       }
 
-      spinlock_release(&thread_table_slock);
+      spinlock_release(&thread_table_klock);
     }
   }
 

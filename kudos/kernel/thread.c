@@ -3,7 +3,7 @@
  */
 
 #include "lib/libc.h"
-#include "kernel/spinlock.h"
+#include "kernel/klock.h"
 #include "kernel/thread.h"
 #include "kernel/scheduler.h"
 #include "kernel/panic.h"
@@ -19,8 +19,8 @@
  * @{
  */
 
-/** Spinlock which must be held when manipulating the thread table */
-spinlock_t thread_table_slock;
+/** Kernel lock which must be held when manipulating the thread table */
+klock_t thread_table_klock;
 
 /** The table containing all threads in the system, whether active or not. */
 thread_table_t thread_table[CONFIG_MAX_THREADS];
@@ -46,7 +46,7 @@ void thread_table_init(void)
      the end of thread_table_t definition in kernel/thread.h */
   KERNEL_ASSERT(sizeof(thread_table_t) == 64);
 
-  spinlock_reset(&thread_table_slock);
+  klock_init(&thread_table_klock);
 
   /* Init all entries to 'NULL' */
   for (i=0; i<CONFIG_MAX_THREADS; i++) {
@@ -95,11 +95,7 @@ TID_t thread_create(void (*func)(uint32_t), uint32_t arg)
   func = func;
   arg = arg;
 
-  interrupt_status_t intr_status;
-
-  intr_status = _interrupt_disable();
-
-  spinlock_acquire(&thread_table_slock);
+  klock_status_t st = klock_lock(&thread_table_klock);
 
   /* Find the first free thread table entry starting from 'next_tid' */
   for (i=0; i<CONFIG_MAX_THREADS; i++) {
@@ -117,8 +113,7 @@ TID_t thread_create(void (*func)(uint32_t), uint32_t arg)
 
   /* Is the thread table full? */
   if (tid < 0) {
-    spinlock_release(&thread_table_slock);
-    _interrupt_set_state(intr_status);
+    klock_open(st, &thread_table_klock);
     return tid;
   }
 
@@ -126,8 +121,7 @@ TID_t thread_create(void (*func)(uint32_t), uint32_t arg)
 
   thread_table[tid].state = THREAD_NONREADY;
 
-  spinlock_release(&thread_table_slock);
-  _interrupt_set_state(intr_status);
+  klock_open(st, &thread_table_klock);
 
   thread_table[tid].context      = (context_t *) (thread_stack_areas
                                                   +CONFIG_THREAD_STACKSIZE*tid + CONFIG_THREAD_STACKSIZE -
@@ -272,14 +266,14 @@ void thread_finish(void)
 
   my_tid = thread_get_current_thread();
 
-  _interrupt_disable();
+  klock_status_t st = klock_lock(&thread_table_klock);
 
   /* Check that the page mappings have been cleared. */
   KERNEL_ASSERT(thread_table[my_tid].pagetable == NULL);
 
-  spinlock_acquire(&thread_table_slock);
   thread_table[my_tid].state = THREAD_DYING;
-  spinlock_release(&thread_table_slock);
+
+  klock_open(st, &thread_table_klock);
 
   _interrupt_enable();
   _interrupt_yield();
