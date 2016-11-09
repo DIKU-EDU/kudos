@@ -46,6 +46,9 @@ void syscall_handle(regs_t *registers)
      * returning from this function the userland context will be
      * restored from user_context.
      */
+     interrupt_status_t intr_status = _interrupt_get_state();
+     _interrupt_enable();
      registers->rax = syscall_entry(registers->rdi, registers->rsi, 
                                     registers->rdx, registers->rcx);
+     _interrupt_set_state(intr_status);
 }
