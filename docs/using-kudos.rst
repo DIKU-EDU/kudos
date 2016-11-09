@@ -14,7 +14,8 @@ Compiling the kernel
 --------------------
 
 You can compile the operating system by running ``make`` in the ``kudos/``
-subdirectory of KUDOS.
+subdirectory of KUDOS. You can also type ``make -C kudos/`` from the root KUDOS
+source directory.
 
 After compiling the system, you should have a binary named ``kudos-x86_64`` in
 that directory.  This is your entire operating system, in one file!
@@ -27,7 +28,8 @@ Userland programs are compiled using the same compiler used for compiling
 KUDOS.
 
 To compile userland binaries, go to the ``userland/`` subdirectory of KUDOS and
-run ``make``.
+run ``make``. You can also type ``make -C kudos/`` from the root KUDOS source
+directory.
 
 To run these programs in KUDOS, they need to be copied to a virtaul
 disk, where KUDOS can find them.
