@@ -174,7 +174,9 @@ void vm_init(void){
   /* The boundary for the indentity mapping */
   indentity_bound = ((physaddr_t)&KERNEL_ENDS_HERE)+stalloced_total;
 
-  indentity_bound += indentity_bound%PMM_BLOCK_SIZE;
+  if (indentity_bound % PMM_BLOCK_SIZE > 0) {
+    indentity_bound += PMM_BLOCK_SIZE - indentity_bound % PMM_BLOCK_SIZE;
+  }
 
   /* initialize kmalloc allocation address */
   kmalloc_addr = indentity_bound;
