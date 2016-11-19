@@ -27,7 +27,8 @@ supports multiple CPU cores, running each either own thread, while sharing the
 same physical memory.
 
 Threads are a fundamental kernel construct, which allows to implement more
-nuanced userland tasks, such as userland threads and userland processes.
+nuanced userland threads of execution, such as userland threads and userland
+processes.
 
 Kernel Threads API
 ------------------
