@@ -37,38 +37,38 @@ The kernel threads API, defined in ``kudos/kernel/thread.h`` and implemented in
 ``kudos/kernel/thread.c``, provides functions for setting up kernel threads in
 the kernel thread table, and for kernel threads to interact with the scheduler.
 
-``void thread table init (void)``
+``void thread_table_init(void)``
   Initialisation of thread table and idle thread for threading subsystem.
 
 The following two functions are used by a thread to create a new thread, and
 mark it as ready to run:
 
-``TID_t thread create (void (*func)(uint32 t), uint32 t arg)``
+``TID_t thread_create(void (*func)(uint32_t), uint32_t arg)``
   Finds the first free entry in the thread table, and sets up a thread for the
   given function.  This function does not cause the thread to be run, and the
   thread’s resultant state is ``NONREADY``.
 
-``void thread_run (TID_t t)``
+``void thread_run(TID_t t)``
   Causes the thread’s state in the thread table to be updated to READY,
   allowing the scheduler to allocate the thread to a CPU core.
 
 The following function can be used by a kernel thread to manipulate itself:
 
-``void thread_switch (void)``
+``void thread_switch(void)``
   Perform voluntary context switch. An interrupt is invoked, causing the scheduler to
   reschedule. Interrupts must be enabled when this function is called, and the interrupt
   state is restored prior to the function returning.
 
-``void thread_yield (void)``
+``void thread_yield(void)``
   Macro pointing to ``thread_switch``. The name "switch" is used when, for
   instance, the thread goes to sleep, whereas the name yielding implies no
   actual effect.
 
-``void thread_finish (void)``
+``void thread_finish(void)``
   Called automatically when the thread's function terminates or voluntarily by
   the thread to "commit suicide". Tidies up after thread.
 
-``TID t thread_get_current_thread (void)``
+``TID t thread_get_current_thread(void)``
   Returns the TID of the calling thread.
 
 Controlling Kernel Threads
