@@ -13,7 +13,7 @@ concepts. It is intended for:
    introduction.rst
    source-code-overview.rst
    using-kudos.rst
-   bootstrapping-kudos.rst
+   how-kudos-bootstraps.rst
    system-calls.rst
    kernel-threads.rst
    device-drivers.rst

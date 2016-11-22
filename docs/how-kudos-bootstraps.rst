@@ -1,5 +1,5 @@
-Bootstrapping KUDOS
-===================
+How KUDOS Bootstraps
+====================
 
 This section explains the bootup process of KUDOS from the first instruction
 ever executed by the CPU(s) to the point when userland processes can be
