@@ -60,6 +60,35 @@ memory addresses into CPU registers.
 .. Once the init stack has been set up, we can jump to the ``init`` function in
 .. the (still) architecture-specific ``main.c``.
 
+Booting KUDOS with GRUB2
+------------------------
+
+On boot, the BIOS, which is mapped to a specific location in memory, is run.
+The BIOS detects what hardware is present, placing this information in memory,
+and runs a bootloader on a specified device, e.g. a hard disk.
+
+GRUB is a generic bootloader, which can be used by operating systems that
+support the `multiboot specification
+<https://www.gnu.org/software/grub/manual/multiboot/multiboot.html>`_, such as
+KUDOS. When the bootloader starts, the CPU is in 16-bit real mode.
+
+GRUB loads a kernel image, and begins its execution at the *entry point*, which
+was defined when linking, by setting the instruction pointer to this memory
+address. It starts this execution in 32-bit *protected mode*. Protected mode
+provides memory protection, i.e. user and kernel modes, such that processes
+cannot interfere with one another's execution. This allows for a multi-tasking
+operating system, as the kernel is protected from interference by processes
+running in user mode.
+
+There is a clash of terminology here; a CPU in protected mode has the ability
+to switch between user and kernel mode, whereas real mode provides no such
+protection.
+
+The entry point is ``kudos/init/x86_64/_boot.S``, which sets up long mode (64
+bit mode), and a stack for the execution of C code, before jumping to the
+architecture-specific ``init`` function, located in
+``kudos/init/x86_64/main.c``.
+
 Starting Subsystems
 -------------------
 
