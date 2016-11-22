@@ -60,8 +60,8 @@ memory addresses into CPU registers.
 .. Once the init stack has been set up, we can jump to the ``init`` function in
 .. the (still) architecture-specific ``main.c``.
 
-Booting KUDOS with GRUB2
-------------------------
+Booting KUDOS/x86_64 with GRUB2
+-------------------------------
 
 On boot, the BIOS, which is mapped to a specific location in memory, is run.
 The BIOS detects what hardware is present, placing this information in memory,
