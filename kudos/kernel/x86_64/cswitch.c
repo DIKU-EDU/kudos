@@ -154,8 +154,6 @@ struct dirty_dirty_hack task_switch(uint64_t *stack)
   thread_table_t *task = thread_get_current_thread_entry();
   virtaddr_t new_stack;
 
-  int dummy;
-
   /* Is it a usertask?  */
   if(task->attribs & THREAD_FLAG_USERMODE)
     task->user_context->stack = stack;
