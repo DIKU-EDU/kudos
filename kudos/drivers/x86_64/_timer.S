@@ -42,8 +42,9 @@ pit_irq_handler:
 	mov %rsp, %rdi
 	call task_switch
 
-	/* It returns a new stack for us in rax */
+	/* It returns a new stack for us in rax and the PML4 in RDX*/
 	mov %rax, %rsp
+    mov %rdx, %cr3
 
 	/* Acknowledge irq */
 	mov $0, %rdi

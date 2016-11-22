@@ -143,10 +143,18 @@ void _context_set_sp(context_t *cxt, virtaddr_t sp)
   cxt->stack = (virtaddr_t*)sp;
 }
 
-uint64_t *task_switch(uint64_t *stack)
+struct dirty_dirty_hack {
+    uint64_t stack;
+    uint64_t pml4;
+};
+
+struct dirty_dirty_hack task_switch(uint64_t *stack)
 {
   /* OK, We want to save current stack */
   thread_table_t *task = thread_get_current_thread_entry();
+  virtaddr_t new_stack;
+
+  int dummy;
 
   /* Is it a usertask?  */
   if(task->attribs & THREAD_FLAG_USERMODE)
@@ -159,9 +167,6 @@ uint64_t *task_switch(uint64_t *stack)
 
   /* Get new task */
   task = thread_get_current_thread_entry();
-
-  /* Switch page directory */
-  vmm_setcr3(task->context->pml4);
 
   /* Update TSS */
   tss_setstack(0, (uint64_t)task->context->stack);
@@ -176,7 +181,13 @@ uint64_t *task_switch(uint64_t *stack)
 
   /* return new stack */
   if(task->attribs & THREAD_FLAG_USERMODE)
-    return task->user_context->stack;
+    new_stack = task->user_context->stack;
   else
-    return task->context->stack;
+    new_stack = task->context->stack;
+
+  //return new_stack;
+  struct dirty_dirty_hack tmp;
+  tmp.stack = new_stack;              //RAX
+  tmp.pml4 = task->context->pml4;     //RDX
+  return tmp;
 }
