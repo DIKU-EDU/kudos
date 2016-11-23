@@ -32,13 +32,14 @@ int setup_new_process(TID_t thread,
   uintptr_t phys_page;
   virtaddr_t virt_page;
   int i, res;
+  interrupt_status_t intr_status;
+  TID_t current_thread = thread_get_current_thread();
+  pml4_t *current_pml4;
   thread_table_t *thread_entry = thread_get_thread_entry(thread);
 
-  int argc = 1;
-  virtaddr_t argv_begin;
-  virtaddr_t argv_dst;
-  int argv_elem_size;
-  virtaddr_t argv_elem_dst;
+  //Save the currently running threads page table 
+  current_pml4 = thread_get_thread_entry(current_thread)
+      ->context->virt_memory;
 
   file = vfs_open((char *)executable);
 
@@ -59,7 +60,14 @@ int setup_new_process(TID_t thread,
 
   *entry_point = elf.entry_point;
 
+  //Create new page table
   pagetable = vm_create_pagetable(thread);
+
+  //We don't want to be interrupted when we potentially
+  //is running with the wrong page tables mapped in ;)
+  intr_status = _interrupt_disable();
+
+  //Change the page table of the currently running thread
   process_set_pagetable(pagetable);
 
   thread_entry->pagetable = pagetable;
@@ -120,72 +128,22 @@ int setup_new_process(TID_t thread,
   /* Done with the file. */
   vfs_close(file);
 
-  /* Set up argc and argv on the stack. */
-
-  /* Start by preparing ancillary information for the new process argv. */
-  //if (argv_src != NULL)
-  //  for (i = 0; argv_src[i] != NULL; i++) {
-  //    argc++;
-  //  }
-
-  //argv_begin = USERLAND_STACK_TOP - (argc * sizeof(virtaddr_t));
-  //argv_dst = argv_begin;
-
-  ///* Prepare for copying executable. */
-  //argv_elem_size = strlen(executable) + 1;
-  //argv_elem_dst = argv_dst - wordpad(argv_elem_size);
-
-  ///* Copy executable to argv[0] location. */
-  //vm_memwrite(pagetable,
-  //            argv_elem_size,
-  //            argv_elem_dst,
-  //            executable);
-  ///* Set argv[i] */
-  //vm_memwrite(pagetable,
-  //            sizeof(virtaddr_t),
-  //            argv_dst,
-  //            &argv_elem_dst);
-
-  ///* Move argv_dst to &argv[1]. */
-  //argv_dst += sizeof(virtaddr_t);
-
-  //if (argv_src != NULL) {
-  //  for (i = 0; argv_src[i] != NULL; i++) {
-  //    /* Compute the size of argv[i+1] */
-  //    argv_elem_size = strlen(argv_src[i]) + 1;
-  //    argv_elem_dst -= wordpad(argv_elem_size);
-
-  //    /* Write the 'i+1'th element of argv */
-  //    vm_memwrite(pagetable,
-  //                argv_elem_size,
-  //                argv_elem_dst,
-  //                argv_src[i]);
-
-  //    /* Write argv[i+1] */
-  //    vm_memwrite(pagetable,
-  //                sizeof(virtaddr_t),
-  //                argv_dst,
-  //                &argv_elem_dst);
-
-  //    /* Move argv_dst to next element of argv. */
-  //    argv_dst += sizeof(virtaddr_t);
-  //  }
-  //}
-
-  ///* Write argc to the stack. */
-  //vm_memwrite(pagetable,
-  //            sizeof(int),
-  //            argv_elem_dst - sizeof(int),
-  //            &argc);
-  ///* Write argv to the stack. */
-  //vm_memwrite(pagetable,
-  //            sizeof(virtaddr_t),
-  //            argv_elem_dst - sizeof(int) - sizeof(virtaddr_t),
-  //            &argv_begin);
-
-  ///* Stack pointer points at argv. */
-  //*stack_top = argv_elem_dst - sizeof(int) - sizeof(virtaddr_t);
   *stack_top = USERLAND_STACK_TOP;
+
+  /* We restore the currently running threads page table
+   * here. And saves the new page table to the new threads
+   * context
+   */
+  //restore
+  process_set_pagetable(current_pml4);
+
+  //save new page table to new threads context
+  thread_entry->context->pml4 = (uintptr_t)current_pml4;
+  thread_entry->context->virt_memory = current_pml4;
+
+  //enable interrupts
+  _interrupt_set_state(intr_status);
+
 
   return 0;
 }
