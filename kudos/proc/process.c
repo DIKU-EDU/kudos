@@ -138,8 +138,8 @@ int setup_new_process(TID_t thread,
   process_set_pagetable(current_pml4);
 
   //save new page table to new threads context
-  thread_entry->context->pml4 = (uintptr_t)current_pml4;
-  thread_entry->context->virt_memory = current_pml4;
+  thread_entry->context->pml4 = (uintptr_t)pagetable;
+  thread_entry->context->virt_memory = pagetable;
 
   //enable interrupts
   _interrupt_set_state(intr_status);
@@ -170,6 +170,9 @@ void process_start(const char *executable, const char **argv)
 
   _context_set_ip(&user_context, entry_point);
   _context_set_sp(&user_context, stack_top);
+
+  /* Switch pagetables */
+  vmm_setcr3(thread_get_thread_entry(my_thread)->context->pml4);
 
   thread_goto_userland(&user_context);
 }
