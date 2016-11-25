@@ -75,7 +75,7 @@ Implementation if WIRQ (*write interrupt request*) is set:
   6. If the buffer is empty, wake up the threads sleeping on the write buffer.
   7. Release the driver spinlock.
 
-Implementation if RIRQ (*read interrupt request* is set:
+Implementation if RIRQ (*read interrupt request*) is set:
 
   1. Acquire the driver spinlock.
   2. Issue the Reset RIRQ command to COMMAND. If this caused an error, panic
