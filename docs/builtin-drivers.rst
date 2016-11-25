@@ -40,6 +40,7 @@ interface**.
 The following functions implement the TTY driver:
 
 ``device_t *tty_init(io_descriptor_t *desc)``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Initialize a driver for the TTY defined by ``desc``.  This function is called
 once for each TTY driver present in the YAMS virtual machine.
@@ -60,6 +61,7 @@ Implementation:
   6. Return a pointer to the allocated ``device_t``.
 
 ``void tty_interrupt_handle(device_t *device)``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Handle interrupts concerning ``device``. This function is never called
 directly from kernel code, instead it is invoked from interrupt handler.
@@ -87,6 +89,7 @@ Implementation if RIRQ (*read interrupt request*) is set:
   5. Wake up all threads sleeping on the read buffer.
 
 ``static int tty_write(gcd_t *gcd, void *buf, int len)``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Write ``len`` bytes from ``buf`` to the TTY specified by ``gcd``.
 
@@ -106,6 +109,7 @@ Implementation:
   8. Return the number of bytes written.
 
 ``static int tty_read(gcd_t *gcd, void *buf, int len)``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Read at least one and at most ``len`` bytes into ``buf`` from the TTY specified
 by ``gcd``.
