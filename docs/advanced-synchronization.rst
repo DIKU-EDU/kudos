@@ -164,3 +164,113 @@ hash, the first thread in the chain isn't necessarily the one awoken.
 ``void sleepq_wake_all(void *resource)``
   As ``sleepq_wake``, but wakes up all threads which are waiting on the given
   resource.
+
+Semaphores
+----------
+
+Interrupt disabling, spinlocks and sleep queue provide the low level synchronization mechanisms
+in KUDOS. However, these methods have their limitations; they are cumbersome to use and thus
+error prone and they also require uninterrupted operations when doing processing on a locked
+resource. Semaphores are higher level synchronization mechanisms which solve these issues, and
+additionally can allow multiple units of a resource to be available to be accounted for.
+A semaphore can be thought of as a variable with an integer value. The resource protected
+by a binary semaphore can either be available (1), or locked (0, or a negative value indicating
+number of waiters). The counting semaphores implemented in KUdOS can have any value, with
+positive values indicating the number of units of a resource currently available. 
+Three different operations are defined on a conceptual semaphore:
+
+**Initialization** A semaphore may be initialized to any non-negative value indicating the number
+of concurrent accesses that may occur/units of resource available.
+
+**The P-operation** (semaphore P()) decrements the value of the semaphore. If the value
+becomes negative, the calling thread will block by being added to the sleep queue waiting
+on this semaphore, until awakened by some other thread’s V-operation.
+
+**The V-operation** (semaphore V()) increments the value of the semaphore. If the resulting
+value is not positive, one thread blocking in P-operation will be unblocked.
+
+Semaphore Implementation
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The KUDOS semaphore API is defined in `kudos/kernel/semaphore.h`
+
+Semaphores are implemented as a static array of semaphore structures with the name semaphore
+table. When semaphores are ”created”, they are actually allocated from this table. A spin-
+lock semaphore table slock is used to prevent concurrent access to the semaphore table. A
+semaphore is defined by ``semaphore_t``, which is a structure with three fields:
+
+.. One should format as a table
+
+``spinlock_t slock`` 
+Spinlock which must be held when accessing the semaphore data.
+
+``int value`` 
+The current value of the semaphore. If the value is negative,
+it indicates that thread(s) are waiting for the semaphore to
+be incremented. Conceptually the value of a semaphore is
+never below zero since calls from semaphore P() do not
+return while the value is negative.
+
+``TID_t``
+The thread ID of the thread that created this semaphore.
+Negative value indicates that the semaphore is unallocated
+(not yet created). The creator information is useful for
+debugging purposes.
+
+Semaphore Functions
+^^^^^^^^^^^^^^^^^^^
+
+See `kudos/kernel/semaphore.c`
+
+Create a semaphore
+""""""""""""""""""
+
+``semaphore t *semaphore create(int value)``
+  Creates a new semaphore, by finding the first unused semaphore in semaphore table, and initializes its value to the specified value.
+
+  1.  Assert that the given value is non-negative.
+  2.  Disable interrupts.
+  3.  Acquire spinlock semaphore table slock.
+  4.  Find free semaphore in the semaphore table and set its creator to the current thread.
+  5.  Release the spinlock.
+  6.  Restore the interrupt status.
+  7.  Return NULL if no semaphores were available (in step 5).
+  8.  Set the initial value of the semaphore to `value`.
+  9.  Reset the semaphore spinlock.
+  10. Return the allocated semaphore.
+
+Destory a semaphore
+"""""""""""""""""""
+
+``void semaphore destroy(semaphore t *sem)``
+  Destroys the given semaphore `sem`, freeing its entry in the `semaphore_table`.
+
+Vacate a semaphore
+""""""""""""""""""
+
+``void semaphore V(semaphore t *sem)``
+  Increments the value of sem by one. 
+  If the value was originally negative 
+  (there are waiters), wakes up one waiter.
+
+  1. Disable interrupts.
+  2. Acquire sem’s spinlock.
+  3. Increment the value of sem by one.
+  4. If the value was originally negative, wake up one thread from sleep queue which is sleeping on this semaphore.
+  5. Release the spinlock.
+  6. Restore the interrupt status.
+
+Procure a semaphore
+"""""""""""""""""""
+
+``void semaphore P(semaphore t *sem)``
+  Decreases the value of sem by one. If the value becomes negative, block (sleep). 
+  Conceptually the value of the semaphore is never below zero, 
+  since this call returns only after the value is non-negative.
+
+  1. Disable interrupts.
+  2. Acquire sem’s spinlock.
+  3. Decrement sem’s value by one.
+  4. If the value becomes negative, start add current thread to sleep queue, waiting on this semaphore, and simultaneously release the spinlock.
+  5. Else, release the spinlock.
+  6. Restore the interrupt status.
