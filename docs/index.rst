@@ -16,6 +16,8 @@ concepts. It is intended for:
    how-kudos-bootstraps.rst
    system-calls.rst
    kernel-threads.rst
+   low-level-synchronization.rst
+   advanced-synchronization.rst
    device-drivers.rst
    builtin-drivers.rst
    filesystems.rst
@@ -23,8 +25,6 @@ concepts. It is intended for:
    trivial-filesystem.rst
    appendix.rst
 
-..   low-level-synchronization.rst
-..   advanced-synchronization.rst
 ..   userland-processes.rst
 ..   kernel-overview.rst
 ..   virtual-memory.rst
