@@ -8,7 +8,7 @@
 #include "lib/types.h"
 #include "kernel/interrupt.h"
 
-void exception_init() 
+void exception_init()
 {
   //Hardware exceptions x86
   idt_install_gate(0, (uint16_t)(IDT_DESC_PRESENT | IDT_DESC_BIT32), (GDT_KERNEL_CODE << 3), (irq_handler)isr_handler0);

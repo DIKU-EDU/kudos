@@ -60,7 +60,7 @@ void sleepq_init(void)
  * to sleep, the thread must switch explicitly after calling this
  * function. Before switching, the thread usually frees the resource
  * it will start waiting for (release some spinlock).
- * 
+ *
  * Note that interrupts must be disabled before calling this function.
  *
  * @param resource The resource to wait for
@@ -78,7 +78,7 @@ void sleepq_add(void *resource)
   my_tid = thread_get_current_thread();
   /* the thread to be added should not have a next entry: */
   thread_table[my_tid].next = -1;
-  thread_table[my_tid].sleeps_on = (virtaddr_t)resource; 
+  thread_table[my_tid].sleeps_on = (virtaddr_t)resource;
 
   /* Idle thread should never do _anything_ (other than its own wait loop) */
   KERNEL_ASSERT(my_tid != IDLE_THREAD_TID);
@@ -124,7 +124,7 @@ void sleepq_wake(void *resource)
   spinlock_acquire(&sleepq_slock);
 
   /* Find the first entry actually waiting for 'resource', since
-   * multiple resources may hash to the same index. 
+   * multiple resources may hash to the same index.
    */
   prev = -1;
   first = sleepq_hashtable[hash];
@@ -136,7 +136,7 @@ void sleepq_wake(void *resource)
   /* First entry with correct resource found */
   if (first > 0) {
     /* remove it from the sleep queue */
-    if (prev <= 0) { 
+    if (prev <= 0) {
       /* it was the first entry in the table slot */
       sleepq_hashtable[hash] = thread_table[first].next;
     } else {
@@ -150,7 +150,7 @@ void sleepq_wake(void *resource)
 
     thread_table[first].sleeps_on = 0;
     thread_table[first].next = -1;
-        
+
     if (thread_table[first].state == THREAD_SLEEPING) {
       thread_table[first].state = THREAD_READY;
       scheduler_add_to_ready_list(first);
@@ -189,9 +189,9 @@ void sleepq_wake_all(void *resource)
   while (first > 0) {
 
     /* Find the next entry actually waiting for 'resource', since
-     * multiple resources may hash to the same index. 
+     * multiple resources may hash to the same index.
      */
-    while (first > 0 
+    while (first > 0
            && thread_table[first].sleeps_on != (virtaddr_t)resource) {
       prev = first;
       first = thread_table[first].next;
@@ -201,7 +201,7 @@ void sleepq_wake_all(void *resource)
     if (first > 0) {
       wake = first;
       /* remove it from the sleep queue */
-      if (prev <= 0) { 
+      if (prev <= 0) {
         /* it was the first entry in the table slot */
         first = sleepq_hashtable[hash] = thread_table[wake].next;
       } else {
@@ -215,7 +215,7 @@ void sleepq_wake_all(void *resource)
 
       thread_table[wake].sleeps_on = 0;
       thread_table[wake].next      = -1;
-        
+
       if (thread_table[wake].state == THREAD_SLEEPING) {
         thread_table[wake].state = THREAD_READY;
         scheduler_add_to_ready_list(wake);

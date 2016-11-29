@@ -50,7 +50,7 @@ static device_t system_rtc, system_meminfo, system_shutdown;
  * should have only one RTC.
  *
  * @param desc Pointer to the YAMS IO device descriptor of the RTC
- * @return Pointer to the device structure of the RTC 
+ * @return Pointer to the device structure of the RTC
  */
 device_t *rtc_init(io_descriptor_t *desc)
 {
@@ -125,7 +125,7 @@ uint32_t meminfo_get_pages()
  * supported.
  *
  * @param desc Pointer to the YAMS IO device descriptor of the CPU
- * status device 
+ * status device
  *
  * @return Pointer to the device structure of the CPU status device
  */
@@ -138,7 +138,7 @@ device_t *cpustatus_init(io_descriptor_t *desc)
   dev = fill_device_t(desc, NULL);
 
   cpu = (cpu_real_device_t*)stalloc(sizeof(cpu_real_device_t));
-  if (cpu == NULL) 
+  if (cpu == NULL)
     KERNEL_PANIC("Could not reserve memory for CPU status device driver.");
   spinlock_reset(&cpu->slock);
 
@@ -173,7 +173,7 @@ int cpustatus_count() {
 }
 
 /**
- * Generate IRQ on given CPU. 
+ * Generate IRQ on given CPU.
  *
  * @param dev Device descriptor for CPU
  *
@@ -230,11 +230,11 @@ void cpustatus_interrupt_handle(device_t *dev){
 
   /* Clear the interrupt */
   iobase->command = CPU_COMMAND_CLEAR_IRQ;
-    
+
   spinlock_release(&cpu->slock);
 }
 
-/** 
+/**
  * Indicate whether shotdown device has been initialized. This
  * variable is used by several functions (shutdown_init and shutdown)
  * and needs therefore to be public unlike other indicators for
@@ -246,7 +246,7 @@ static int shutdown_init_done = 0;
  * should have only one shutdown device.
  *
  * @param desc Pointer to the YAMS IO device descriptor of the shutdown device
- * @return Pointer to the device structure of the shutdown device 
+ * @return Pointer to the device structure of the shutdown device
  */
 device_t *shutdown_init(io_descriptor_t *desc)
 {
@@ -284,12 +284,12 @@ void shutdown(uint32_t magic)
   descriptor = (io_descriptor_t*)IO_DESCRIPTOR_AREA;
   for (i=0; i<YAMS_MAX_DEVICES; i++) {
     /* match found, shutdown: */
-    if (descriptor->type == YAMS_TYPECODE_SHUTDOWN) 
-      *((uint32_t*)descriptor->io_area_base) = magic; 
+    if (descriptor->type == YAMS_TYPECODE_SHUTDOWN)
+      *((uint32_t*)descriptor->io_area_base) = magic;
 
     descriptor++;
   }
-    
+
   /* Uh-oh: no shutdown device! */
   kprintf("Shutdown failed. Hardware failure!\n");
 }

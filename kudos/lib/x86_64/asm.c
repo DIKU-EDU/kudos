@@ -39,7 +39,7 @@ uint32_t _inl(uint16_t Port)
 
 void _insw(uint16_t Port, uint64_t Count, uint8_t *Buffer)
 {
-  asm volatile("rep;insw" 
+  asm volatile("rep;insw"
                : "=D"(Buffer), "=c"(Count)
                : "D"(Buffer), "c"(Count), "d"((uint64_t)Port)
                : "memory");
@@ -47,7 +47,7 @@ void _insw(uint16_t Port, uint64_t Count, uint8_t *Buffer)
 
 void _outsw(uint16_t Port, uint64_t Count, uint8_t *Buffer)
 {
-  asm volatile("rep;outsw" 
+  asm volatile("rep;outsw"
                : "=S"(Buffer), "=c"(Count)
                : "S"(Buffer), "c"(Count), "d"((uint64_t)Port)
                : "memory");

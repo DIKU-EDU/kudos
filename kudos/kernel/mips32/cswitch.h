@@ -43,11 +43,11 @@
 
 /* Thread context data structure */
 typedef struct {
-  uint32_t cpu_regs[29];   /* The general purpose registers. zero, k0 and 
+  uint32_t cpu_regs[29];   /* The general purpose registers. zero, k0 and
                               k1 registers are omitted. */
   uint32_t hi;             /* The hi register. */
   uint32_t lo;             /* The lo register. */
-  uint32_t pc;             /* The program counter. Actually loaded from 
+  uint32_t pc;             /* The program counter. Actually loaded from
                               EPC register in co-processor 0. */
   uint32_t status;         /* Status register bits. */
   void    *prev_context;   /* Previous context in a nested exception chain */
@@ -60,7 +60,7 @@ void _cswitch_vector_code(void);
 void _cswitch_to_userland(context_t *usercontext);
 
 /* Context manipulation */
-void _context_init(context_t *cxt, virtaddr_t entry, virtaddr_t endentry, 
+void _context_init(context_t *cxt, virtaddr_t entry, virtaddr_t endentry,
                    virtaddr_t stack, uint32_t args);
 void _context_enter_userland(context_t *cxt);
 void _context_set_ip(context_t *cxt, virtaddr_t ip); /* Set new instruction pointer / program counter */

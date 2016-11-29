@@ -8,7 +8,7 @@
 #include "drivers/disk.h"
 #include "drivers/metadev.h"
 
-/**  
+/**
  * A table of available device drivers.
  */
 drivers_available_t drivers_available[] = {

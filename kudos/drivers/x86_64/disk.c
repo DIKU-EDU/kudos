@@ -386,7 +386,7 @@ int32_t ide_wait(uint8_t channel, int advanced)
   return 0;
 }
 
-int32_t ide_pio_readwrite(uint8_t rw, uint8_t drive, uint64_t lba, 
+int32_t ide_pio_readwrite(uint8_t rw, uint8_t drive, uint64_t lba,
                           uint8_t *buf, uint32_t numsectors)
 {
   /* Sanity */
@@ -438,7 +438,7 @@ int32_t ide_pio_readwrite(uint8_t rw, uint8_t drive, uint64_t lba,
   else if(lba_mode == 1)
     {
       /* LBA28 */
-      ide_write(channel, IDE_REGISTER_HDDSEL, 
+      ide_write(channel, IDE_REGISTER_HDDSEL,
                 0xE0 | (slave << 4) | ((addr & 0x0F000000) >> 24));
       ide_wait(channel, 0);
       ide_write(channel, IDE_REGISTER_FEATURES, 0x00);

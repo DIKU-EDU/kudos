@@ -49,7 +49,7 @@ int elf_parse_header(elf_info_t *elf, openfile_t file);
 #define ELF_MAGIC 0x7f454c46
 
 /* ELF file header. The structure fields are aligned by data type
- * size, so the packed-attribute is not really necessary. 
+ * size, so the packed-attribute is not really necessary.
  */
 #define EI_NIDENT 16
 typedef struct {

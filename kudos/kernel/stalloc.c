@@ -75,7 +75,7 @@ physaddr_t *stalloc(int bytes)
 
   if (free_area_start == 0) {
     KERNEL_PANIC("Attempting to use stalloc before initialization\n");
-  }    
+  }
 
   /* bytes == 0 may be useful for aligning memory so it is allowed */
   if (bytes < 0)

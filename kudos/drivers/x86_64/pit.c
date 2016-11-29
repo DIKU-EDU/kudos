@@ -20,8 +20,8 @@ extern void pit_irq_handler(void);
 void pit_send_data(uint8_t data, uint8_t counter)
 {
   /* Get correct port */
-  uint8_t port = 
-    (counter == PIT_CW_MASK_COUNTER0) ? (uint8_t)PIT_COUNTER0_REG : 
+  uint8_t port =
+    (counter == PIT_CW_MASK_COUNTER0) ? (uint8_t)PIT_COUNTER0_REG :
     (counter == PIT_CW_MASK_COUNTER1) ? (uint8_t)PIT_COUNTER1_REG :
     (uint8_t)PIT_COUNTER2_REG;
 

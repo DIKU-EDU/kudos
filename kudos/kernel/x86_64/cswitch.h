@@ -25,7 +25,7 @@ void _cswitch_vector_code(void);
 void _cswitch_to_userland(context_t *usercontext);
 
 /* Context manipulation */
-void _context_init(context_t *cxt, virtaddr_t entry, virtaddr_t endentry, 
+void _context_init(context_t *cxt, virtaddr_t entry, virtaddr_t endentry,
                    virtaddr_t stack, uint32_t args);
 void _context_enter_userland(context_t *cxt);
 void _context_set_ip(context_t *cxt, virtaddr_t ip); /* Set new instruction pointer / program counter */

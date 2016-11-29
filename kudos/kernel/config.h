@@ -5,7 +5,7 @@
 #ifndef KUDOS_KERNEL_CONFIG_H
 #define KUDOS_KERNEL_CONFIG_H
 
-/* Define the maximum number of threads supported by the kernel 
+/* Define the maximum number of threads supported by the kernel
  * Range from 2 (idle + init) to 256 (ASID size)
  */
 #define CONFIG_MAX_THREADS 32
@@ -19,16 +19,16 @@
  */
 #define CONFIG_MAX_CPUS 4
 
-/* Define the length of scheduling interval (timeslice) in 
- * processor cycles. 
+/* Define the length of scheduling interval (timeslice) in
+ * processor cycles.
  * Range from 200 to 2000000000.
  */
 #define CONFIG_SCHEDULER_TIMESLICE 750
 
-/* Sets the maximum number of boot arguments that the kernel will 
+/* Sets the maximum number of boot arguments that the kernel will
  * accept.
  * Range from 1 to 1024
- */ 
+ */
 #define CONFIG_BOOTARGS_MAX 32
 
 /* Define the maximum number of semaphores.
@@ -53,12 +53,12 @@
 
 #define CONFIG_MAX_OPEN_FILES 512
 
-/* Maximum number of simultaneously open sockets for POP/SOP 
+/* Maximum number of simultaneously open sockets for POP/SOP
  * Range from 4 to 65536
  */
 #define CONFIG_MAX_OPEN_SOCKETS 64
 
-/* Size of the POP receive queue 
+/* Size of the POP receive queue
  * Range from 4 to 512
  */
 #define CONFIG_POP_QUEUE_SIZE 32
@@ -69,7 +69,7 @@
  */
 #define CONFIG_POP_QUEUE_MIN_AGE 250
 
-/* Maximum number of network interfaces 
+/* Maximum number of network interfaces
  * Range from 1 to 64
  */
 #define CONFIG_MAX_GNDS 4

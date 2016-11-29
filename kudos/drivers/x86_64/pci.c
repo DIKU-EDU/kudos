@@ -5,17 +5,17 @@
 #include "lib/libc.h"
 
 /* Class Codes */
-static const char * class_code[18] = 
-{ 
-"Legacy", "Mass Storage Controller", "Network Controller", 
+static const char * class_code[18] =
+{
+"Legacy", "Mass Storage Controller", "Network Controller",
 "Video Controller", "Multimedia Unit", "Memory Controller", "Bridge",
 "Simple Communications Controller", "Base System Peripheral", "Input Device",
 "Docking Station", "Processor", "Serial Bus Controller", "Wireless Controller",
-"Intelligent I/O Controller", "Satellite Communication Controller", 
+"Intelligent I/O Controller", "Satellite Communication Controller",
 "Encryption/Decryption Controller", "Data Acquisition and Signal Processing Controller"
 };
 
-static const char * subclass[13][8] = 
+static const char * subclass[13][8] =
 {
 { "Legacy", "VGA", "Other", "Other", "Other", "Other", "Other", "Other" },
 { "SCSI", "IDE", "Floppy", "IPI", "RAID", "Other", "SATA", "Other" },
@@ -34,7 +34,7 @@ static const char * subclass[13][8] =
 
 /**
  * Reads a dword from a given pci register
- * 
+ *
  * @param bus The target bus
  * @param dev The target device
  * @param func The target function
@@ -45,7 +45,7 @@ static const char * subclass[13][8] =
 uint32_t pci_read_dword(uint16_t bus, uint16_t dev, uint16_t func, uint32_t reg)
 {
     /* Select specific func */
-    _outl(0xCF8, 0x80000000 | ((uint32_t)bus << 16) | 
+    _outl(0xCF8, 0x80000000 | ((uint32_t)bus << 16) |
         ((uint32_t)dev << 11) | ((uint32_t)func << 8) |
         (reg & ~3));
 
@@ -85,8 +85,8 @@ uint8_t get_pci_config(pci_conf_t *pcs, uint16_t bus, uint16_t dev, uint16_t fun
         if(pcs->classcode < 13 && pcs->subclass != 0x80 && pcs->device_id != 0x7a0)
         {
             kprintf("PCI: [%u:%u][%u:%u:%u] Vendor 0x%x, Device 0x%x: %s %s\n",
-                pcs->classcode, pcs->subclass, bus, dev, func, 
-                pcs->vendor_id, pcs->device_id, 
+                pcs->classcode, pcs->subclass, bus, dev, func,
+                pcs->vendor_id, pcs->device_id,
                 subclass[pcs->classcode][pcs->subclass],
                 class_code[pcs->classcode]);
         }
@@ -150,7 +150,7 @@ int pci_init(){
                     //if(pcs.classcode == 0x1 && pcs.subclass == 0x1)
                     //{
                     //    /* Yes */
-                    //    device_table[number_of_devices] = 
+                    //    device_table[number_of_devices] =
                     //        disk_init((io_descriptor_t*)&pcs);
                     //    number_of_devices++;
                     //}

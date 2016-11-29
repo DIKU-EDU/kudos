@@ -63,7 +63,7 @@ int bitmap_get(bitmap_t *bitmap, int pos)
 
   i = pos / 32;
   j = pos % 32;
-    
+
   return ((bitmap[i] >> j) & 0x01);
 }
 
@@ -99,11 +99,11 @@ void bitmap_set(bitmap_t *bitmap, int pos, int value)
 
 /**
  * Finds first zero and sets it to one.
- * 
+ *
  * @param bitmap The bitmap
  *
  * @param l Length of bitmap in bits
- * 
+ *
  * @return Number of bit set. Negative if failed.
  */
 
@@ -132,10 +132,10 @@ int bitmap_findnset(bitmap_t *bitmap, int l)
           bitmap_set(bitmap, basepos+j, 1);
           return (basepos+j);
         }
-      }         
+      }
     }
   }
-        
+
   /* No free slots found */
   return -1;
 }

@@ -14,7 +14,7 @@
    a separate structure. */
 
 typedef struct {
-    /* Virtual page pair number. These are the upper 19 bits of a 
+    /* Virtual page pair number. These are the upper 19 bits of a
        virtual address. VPN2 describes which 2 page (8096 bytes)
        region of virtual address space this entry maps. */
     unsigned int VPN2:19    __attribute__ ((packed));
@@ -28,10 +28,10 @@ typedef struct {
     unsigned int PFN0:20    __attribute__ ((packed));
     /* Cache settings. Not used. */
     unsigned int C0:3       __attribute__ ((packed));
-    /* Dirty bit for even page. If this is 0, page is write protected. If 1 
+    /* Dirty bit for even page. If this is 0, page is write protected. If 1
        page can be written. */
     unsigned int D0:1       __attribute__ ((packed));
-    /* Valid bit for even page. */ 
+    /* Valid bit for even page. */
     unsigned int V0:1       __attribute__ ((packed));
     /* Global bit for even page. Can't be used without the global bit
        of odd page.*/
@@ -42,10 +42,10 @@ typedef struct {
     unsigned int PFN1:20    __attribute__ ((packed));
     /* Cache settings. Not used. */
     unsigned int C1:3       __attribute__ ((packed));
-    /* Dirty bit for odd page. If this is 0, page is write protected. If 1 
+    /* Dirty bit for odd page. If this is 0, page is write protected. If 1
        page can be written. */
     unsigned int D1:1       __attribute__ ((packed));
-    /* Valid bit for odd page. */ 
+    /* Valid bit for odd page. */
     unsigned int V1:1       __attribute__ ((packed));
     /* Global bit for odd page. Can't be used without the global bit
        of even page.*/

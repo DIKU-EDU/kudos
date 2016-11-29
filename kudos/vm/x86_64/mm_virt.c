@@ -180,7 +180,7 @@ void vm_init(void){
 
   /* initialize kmalloc allocation address */
   kmalloc_addr = indentity_bound;
-    
+
   /* Clear page table bitmap */
   for(uint64_t i = 0; i < VM_PTP_SIZE; i++)
     ptmap_unsetbit(i);

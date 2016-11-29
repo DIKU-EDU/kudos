@@ -59,10 +59,10 @@ interrupt_status_t _interrupt_is_disabled(void)
   return !_interrupt_get_state();
 }
 
-void interrupt_init(int num_cpus) 
+void interrupt_init(int num_cpus)
 {
   num_cpus = num_cpus;
-        
+
   /* Setup descriptors */
   gdt_init();
   idt_init();
@@ -76,7 +76,7 @@ void interrupt_init(int num_cpus)
   /* Syscall vector and YIELD vector */
   syscall_init();
 
-  idt_install_gate(0x81, IDT_DESC_PRESENT | IDT_DESC_BIT32 | IDT_DESC_RING3, 
+  idt_install_gate(0x81, IDT_DESC_PRESENT | IDT_DESC_BIT32 | IDT_DESC_RING3,
                    (GDT_KERNEL_CODE << 3), (int_handler_t)yield_irq_handler);
 }
 
@@ -85,11 +85,11 @@ void interrupt_register(uint32_t irq,
                         device_t *device)
 {
   device = device;
-        
+
   /* Install interupt, first 32 interrupts are reserved */
-  idt_install_gate(0x20 + irq, 
-                   IDT_DESC_PRESENT | IDT_DESC_BIT32, 
-                   (GDT_KERNEL_CODE << 3), 
+  idt_install_gate(0x20 + irq,
+                   IDT_DESC_PRESENT | IDT_DESC_BIT32,
+                   (GDT_KERNEL_CODE << 3),
                    handler);
 }
 
@@ -203,7 +203,7 @@ void interrupt_handle(virtaddr_t cause)
     }
 
   /* Info */
-  kprintf("Exception: 0x%xl (errcode 0x%xl) Occured!\n", 
+  kprintf("Exception: 0x%xl (errcode 0x%xl) Occured!\n",
           Registers->irq, Registers->errorcode);
   kprintf("Exception occured at address 0x%xl\n", Registers->rip);
 

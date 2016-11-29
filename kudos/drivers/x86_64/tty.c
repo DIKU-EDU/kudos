@@ -39,7 +39,7 @@ extern spinlock_t kprintf_slock;
  *
  * @return Pointer to tty's device_t structure.
  */
-device_t *tty_init(io_descriptor_t *desc) 
+device_t *tty_init(io_descriptor_t *desc)
 {
   device_t *dev;
   gcd_t *gcd;
@@ -116,7 +116,7 @@ int tty_write(gcd_t *gcd, const void *buf, int len)
       uint16_t t_attrib = (uint16_t)(fcolor << 8);
 
       /* Calculate where to put next character */
-      uint64_t offset = (tty->cursor_y * VIDEO_MEMORY_COLUMNS + 
+      uint64_t offset = (tty->cursor_y * VIDEO_MEMORY_COLUMNS +
                          tty->cursor_x) * 2;
       volatile uint16_t *vptr = (volatile uint16_t*)(vidbase + offset);
 
@@ -174,15 +174,15 @@ int tty_write(gcd_t *gcd, const void *buf, int len)
         {
           /* Move all lines one up */
           uint16_t *sptr = (uint16_t*) vidbase;
-          for(i = 0; 
-              i < (VIDEO_MEMORY_ROWS-1) * VIDEO_MEMORY_COLUMNS; 
+          for(i = 0;
+              i < (VIDEO_MEMORY_ROWS-1) * VIDEO_MEMORY_COLUMNS;
               i++)
             {
               sptr[i] = sptr[i + VIDEO_MEMORY_COLUMNS];
             }
 
           /* Clear last line */
-          for (i = (VIDEO_MEMORY_ROWS-1) * VIDEO_MEMORY_COLUMNS; 
+          for (i = (VIDEO_MEMORY_ROWS-1) * VIDEO_MEMORY_COLUMNS;
                i < VIDEO_MEMORY_ROWS * VIDEO_MEMORY_COLUMNS;
                i++)
             {
@@ -194,7 +194,7 @@ int tty_write(gcd_t *gcd, const void *buf, int len)
         }
 
       /* Advance in string */
-      /* Now, we dont advance in string, since this 
+      /* Now, we dont advance in string, since this
        * function only gets called with len = 1 */
       str++;
       j--;
@@ -234,7 +234,7 @@ int tty_read(gcd_t *gcd, void *buf, int len)
     {
       /* Get key */
       char key = keyboard_getkey();
-        
+
       /* Cancel on enter /newline */
       if(key == '\n')
         break;
@@ -247,7 +247,7 @@ int tty_read(gcd_t *gcd, void *buf, int len)
       str++;
       j--;
     }
-    
+
   return i;
 }
 

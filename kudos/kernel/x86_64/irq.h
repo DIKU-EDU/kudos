@@ -15,7 +15,7 @@ typedef struct regs_t
   /* General Registers */
   uint64_t rax, rcx, rdx, rbx;
   uint64_t kernel_rsp, rbp, rsi, rdi;
-        
+
   /* Extra registers */
   uint64_t r8, r9, r10, r11;
   uint64_t r12, r13, r14, r15;

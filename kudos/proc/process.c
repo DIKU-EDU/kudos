@@ -37,7 +37,7 @@ int setup_new_process(TID_t thread,
   pml4_t *current_pml4;
   thread_table_t *thread_entry = thread_get_thread_entry(thread);
 
-  //Save the currently running threads page table 
+  //Save the currently running threads page table
   current_pml4 = thread_get_thread_entry(current_thread)
       ->context->virt_memory;
 

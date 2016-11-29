@@ -52,11 +52,11 @@ typedef struct gbd_request_struct {
     /* Driver internal data. */
     void           *internal;
 
-    /* Changing pointer for request queues. Used internally by drivers. */ 
+    /* Changing pointer for request queues. Used internally by drivers. */
     struct gbd_request_struct *next;
 
     /* Return value for asynchronous call of read or write. After
-       the sem is signaled, return value can be read from this field. 
+       the sem is signaled, return value can be read from this field.
        0 is success, other values indicate failure. */
     int             return_value;
 } gbd_request_t;
@@ -67,7 +67,7 @@ typedef struct gbd_struct {
     device_t       *device;
 
     /* A pointer to a function which reads one block from the device.
-       
+
        Before calling, fill fields block, buf and sem in request.
        If sem is set to NULL, this call will block until the
        request is complete (a block is read). If sem is not NULL,
@@ -77,7 +77,7 @@ typedef struct gbd_struct {
     int (*read_block)(struct gbd_struct *gbd, gbd_request_t *request);
 
     /* A pointer to a function which writes one block to the device.
-       
+
        Before calling, fill fields block, buf and sem in request.
        If sem is set to NULL, this call will block until the
        request is complete (a block is written). If sem is not NULL,
@@ -90,7 +90,7 @@ typedef struct gbd_struct {
        in bytes. */
     uint32_t (*block_size)(struct gbd_struct *gbd);
 
-    /* A pointer to a function which returns the total number of 
+    /* A pointer to a function which returns the total number of
        blocks in this device. */
     uint32_t (*total_blocks)(struct gbd_struct *gbd);
 } gbd_t;

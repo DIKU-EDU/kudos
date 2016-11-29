@@ -45,10 +45,10 @@ typedef struct multiboot_info
   /* Drive Info */
   uint32_t drives_length;
   uint32_t drives_addr;
-        
+
   /* ROM Configuration Table */
   uint32_t config_table;
-        
+
   /* BootLoader Name */
   uint32_t bootloader_name;
 

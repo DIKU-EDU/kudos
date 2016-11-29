@@ -14,7 +14,7 @@
 #define IDT_DESC_RING1                  0x40    //Priveligie Level 1
 #define IDT_DESC_RING2                  0x20    //Priveligie Level 2
 #define IDT_DESC_RING3                  0x60    //Priveligie Level 3
-#define IDT_DESC_PRESENT                0x80    //Is it present? 
+#define IDT_DESC_PRESENT                0x80    //Is it present?
 
 /* Callback Type (Interrupt) */
 typedef void (*irq_handler)();

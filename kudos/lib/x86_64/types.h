@@ -14,7 +14,7 @@ typedef unsigned int uint32_t;       /* unsigned 32-bit integer */
 typedef unsigned long long uint64_t; /* unsigned 64-bit integer */
 
 typedef signed char int8_t;       /* signed 8-bit integer */
-typedef signed short int16_t;     /* signed 16-bit integer */ 
+typedef signed short int16_t;     /* signed 16-bit integer */
 typedef signed int int32_t;       /* signed 32-bit integer */
 typedef signed long long int64_t; /* signed 64-bit integer */
 

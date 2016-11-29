@@ -395,7 +395,7 @@ void tfstool_list(char *diskfilename) {
       read_block(data, ntohl(direntry[i].inode));
       inode = (tfs_inode_t *)data;
 
-      printf("  %3u %5u  %-16s", 
+      printf("  %3u %5u  %-16s",
              (unsigned int) ntohl(direntry[i].inode),
              (unsigned int) ntohl(inode->filesize),
              direntry[i].name);

@@ -10,7 +10,7 @@
 
 /* Defines */
 
-/* We have two PICs, a master and a slave, 
+/* We have two PICs, a master and a slave,
  * and they are capable of 8 interrupt lines each */
 
 /* PIC 1 Interrupts */
@@ -61,7 +61,7 @@
 /* Control Word 1 */
 #define PIC_ICW1_MASK_IC4               1       /* If set, pic expects IC4 during init */
 #define PIC_ICW1_MASK_SNGL              2       /* If set, no slave pic is present */
-#define PIC_ICW1_MASK_ADI               4       /* If set, call address interval is 4, default is 
+#define PIC_ICW1_MASK_ADI               4       /* If set, call address interval is 4, default is
                                                  * cleared */
 #define PIC_ICW1_MASK_LTIM              8       /* If set, level triggered mode is enabled, else
                                                  * we operate in edge triggered mode */
@@ -70,7 +70,7 @@
 
 /* Control Word 4 */
 #define PIC_ICW4_MASK_UPM               1       /* If set, it is in x86 mode */
-#define PIC_ICW4_MASK_AEOI              2       /* If set, the controller automatically sets 
+#define PIC_ICW4_MASK_AEOI              2       /* If set, the controller automatically sets
                                                  * end of interrupt on the last interrupt pulse */
 #define PIC_ICW4_MASK_MS                4       /* If set, selects buffer master, else slave */
 #define PIC_ICW4_MASK_BUF               8       /* If set, controller operates in buffer mode */

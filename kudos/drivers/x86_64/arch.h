@@ -19,7 +19,7 @@
 /* The structure of X64 device descriptor. */
 typedef struct {
     /* Not used */
-    uint32_t type          __attribute__ ((packed)); 
+    uint32_t type          __attribute__ ((packed));
 
 } io_descriptor_t;
 

@@ -1,7 +1,7 @@
 /*
  * The interrupt descriptor table
  */
- 
+
 #include <gdt.h>
 #include <idt.h>
 #include "lib/libc.h"
@@ -33,7 +33,7 @@ void idt_init()
   asm volatile("lidt (%%rax)" : : "a"((uint64_t)&idt_table));
 }
 
-void idt_install_gate(uint32_t index, uint16_t flags, 
+void idt_install_gate(uint32_t index, uint16_t flags,
                       uint16_t selector, irq_handler Irq)
 {
   /* Sanity */

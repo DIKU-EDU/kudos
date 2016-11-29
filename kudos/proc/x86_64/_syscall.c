@@ -24,7 +24,7 @@ extern uintptr_t syscall_entry(uintptr_t syscall, uintptr_t arg0, uintptr_t arg1
 void syscall_init(void)
 {
     /* Install interrupt at vector 0x80 */
-    idt_install_gate(0x80, IDT_DESC_PRESENT | IDT_DESC_BIT32 | IDT_DESC_RING3, 
+    idt_install_gate(0x80, IDT_DESC_PRESENT | IDT_DESC_BIT32 | IDT_DESC_RING3,
         (GDT_KERNEL_CODE << 3), (int_handler_t)syscall_irq_handler);
 }
 
@@ -48,7 +48,7 @@ void syscall_handle(regs_t *registers)
      */
      interrupt_status_t intr_status = _interrupt_get_state();
      _interrupt_enable();
-     registers->rax = syscall_entry(registers->rdi, registers->rsi, 
+     registers->rax = syscall_entry(registers->rdi, registers->rsi,
                                     registers->rdx, registers->rcx);
      _interrupt_set_state(intr_status);
 }
