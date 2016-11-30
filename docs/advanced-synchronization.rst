@@ -3,8 +3,10 @@ Advanced Synchronization
 
 The :doc:`low-level synchronization primitives <low-level-synchronization>`,
 such as disabling interrupts and spinlocks, can be used to implement more
-advanced synchronization techniques. Kernel-level KUDOS supports sleep queues
-and semaphores. Documentation about kernel-level semaphores is coming soon.
+advanced synchronization techniques. Kernel-level KUDOS supports :ref:`sleep
+queues <sleep-queues>` and :ref:`semaphores <semaphores>`.
+
+.. _sleep-queues:
 
 Sleep Queue
 -----------
@@ -179,6 +181,8 @@ no threads are waiting for the given ``resource``, do nothing.
 ::::::::::::::::::::::::::::::::::::::::
 As ``sleepq_wake``, but wakes up all threads which are waiting on the given
 resource.
+
+.. _semaphores:
 
 Semaphores
 ----------
