@@ -133,7 +133,7 @@ happen.
   +---------------------------+
 
 Exercises
-^^^^^^^^^
+---------
 
 1. Do we need spinlocks on a uniprocessor system?
 
