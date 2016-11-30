@@ -212,7 +212,7 @@ unblocked.
 API
 ```
 
-The KUDOS semaphores API is defined in `kudos/kernel/semaphore.h`.
+The KUDOS semaphores API is defined in ``kudos/kernel/semaphore.h``.
 
 ``semaphore_t *semaphore_create(int value)``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -272,7 +272,7 @@ this call returns only after the value is non-negative.
 Implementation
 ``````````````
 
-KUDOS semaphores are implemented in `kudos/kernel/semaphore.h`.
+KUDOS semaphores are implemented in ``kudos/kernel/semaphore.h``.
 
 Semaphores are implemented as a static array of semaphore structures with the name semaphore
 table. When semaphores are ”created”, they are actually allocated from this table. A spin-
