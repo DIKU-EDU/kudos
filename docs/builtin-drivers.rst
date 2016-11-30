@@ -6,6 +6,22 @@ target are all designed to work with YAMS hardware.  The purpose of this section
 is to show how one can create actual drivers for for the KUDOS device driver
 interface.
 
+TTY
+---
+
+TTY roughly stands for "teletype", and in this context refers to a class of
+drivers that provide a low-level interface for terminal-style user interaction.
+KUDOS comes with both a :ref:`polling <polling-tty>`, and
+:ref:`interrupt-driven <interrupt-driven-tty>` TTY driver built-in. The former
+works by repeatedly polling the keyboard device, which can waste precious
+clock-cycles, while the latter relies on an interrupt handler to wake up the
+kernel thread when input from the keyboard actually becomes available.
+
+Historically, TTY drivers also implement a line discipline, and the KUDOS TTY
+drivers are no exception.
+
+.. _polling-tty:
+
 Polling TTY Driver
 ------------------
 
@@ -14,17 +30,19 @@ implemented by *polling* and the other with *interrupt handlers*.
 
 Polling means that the kernel again and again asks the (virtual, in this case)
 hardware if anything new has come up.  Depending on interrupt handlers means
-that the hardware signals the kernel when a change has occured.
+that the hardware signals the kernel when a change has occurred.
 
 The polling driver is needed when booting up, since interrupts are disabled.  It
 is also useful in kernel panic situations, because interrupt handlers might not
 be relied on in such error cases.
 
-Perhaps the easiest way to use the polling TTY driver is using the builtin
+Perhaps the easiest way to use the polling TTY driver is using the built-in
 functions ``kwrite`` and ``kprintf`` (defined in ``kudos/lib/libc.h``). See
 ``kudos/drivers/polltty.h`` and ``kudos/drivers/$ARCH/polltty.c`` for the
 implementation and documentation of the driver itself.
 
+.. _interrupt-driven-tty:
+ 
 Interrupt-driven TTY Driver
 ---------------------------
 
@@ -45,7 +63,7 @@ The following functions implement the TTY driver:
 Initialize a driver for the TTY defined by ``desc``.  This function is called
 once for each TTY driver present in the YAMS virtual machine.
 
-Implementation:
+*Implementation:*
 
   1. Allocate memory for one ``device_t``.
   2. Allocate memory for one ``gcd_t`` and set ``generic_device`` to point to
@@ -93,7 +111,7 @@ Implementation if RIRQ (*read interrupt request*) is set:
 
 Write ``len`` bytes from ``buf`` to the TTY specified by ``gcd``.
 
-Implementation:
+*Implementation:*
 
   1. Disable interrupts and acquire driver spinlock.
   2. As long as write buffer is not empty, sleep on it (release-reacquire for
