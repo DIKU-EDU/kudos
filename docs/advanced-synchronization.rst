@@ -219,7 +219,8 @@ API
 The KUDOS semaphores API is defined in ``kudos/kernel/semaphore.h``.
 
 ``semaphore_t *semaphore_create(int value)``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::::::::::::::::::::::::::::::::::::::::::::
+
 Creates a new semaphore, by finding the first unused semaphore in semaphore
 table, and initializes its value to the specified value.
 
@@ -236,13 +237,16 @@ table, and initializes its value to the specified value.
   9.  Reset the semaphore spinlock.
   10. Return the allocated semaphore.
 
+
 ``void semaphore_destroy(semaphore_t *sem)``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::::::::::::::::::::::::::::::::::::::::::::
+
 Destroys the given semaphore `sem`, freeing its entry in the `semaphore_table`.
 
 
 ``void semaphore V(semaphore_t *sem)``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::::::::::::::::::::::::::::::::::::::
+
 Increments the value of ``sem`` by one.  If the value was originally negative
 (there are waiters), wakes up one waiter.
 
@@ -258,7 +262,8 @@ Increments the value of ``sem`` by one.  If the value was originally negative
 
 
 ``void semaphore P(semaphore t *sem)``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::::::::::::::::::::::::::::::::::::::
+
 Decreases the value of ``sem`` by one. If the value becomes negative, block
 (sleep).  Conceptually the value of the semaphore is never below zero, since
 this call returns only after the value is non-negative.
@@ -273,6 +278,7 @@ this call returns only after the value is non-negative.
   5. Else, release the spinlock.
   6. Restore the interrupt status.
 
+
 Implementation
 ``````````````
 
@@ -286,12 +292,12 @@ semaphore is defined by ``semaphore_t``, which is a structure with three fields:
 .. One should format as a table
 
 ``spinlock_t slock``
-~~~~~~~~~~~~~~~~~~~~
+::::::::::::::::::::
 
 Spinlock which must be held when accessing the semaphore data.
 
 ``int value``
-~~~~~~~~~~~~~
+:::::::::::::
 
 The current value of the semaphore. If the value is negative,
 it indicates that thread(s) are waiting for the semaphore to
@@ -300,7 +306,7 @@ never below zero since calls from semaphore P() do not
 return while the value is negative.
 
 ``TID_t``
-~~~~~~~~~
+:::::::::
 
 The thread ID of the thread that created this semaphore.
 Negative value indicates that the semaphore is unallocated
