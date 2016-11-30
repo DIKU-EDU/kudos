@@ -316,7 +316,7 @@ debugging purposes.
 Exercises
 ---------
 
-1. Suppose you need to implement periodic wake-ups for threads. For ex- ample
+1. Suppose you need to implement periodic wake-ups for threads. For example,
    threads can go to sleep and then they are waked up every time a timer interrupt
    occurs. In this case a resource spinlock is not needed to use the sleep queue.
    Why can the functions ``sleepq_add``, ``sleepq_wake`` and ``sleepq_wake_all``
