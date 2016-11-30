@@ -302,3 +302,24 @@ The thread ID of the thread that created this semaphore.
 Negative value indicates that the semaphore is unallocated
 (not yet created). The creator information is useful for
 debugging purposes.
+
+Exercises
+---------
+
+1. Suppose you need to implement periodic wake-ups for threads. For ex- ample
+   threads can go to sleep and then they are waked up every time a timer interrupt
+   occurs. In this case a resource spinlock is not needed to use the sleep queue.
+   Why can the functions ``sleepq_add``, ``sleepq_wake`` and ``sleepq_wake_all``
+   be called without holding a resource spinlock in this case?
+2. Some synchronization mechanisms may be used in both threads and interrupt
+   handlers, some cannot. Which of the following functions can be called from a
+   interrupt handler (why or why not?):
+     a. ``interrupt disable()``
+     b. ``interrupt enable()``
+     c. ``spinlock acquire()``
+     d. ``spinlock release()``
+     e. ``sleepq add()``
+     f. ``sleepq wake()``
+     g. ``sleepq wake all()``
+     h. ``semaphore V()``
+     i. ``semaphore P()``
