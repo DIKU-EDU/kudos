@@ -37,21 +37,22 @@ need to touch either of these subdirectories.
 ``kudos``
 ---------
 
-The kernel source code is split into modules stored in subdirectories. A module
-typically consists of some C-files and a ``module.mk``. To add a new module,
-list it in the ``MODULES`` variables in ``kudos/Makefile``.  To add new C-files
-to a module, list them in the ``FILES`` variable of the ``module.mk``. A module
-may also contain architecture-specific implementations in designated
-sub-subdirectories, such as ``mips32`` and ``x86-64``.
+The kernel source code is split into subsystems stored in subdirectories. A
+subsystem typically consists of some C-files and a ``subsys.mk``. To add a new
+subsystem, list it in the ``MODULES`` variables in ``kudos/Makefile``.  To add
+new C-files to a subsystem, list them in the ``FILES`` variable of the
+``subsys.mk``. A subsystem may also contain architecture-specific
+implementations in designated sub-subdirectories, such as ``mips32`` and
+``x86-64``.
 
-Currently, the kernel contains the following modules:
+Currently, the kernel contains the following subsystems:
 
 ``kudos/init/``
 ~~~~~~~~~~~~~~~
 
 Kernel initialization and entry point.  This directory contains the functions
 that KUDOS will execute to bootstrap itself. See :doc:`bootstrapping-kudos` for
-documentation of this module.
+documentation of this subsystem.
 
 ``kudos/kernel/``
 ~~~~~~~~~~~~~~~~~
@@ -66,7 +67,7 @@ various core functions used in the KUDOS kernel reside here (e.g. ``panic`` and
 Userland processes.  Starting of new userland processes, loading userland
 binaries and handling exceptions and system calls from userland. See
 :doc:`system-calls` for documentation about the system call interface.
-Documentation about the rest of this module is coming soon.
+Documentation about the rest of this subsystem is coming soon.
 
 ``kudos/vm``
 ~~~~~~~~~~~~
@@ -84,7 +85,7 @@ soon.
 ~~~~~~~~~~~~~~~~~
 
 Low level device drivers and their interfaces. See :doc:`device-drivers` and
-:doc:`builtin-drivers` for documentation of this module.
+:doc:`builtin-drivers` for documentation of this subsystem.
 
 ``kudos/lib``
 ~~~~~~~~~~~~~
