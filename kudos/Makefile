@@ -59,9 +59,9 @@ copy:
 	dd if=$(IMG) of=/dev/sda7
 
 # include the description for each module
-include $(patsubst %, %/module.mk, $(MODULES))
-include $(patsubst %, %/module.mk, $(ARCHMIPS32))
-include $(patsubst %, %/module.mk, $(ARCHX86_64))
+include $(patsubst %, %/subsys.mk, $(MODULES))
+include $(patsubst %, %/subsys.mk, $(ARCHMIPS32))
+include $(patsubst %, %/subsys.mk, $(ARCHX86_64))
 
 # determine the object files
 MIPS32OBJS :=  $(patsubst %.s,%.mips32.o,$(filter %.s,$(SRC))) \
